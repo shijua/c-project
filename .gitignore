@@ -37,3 +37,4 @@ assemble
 .cmake
 cmake-build-debug
 .ideas
+.vscode
