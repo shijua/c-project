@@ -1,5 +1,5 @@
 #include <string.h>
-#include "Util.h"
+#include "../Util.h"
 #include "inputformat.h"
 
 struct send_DPI to_DPI(int instruction) {

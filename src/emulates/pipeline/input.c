@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "../emulate.h"
+#include "../../emulate.h"
 #include "inputformat.h"
 #include "input.h"
-#include "Util.h"
+#include "../Util.h"
 
 int memory[MAX_MEMORY];
 struct Registers registers;
