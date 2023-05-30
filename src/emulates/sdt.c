@@ -68,11 +68,11 @@ void SingleDataTransfer(struct sdtp s) {
         // Unsigned Immediate Offset
         address = getRegisterValue(n) + (unsigned long long) offset;
     } else {
-        unsigned int bit21 = getBits(offset, 21, 1);
+        unsigned int bit21 = getBits(offset, 11, 1);
         if (bit21 == 0) {
             //Pre/Post-Index
-            unsigned int bit11 = getBits(offset, 11, 1);
-            int simm9 = getBits(offset, 2, 9) - 256;
+            unsigned int bit11 = getBits(offset, 1, 1);
+            int simm9 = getBits(offset, 2, 9);
             if (bit11 == 1) {
                 //Pre-Index
                 address = getRegisterValue(n) + ((long long) simm9) * 8;
@@ -146,6 +146,7 @@ void SingleDataTransfer(struct sdtp s) {
         }
     }
 }
+
 void LoadLiteral(struct loadliteral l) {
     unsigned long long address;
     bool sf = l.sf;
