@@ -36,5 +36,5 @@ assemble
 #ignore files from the Clion IDE
 .cmake
 cmake-build-debug
-.ideas
+.idea
 .vscode
