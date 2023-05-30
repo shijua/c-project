@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "Main.c"
+#include "../emulate.h"
+#include "output.h"
 
 void output_general(long long* general_register_ptr) {
     for (int i = 0; i < 31; i++) {
@@ -23,7 +24,7 @@ void output_Pstate(bool* pstate_ptr) {
     }
 }
 
-void output_memory(){
+void output_memory(long long* memory){
     for (int i = 0; i < 524288; i++) // 2^19
     {
         if (memory[i] != 0) {
@@ -33,7 +34,7 @@ void output_memory(){
 }
 
 
-void output(struct Registers* register_ptr) { 
+void output(struct Registers* register_ptr, long long* memory) { 
     // output all general registers
     printf("Registers:\n");
     output_general(register_ptr->general);
@@ -48,37 +49,37 @@ void output(struct Registers* register_ptr) {
 
     //output memory
     printf("Non-zero memory:\n");
-    output_memory();
+    output_memory(memory);
 }
 
-int main(int argc, char const *argv[])
-{
-    struct Registers registers;
+// int main(int argc, char const *argv[])
+// {
+//     struct Registers registers;
 
-    // initialise 
-    long long* general_register_ptr = registers.general;
-    for (int i = 0; i < 31; i++) {
-        *general_register_ptr++ = 0;
-    }
-    registers.general[0] = 3;
-    registers.general[1] = 1;
-    registers.general[2] = 2;
+//     // initialise 
+//     long long* general_register_ptr = registers.general;
+//     for (int i = 0; i < 31; i++) {
+//         *general_register_ptr++ = 0;
+//     }
+//     registers.general[0] = 3;
+//     registers.general[1] = 1;
+//     registers.general[2] = 2;
 
-    // initialise pstate
-    registers.pstate.N = false;
-    registers.pstate.Z = false;
-    registers.pstate.C = true;
-    registers.pstate.V = false;
+//     // initialise pstate
+//     registers.pstate.N = false;
+//     registers.pstate.Z = false;
+//     registers.pstate.C = true;
+//     registers.pstate.V = false;
 
-    // initialise memory
-    for (int i = 0; i < 524288; i++) // 2^19
-    {
-        memory[i] = 0;
-    }
-    memory[0] = 114514;
-    memory[114514] = 1919810;
+//     // initialise memory
+//     for (int i = 0; i < 524288; i++) // 2^19
+//     {
+//         memory[i] = 0;
+//     }
+//     memory[0] = 114514;
+//     memory[114514] = 1919810;
 
-    output(&registers);
+//     output(&registers);
 
-    return 0;
-}
+//     return 0;
+// }

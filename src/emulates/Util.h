@@ -1,0 +1,1 @@
+extern int get_bit(int startbit, int length, int instruction);
