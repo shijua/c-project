@@ -1,7 +1,7 @@
 #include "../Util.h"
 #include "../inputformat.h"
 struct literal{
-    int type;
+    int sf;
     int simM26;
     int Xn;
     int SimM19;
