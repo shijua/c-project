@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "../memory.h"
+#include "../Util.h"
 #include "output.h"
 
 void output_general(long long* general_register_ptr) {
@@ -24,7 +24,7 @@ void output_Pstate(bool* pstate_ptr) {
     }
 }
 
-void output_memory(long long* memory){
+void output_memory(int* memory){
     for (int i = 0; i < 524288; i++) // 2^19
     {
         if (memory[i] != 0) {
@@ -34,7 +34,7 @@ void output_memory(long long* memory){
 }
 
 
-void output(struct Registers* register_ptr, long long* memory) { 
+void output(struct Registers* register_ptr, int* memory) { 
     // output all general registers
     printf("Registers:\n");
     output_general(register_ptr->general);

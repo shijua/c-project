@@ -4,15 +4,14 @@
 #include <assert.h>
 #include "input.h"
 #include "inputformat.h"
-#include "../Util.h"
 
-extern void DPI(int* memory, struct Registers registers, struct send_DPI divide){return;}
-extern void DPR(int* memory, struct Registers registers, struct send_DPR divide){return;}
-extern void SDT(int* memory, struct Registers registers, struct send_SDT divide){return;}
-extern void LL(int* memory, struct Registers registers, struct send_LL divide){return;}
-extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;}
+extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
+extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
+extern void SDT(int* memory, struct Registers* registers, struct send_SDT divide){return;}
+extern void LL(int* memory, struct Registers* registers, struct send_LL divide){return;}
+extern void branch(int* memory, struct Registers* registers, struct send_branch divide){return;}
 
-void decode(int* memory, struct Registers registers, int instruction) {
+void decode(int* memory, struct Registers* registers, int instruction) {
     int op0 = get_bit(28, 4, instruction);
     // printf("op0: %d\n", op0);
     if (op0 == 8 || op0 == 9) {  // 1000 1001
