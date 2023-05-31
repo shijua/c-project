@@ -1,0 +1,51 @@
+#include <string.h>
+#include "../Util.h"
+#include "inputformat.h"
+
+struct send_DPI to_DPI(int instruction) {
+    struct send_DPI divide;
+    divide.sf = get_bit(31, 1, instruction);
+    divide.opc = get_bit(30, 2, instruction);
+    divide.opi = get_bit(23, 3, instruction);
+    divide.operand = get_bit(22, 18, instruction);
+    divide.rd = get_bit(4, 5, instruction);
+    return divide;
+}
+
+struct send_DPR to_DPR(int instruction) {
+    struct send_DPR divide;
+    divide.sf = get_bit(31, 1, instruction);
+    divide.opc = get_bit(30, 2, instruction);
+    divide.opr = get_bit(24, 4, instruction);
+    divide.rm = get_bit(16, 5, instruction);
+    divide.operand = get_bit(15, 6, instruction);
+    divide.rn = get_bit(9, 5, instruction);
+    divide.rd = get_bit(4, 5, instruction);
+    return divide;
+}
+
+struct send_SDT to_SDT(int instruction) {
+    struct send_SDT divide;
+    divide.sf = get_bit(30, 1, instruction);
+    divide.L = get_bit(22, 1, instruction);
+    divide.offset = get_bit(21, 12, instruction);
+    divide.xn = get_bit(9, 5, instruction);
+    divide.rt = get_bit(4, 5, instruction);
+    return divide;
+}
+
+struct send_LL to_LL(int instruction) {
+    struct send_LL divide;
+    divide.sf = get_bit(30, 1, instruction);
+    divide.simm19 = get_bit(23, 19, instruction);
+    divide.rt = get_bit(4, 5, instruction);
+    return divide;
+}
+
+struct send_branch to_branch(int instruction) {
+    struct send_branch divide;
+    divide.sf = get_bit(31, 2, instruction);
+    divide.operand = get_bit(25, 26, instruction);
+    return divide;
+}
+
