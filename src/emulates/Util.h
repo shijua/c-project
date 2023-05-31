@@ -19,4 +19,4 @@ struct Registers {
 #endif
 
 
-extern int get_bit(int startbit, int length, int instruction);
+extern unsigned int get_bit(int startBit, int numBits, unsigned int number);

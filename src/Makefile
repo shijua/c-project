@@ -3,7 +3,7 @@ CFLAGS  ?= -std=c17 -g\
 	-D_POSIX_SOURCE -D_DEFAULT_SOURCE\
 	-Wall -Werror -pedantic
 
-LIBSRCEMULATE = emulates/pipeline/pipelines.a emulates/Util.a
+LIBSRCEMULATE = emulates/pipeline/pipelines.a emulates/Util.a emulates/Single_Data_Transfer/single_data_transfer.a
 # .SUFFIXES: .c .o  # Suffixes for implicit rules so that .o would not be deleted automatically
 
 .PHONY: all clean

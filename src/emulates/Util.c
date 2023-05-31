@@ -1,12 +1,13 @@
 #include <stdio.h>
-int get_bit(int startbit, int length, int instruction) {
-    int mask = 0;
-    for (int i = 0; i < length; i++) {
-        mask <<= 1;
-        mask += 1;
-    }
-    // printf("mask: %d\n", mask);
-    return (instruction >> (startbit - length + 1)) & mask;
+// Function to get the value of specific bits
+unsigned int get_bit(int startBit, int numBits, unsigned int number) {
+    // Create a bitmask with the desired number of bits
+    unsigned int bitmask = (1 << numBits) - 1;
+    // Shift the result back to the rightmost bits
+    unsigned int result = number >> startBit;
+    // Apply the bitmask to the number using bitwise AND operation
+    result = number & bitmask;
+    return result;
 }
 
 

@@ -1,4 +1,3 @@
-#include <stdbool.h>
 extern void output_general(long long* general_register_ptr);
 extern void output_Pstate(bool* pstate_ptr);
 extern void output_memory(int* memory);

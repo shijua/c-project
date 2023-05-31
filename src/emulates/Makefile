@@ -4,7 +4,7 @@ CFLAGS  ?= -std=c17 -g\
 	-Wall -Werror -pedantic
 
 LIBOUT = Util.a
-SOURCES = Util.c
+SOURCES = Util.c inputformat.c
 OBJECTS = $(SOURCES:.c=.o)
 LIBFLAGS = rcs
 
