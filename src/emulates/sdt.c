@@ -48,7 +48,7 @@ unsigned int getBits(unsigned int number, int startBit, int numBits) {
 
     return result;
 }
-long long getRegisterValue(int n) {
+long long getRegisterValue(int n, struct Registers regs) {
     if (n <= 30) {
         return regs.general[n];
     } else {
@@ -56,7 +56,7 @@ long long getRegisterValue(int n) {
     }
 }
 
-void SingleDataTransfer(struct sdtp s) {
+void SingleDataTransfer(int* memory, struct Registers regs, struct sdtp s) {
     unsigned long long address;
     int offset = s.offset;
     int n = s.xn;
@@ -66,7 +66,7 @@ void SingleDataTransfer(struct sdtp s) {
     bool U = s.U;
     if (U == 1) {
         // Unsigned Immediate Offset
-        address = getRegisterValue(n) + (unsigned long long) offset;
+        address = getRegisterValue(n, regs) + (unsigned long long) offset;
     } else {
         unsigned int bit21 = getBits(offset, 11, 1);
         if (bit21 == 0) {
@@ -75,7 +75,7 @@ void SingleDataTransfer(struct sdtp s) {
             int simm9 = getBits(offset, 2, 9);
             if (bit11 == 1) {
                 //Pre-Index
-                address = getRegisterValue(n) + ((long long) simm9) * 8;
+                address = getRegisterValue(n, regs) + ((long long) simm9) * 8;
                 if (rt <= 30) {
                     regs.general[rt] = address;
                 } else {
@@ -83,7 +83,7 @@ void SingleDataTransfer(struct sdtp s) {
                 }
             } else {
                 //Post-Index
-                address = getRegisterValue(n);
+                address = getRegisterValue(n, regs);
                 if (rt <= 30) {
                     regs.general[rt] = address + ((long long) simm9) * 8;
                 } else {
@@ -93,8 +93,8 @@ void SingleDataTransfer(struct sdtp s) {
         } else {
             // Register Offset
             unsigned int m = getBits(offset, 6, 5);
-            long long xm = getRegisterValue((int) m);
-            long long xn = getRegisterValue(n);
+            long long xm = getRegisterValue((int) m, regs);
+            long long xn = getRegisterValue(n, regs);
             address = xm + xn;
         }
     }
@@ -147,7 +147,7 @@ void SingleDataTransfer(struct sdtp s) {
     }
 }
 
-void LoadLiteral(struct loadliteral l) {
+void LoadLiteral(int* memory, struct Registers regs, struct loadliteral l) {
     unsigned long long address;
     bool sf = l.sf;
     long long simm19 = l.simm19;
