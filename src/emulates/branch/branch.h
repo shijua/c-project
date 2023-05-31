@@ -7,8 +7,8 @@ struct literal{
     int SimM19;
     int cond;
 };
-extern void process(struct send_branch pre, struct literal *lit);
+extern void process(struct send_branch pre, struct literal* lit);
 extern unsigned int getBitRange(int num, int x, int y);
 extern void printBinary(unsigned int num);
-extern void Branch(int* memory, struct Register *r, struct send_branch pre);
-extern bool conditional_branch(struct Register * reg, unsigned int condition);
+extern void Branch(int* memory, struct Registers* r, struct send_branch pre);
+extern bool conditional_branch(struct Registers* r, unsigned int condition);
