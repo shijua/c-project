@@ -22,7 +22,7 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
         if (bit21 == 0) {
             //Pre/Post-Index
             unsigned int bit11 = get_bit(1, 1, offset);
-            int simm9 = get_bit(2, 9, offset);
+            int simm9 = get_bit(10, 9, offset);
             if (bit11 == 1) {
                 //Pre-Index
                 address = getRegisterValue(n, regs) + ((long long) simm9) * 8;
@@ -42,7 +42,7 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
             }
         } else {
             // Register Offset
-            unsigned int m = get_bit(6, 5, offset);
+            unsigned int m = get_bit(10, 5, offset);
             long long xm = getRegisterValue((int) m, regs);
             long long xn = getRegisterValue(n, regs);
             address = xm + xn;
