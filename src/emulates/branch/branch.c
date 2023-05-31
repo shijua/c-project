@@ -3,11 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-unsigned int getBitRange(int num, int x, int y) {
-    unsigned int mask = (1u << (y - x + 1)) - 1;
-    return (num >> x) & mask;
-}
-
 void process(struct send_branch pre, struct literal *lit){
     lit->sf = pre.sf;
     lit->simM26 = pre.operand;

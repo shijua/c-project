@@ -26,7 +26,7 @@ clean:
 
 libs:
 	cd ../Single_Data_Transfer; make
-	# cd ../branch; make
+	cd ../branch; make
 	cd ../special; make
 	cd ../; make
 

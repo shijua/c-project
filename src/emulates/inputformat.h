@@ -12,6 +12,7 @@ struct send_DPI
 struct send_DPR
 {
     bool sf;
+    bool M;
     int opc;
     int opr;
     int rm;

@@ -10,6 +10,11 @@ unsigned int get_bit(int startBit, int numBits, unsigned int number) {
     return result;
 }
 
+unsigned int getBitRange(int num, int x, int y) {
+    unsigned int mask = (1u << (y - x + 1)) - 1;
+    return (num >> x) & mask;
+}
+
 // int main(int argc, char const *argv[])
 // {
 //     printf("%d\n", get_bit(28, 4, 335544322));
