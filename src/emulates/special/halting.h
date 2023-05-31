@@ -1,3 +1,3 @@
 #include "../Util.h"
 #include "../inputformat.h"
-void halting(int* memory, struct Register *r, struct send_branch pre);
+extern void halting(int* memory, struct Registers *r);

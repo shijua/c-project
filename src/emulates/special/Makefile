@@ -4,9 +4,9 @@ CFLAGS  ?= -std=c17 -g\
 	-Wall -Werror -pedantic
 
 # define library name generated
-LIBOUT = pipelines.a
+LIBOUT = special.a
 # define source file
-SOURCES = input.c output.c
+SOURCES = nop.c halting.c
 # define object file
 OBJECTS = $(SOURCES:.c=.o)
 # define library flags
@@ -25,10 +25,4 @@ clean:
 	$(RM) *.o $(LIBOUT)
 
 libs:
-	cd ../Single_Data_Transfer; make
-	# cd ../branch; make
-	cd ../special; make
 	cd ../; make
-
-# input.o: input.c input.h
-# output.o: output.c output.h

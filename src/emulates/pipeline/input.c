@@ -6,6 +6,9 @@
 #include "../inputformat.h"
 #include "../Single_Data_Transfer/sdt.h"
 #include "../Single_Data_Transfer/loadl.h"
+// #include "../branch/branch.h"
+#include "../special/halting.h"
+#include "../special/nop.h"
 extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
 extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
 // extern void SDT(int* memory, struct Registers* registers, struct sdtp divide){return;}
@@ -25,6 +28,10 @@ void decode(int* memory, struct Registers* registers, int instruction) {
         LoadLiteral(memory, registers, to_LL(instruction));
     }else if (op0 == 10 || op0 == 11) { // 1010 1011
         branch(memory, registers, to_branch(instruction));
+    } else if (instruction == -721215457) {
+        nop(memory, registers);
+    } else if (instruction == -1979711488) {
+        halting(memory, registers);
     } else {
         printf("Error: invalid instruction\n");
         printf("op0: %d\n", op0);

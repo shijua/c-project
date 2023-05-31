@@ -21,7 +21,7 @@ void process(struct send_branch pre, struct literal *lit){
 }
 //extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;}
 void Branch(int* memory, struct Register *r, struct send_branch pre){
-    struct literal *lit
+    struct literal *lit;
     process(pre, lit);
     switch (lit->sf) {
         case 0:

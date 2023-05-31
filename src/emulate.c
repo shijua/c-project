@@ -11,5 +11,6 @@ int main(int argc, char **argv) {
   int instruction = memory[registers.PC / 4];
   decode(memory, &registers, instruction);
   printf("It runs!!!\n");
+  output(&registers, memory);
   return EXIT_SUCCESS;	
 }
