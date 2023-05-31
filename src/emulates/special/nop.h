@@ -1,3 +1,3 @@
 #include "../Util.h"
 #include "../inputformat.h"
-void nop(int* memory, struct Register *r);
+extern void nop(int* memory, struct Registers *r);
