@@ -2,34 +2,33 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "../../emulate.h"
-#include "inputformat.h"
 #include "input.h"
+#include "inputformat.h"
 #include "../Util.h"
 
-int memory[MAX_MEMORY];
-struct Registers registers;
-extern void DPI(int* memory, struct Registers registers, struct send_DPI divide){return;};
-extern void DPR(int* memory, struct Registers registers, struct send_DPR divide){return;};
-extern void SDT(int* memory, struct Registers registers, struct send_SDT divide){return;};
-extern void LL(int* memory, struct Registers registers, struct send_LL divide){return;};
-extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;};
+extern void DPI(int* memory, struct Registers registers, struct send_DPI divide){return;}
+extern void DPR(int* memory, struct Registers registers, struct send_DPR divide){return;}
+extern void SDT(int* memory, struct Registers registers, struct send_SDT divide){return;}
+extern void LL(int* memory, struct Registers registers, struct send_LL divide){return;}
+extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;}
 
-void decode(int instruction) {
+void decode(int* memory, struct Registers registers, int instruction) {
     int op0 = get_bit(28, 4, instruction);
-    if (op0 == 0b1000 || op0 == 0b1001) {
+    // printf("op0: %d\n", op0);
+    if (op0 == 8 || op0 == 9) {  // 1000 1001
         DPI(memory, registers, to_DPI(instruction));
-    }else if (op0 == 0b0101) {
+    }else if (op0 == 5) { // 0101
         DPR(memory, registers, to_DPR(instruction));
-    }else if (op0 == 0b1100 && get_bit(24, 1, instruction) == 1) {
+    }else if (op0 == 12 && get_bit(24, 1, instruction) == 1) { // 1100
         SDT(memory, registers, to_SDT(instruction));
-    }else if (op0 == 0b1101 && get_bit(24, 1, instruction) == 0) {
+    }else if (op0 == 13 && get_bit(24, 1, instruction) == 0) { // 1101
         LL(memory, registers, to_LL(instruction));
-    }else if (op0 == 0b1010 || op0 == 0b1011) {
+    }else if (op0 == 10 || op0 == 11) { // 1010 1011
         branch(memory, registers, to_branch(instruction));
     } else {
         printf("Error: invalid instruction\n");
-        exit(1);
+        printf("op0: %d\n", op0);
+        // exit(1);
     }
 }
 
@@ -37,7 +36,6 @@ void get_instruction(char* buffer, int file_size, int* memory) {
     // getting binary format of each instruction
     int const BYTE_PER_INSTRCUTION = 4;
     for (int i = 0; i < file_size / BYTE_PER_INSTRCUTION; i++) {
-        int instruction = 0;
         memcpy(memory + i, buffer + i * BYTE_PER_INSTRCUTION, BYTE_PER_INSTRCUTION);
     }
 }
@@ -61,10 +59,12 @@ void readfile(char* filename, int* memory) {
     // Close the file
     free(buffer);
     fclose(file);
+
+    printf("Read file successfully\n");
 }
 
-int main(int argc, char const *argv[]){
-    readfile("b1_exp.bin", memory);
-    decode(memory[registers.PC / 4]);
-    return 0;
-}
+// int main(int argc, char const *argv[]){
+//     readfile("b1_exp.bin", memory);
+//     decode(memory[registers.PC / 4]);
+//     return 0;
+// }

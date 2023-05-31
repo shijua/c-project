@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "../../emulate.h"
+#include "../memory.h"
 #include "output.h"
 
 void output_general(long long* general_register_ptr) {
