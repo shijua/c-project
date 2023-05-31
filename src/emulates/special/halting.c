@@ -1,4 +1,4 @@
 #include"halting.h"
-void halting(int* memory, struct Register *r, struct send_branch pre){
+void halting(int* memory, struct Register *r){
     exit(1)
 }
