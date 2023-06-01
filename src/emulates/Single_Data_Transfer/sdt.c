@@ -1,10 +1,11 @@
 #include "sdt.h"
 long long getRegisterValue(int n, struct Registers* regs) {
-    if (n <= 30) {
+    /*if (n <= 30) {
         return regs->general[n];
     } else {
         return regs->SP;
-    }
+    }*/
+    return n <= 30 ? regs -> general[n] : regs -> SP;
 }
 void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
     unsigned long long address;
