@@ -1,5 +1,6 @@
 #include "../inputformat.h"
 #include "../Util.h"
+#include "DPI.h"
 struct instruction
 {
     long long * rd;
