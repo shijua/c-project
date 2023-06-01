@@ -3,7 +3,7 @@
 #include "DPI.h"
 
 void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
-    struct instruction instr;
+    struct DPI_instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;
     instr.opi = divide.opi == 0x2;
@@ -35,7 +35,7 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
 
 }
 
-void arithmetic (struct Registers* registers, struct instruction instr , struct arithmetic_Operand opr){
+void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr){
     if(opr.sh){
         opr.imm12 = opr.imm12<<12;
     }
@@ -67,7 +67,7 @@ void arithmetic (struct Registers* registers, struct instruction instr , struct 
 
 }
 
-void wideMove (struct Registers* registers , struct instruction instr , struct wideMove_Operand opr){
+void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
     instr.operand = opr.imm16<<(opr.hw * 16);
     switch (instr.opc)
     {
@@ -107,3 +107,5 @@ void copyBits(long long source, long long* destination, int startBit, int endBit
     // move the bits to destination
     *destination |= (source & mask);
 }
+
+

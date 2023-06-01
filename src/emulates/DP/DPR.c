@@ -2,7 +2,7 @@
 #include "bitwiseShift.h"
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
-    struct instruction instr;
+    struct DPR_instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;
     instr.rd = divide.rd == 31 ? &(registers->ZR):&(registers->general [divide.rd]);
@@ -61,7 +61,7 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
 
 }
 
-void arithAndLogic(struct instruction instr , long long OP2 , struct Registers* registers){
+void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
     switch (instr.opc)
         {
         case 0:
@@ -84,3 +84,4 @@ void arithAndLogic(struct instruction instr , long long OP2 , struct Registers* 
             break;
         }
 }
+

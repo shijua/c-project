@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include "../inputformat.h"
 #include "../Util.h"
-struct instruction
+struct DPR_instruction
 {
     long long * rd;
     long long * rn;
@@ -14,4 +14,5 @@ struct instruction
 };
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide);
-void arithAndLogic(struct instruction instr , long long OP2 , struct Registers* registers); 
+void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
+
