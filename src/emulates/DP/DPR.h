@@ -1,5 +1,6 @@
-#include <input.h>
-
+#include <stdbool.h>
+#include "../inputformat.h"
+#include "../Util.h"
 struct instruction
 {
     long long * rd;

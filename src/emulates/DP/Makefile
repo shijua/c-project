@@ -1,17 +1,18 @@
 CC      ?= gcc
 CFLAGS  ?= -std=c17 -g\
 	-D_POSIX_SOURCE -D_DEFAULT_SOURCE\
-	-Wall -Werror -pedantic
+	-Wall -pedantic
 
 # define library name generated
-LIBOUT = pipelines.a
+LIBOUT = DP.a
 # define source file
-SOURCES = input.c output.c
+SOURCES = bitwiseShift.c DPI.c DPR.c
 # define object file
 OBJECTS = $(SOURCES:.c=.o)
 # define library flags
 LIBFLAGS = rcs
 
+# .SUFFIXES: .c .o
 .PHONY: all clean
 all: libs $(LIBOUT)
 
@@ -25,11 +26,7 @@ clean:
 	$(RM) *.o $(LIBOUT)
 
 libs:
-	cd ../Single_Data_Transfer; make
-	cd ../branch; make
-	cd ../special; make
-	cd ../DP; make
 	cd ../; make
 
-# input.o: input.c input.h
-# output.o: output.c output.h
+
+

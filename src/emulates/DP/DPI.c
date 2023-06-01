@@ -1,9 +1,6 @@
 #include <string.h>
 #include <stdbool.h>
-#include <DPI.h>
-#include <input.h>
-#include <inputformat.h>
-#include <emulates/Util.h>
+#include "DPI.h"
 
 void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
     struct instruction instr;

@@ -1,4 +1,5 @@
-#include <input.h>
+#include "../inputformat.h"
+#include "../Util.h"
 struct instruction
 {
     long long * rd;

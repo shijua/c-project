@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #ifndef INPUTFORMAT_H
 #define INPUTFORMAT_H
 struct send_DPI
