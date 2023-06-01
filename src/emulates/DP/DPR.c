@@ -1,7 +1,7 @@
 #include <DPR.h>
 #include <inputformat.h>
 #include <emulates/Util.h>
-#include <bitwiseShift/bitwiseShift.h>
+#include <bitwiseShift.h>
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
     int length;
