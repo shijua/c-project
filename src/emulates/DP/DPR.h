@@ -14,4 +14,4 @@ struct instruction
 };
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide);
-void arithAndLogic(struct instruction instr , long long OP2 , struct Registers* registers); 
+void arithAndLogic(struct instruction instr , long long OP2 , struct Registers* registers);
