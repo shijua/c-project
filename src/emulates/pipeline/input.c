@@ -3,26 +3,26 @@
 #include <string.h>
 #include <assert.h>
 #include "input.h"
-#include "inputformat.h"
-#include "../Util.h"
+#include "../inputformat.h"
+#include "../Single_Data_Transfer/sdt.h"
+#include "../Single_Data_Transfer/loadl.h"
+extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
+extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
+// extern void SDT(int* memory, struct Registers* registers, struct sdtp divide){return;}
+// extern void LL(int* memory, struct Registers* registers, struct loadliteral divide){return;}
+extern void branch(int* memory, struct Registers* registers, struct send_branch divide){return;}
 
-extern void DPI(int* memory, struct Registers registers, struct send_DPI divide){return;}
-extern void DPR(int* memory, struct Registers registers, struct send_DPR divide){return;}
-extern void SDT(int* memory, struct Registers registers, struct send_SDT divide){return;}
-extern void LL(int* memory, struct Registers registers, struct send_LL divide){return;}
-extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;}
-
-void decode(int* memory, struct Registers registers, int instruction) {
+void decode(int* memory, struct Registers* registers, int instruction) {
     int op0 = get_bit(28, 4, instruction);
     // printf("op0: %d\n", op0);
     if (op0 == 8 || op0 == 9) {  // 1000 1001
         DPI(memory, registers, to_DPI(instruction));
     }else if (op0 == 5) { // 0101
         DPR(memory, registers, to_DPR(instruction));
-    }else if (op0 == 12 && get_bit(24, 1, instruction) == 1) { // 1100
-        SDT(memory, registers, to_SDT(instruction));
-    }else if (op0 == 13 && get_bit(24, 1, instruction) == 0) { // 1101
-        LL(memory, registers, to_LL(instruction));
+    }else if (op0 == 12 && get_bit(29, 1, instruction) == 1) { // 1100
+        SingleDataTransfer(memory, registers, to_SDT(instruction));
+    }else if (op0 == 12 && get_bit(29, 1, instruction) == 0) { // 1100
+        LoadLiteral(memory, registers, to_LL(instruction));
     }else if (op0 == 10 || op0 == 11) { // 1010 1011
         branch(memory, registers, to_branch(instruction));
     } else {

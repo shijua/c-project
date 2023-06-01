@@ -1,5 +1,4 @@
-#include <string.h>
-#include "../Util.h"
+#include "Util.h"
 #include "inputformat.h"
 
 struct send_DPI to_DPI(int instruction) {
@@ -24,18 +23,19 @@ struct send_DPR to_DPR(int instruction) {
     return divide;
 }
 
-struct send_SDT to_SDT(int instruction) {
-    struct send_SDT divide;
+struct sdtp to_SDT(int instruction) {
+    struct sdtp divide;
     divide.sf = get_bit(30, 1, instruction);
     divide.L = get_bit(22, 1, instruction);
+    divide.U = get_bit(24, 1, instruction);
     divide.offset = get_bit(21, 12, instruction);
     divide.xn = get_bit(9, 5, instruction);
     divide.rt = get_bit(4, 5, instruction);
     return divide;
 }
 
-struct send_LL to_LL(int instruction) {
-    struct send_LL divide;
+struct loadliteral to_LL(int instruction) {
+    struct loadliteral divide;
     divide.sf = get_bit(30, 1, instruction);
     divide.simm19 = get_bit(23, 19, instruction);
     divide.rt = get_bit(4, 5, instruction);
