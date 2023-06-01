@@ -5,12 +5,14 @@
 
 void output_general(long long* general_register_ptr) {
     for (int i = 0; i < 31; i++) {
+        // output 16 hexadecimals
         printf("X%d=%016llX\n", i, *(general_register_ptr+i));
     }
 }
 
 void output_Pstate(bool* pstate_ptr) {
     for (int i = 0; i < 4; i++) {
+        // if flag is 0
         if (*(pstate_ptr+i) == false) {
             printf("-");
         } else {
@@ -25,6 +27,7 @@ void output_Pstate(bool* pstate_ptr) {
 }
 
 void output_memory(int* memory){
+    // output all memory that exists
     for (int i = 0; i < 524288; i++) // 2^19
     {
         if (memory[i] != 0) {

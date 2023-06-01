@@ -1,5 +1,5 @@
-#include "input.h"
-
+#include "../inputformat.h"
+#include "../Util.h"
 struct instruction
 {
     long long * rd;
@@ -22,6 +22,7 @@ struct wideMove_Operand{
     int hw;
     int imm16;
 };
+
 void DPI(int* memory, struct Registers* registers, struct send_DPI divide);
 void arithmetic (struct Registers* registers, struct instruction str , struct arithmetic_Operand opr);
 void wideMove (struct Registers* registers, struct instruction str, struct wideMove_Operand opr);

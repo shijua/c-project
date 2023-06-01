@@ -28,6 +28,7 @@ libs:
 	cd ../Single_Data_Transfer; make
 	cd ../branch; make
 	cd ../special; make
+	cd ../DP; make
 	cd ../; make
 
 # input.o: input.c input.h
