@@ -1,4 +1,5 @@
 #include "nop.h"
-void nop(int* memory, struct Register *r){
-    r->PC += 4;
+void nop(int* memory, struct Registers *r){
+    // Do nothing      
+    return;
 }

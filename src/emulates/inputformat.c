@@ -14,6 +14,7 @@ struct send_DPI to_DPI(int instruction) {
 struct send_DPR to_DPR(int instruction) {
     struct send_DPR divide;
     divide.sf = get_bit(31, 1, instruction);
+    divide.M = get_bit(28, 1, instruction);
     divide.opc = get_bit(30, 2, instruction);
     divide.opr = get_bit(24, 4, instruction);
     divide.rm = get_bit(16, 5, instruction);

@@ -11,7 +11,6 @@ SOURCES = loadl.c sdt.c
 OBJECTS = $(SOURCES:.c=.o)
 # define library flags
 LIBFLAGS = rcs
-# The r flag specifies that the library should be created or updated, the c flag specifies that the library should be created if it does not exist, and the s flag specifies that an index of the symbols in the library should be created.
 
 .PHONY: all clean
 all: libs $(LIBOUT)
@@ -27,7 +26,3 @@ clean:
 
 libs:
 	cd ../; make
-
-# input.o: input.c input.h inputformat.o
-# inputformat.o: inputformat.c inputformat.h
-# output.o: output.c output.h

@@ -3,7 +3,12 @@ CFLAGS  ?= -std=c17 -g\
 	-D_POSIX_SOURCE -D_DEFAULT_SOURCE\
 	-Wall -Werror -pedantic
 
-LIBSRCEMULATE = emulates/pipeline/pipelines.a emulates/Util.a emulates/Single_Data_Transfer/single_data_transfer.a
+LIBSRCEMULATE = emulates/Util.a \
+	emulates/pipeline/pipelines.a \
+	emulates/Single_Data_Transfer/single_data_transfer.a \
+	emulates/special/special.a \
+	emulates/branch/branch.a 
+	
 # .SUFFIXES: .c .o  # Suffixes for implicit rules so that .o would not be deleted automatically
 
 .PHONY: all clean
@@ -11,12 +16,10 @@ LIBSRCEMULATE = emulates/pipeline/pipelines.a emulates/Util.a emulates/Single_Da
 all: libemulates emulate assemble 
 
 assemble: assemble.o
-# emulate: emulate.o emulates/pipeline/input.o emulates/pipeline/output.o emulates/memory.o emulates/pipeline/inputformat.o emulates/Util.o
 emulate: emulate.o $(LIBSRCEMULATE)
-	$(CC) $(CFLAGS) -o $@ $^
 
-# .c.o:
-# 	$(CC) $(CFLAGS) -c $< -o $@
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) *.o

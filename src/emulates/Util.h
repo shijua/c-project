@@ -18,5 +18,5 @@ struct Registers {
 };
 #endif
 
-
+extern unsigned int getBitRange(int num, int x, int y);
 extern unsigned int get_bit(int startBit, int numBits, unsigned int number);
