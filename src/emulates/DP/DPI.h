@@ -1,6 +1,5 @@
 #include "../inputformat.h"
 #include "../Util.h"
-#include "DPI.h"
 struct instruction
 {
     long long * rd;
@@ -25,8 +24,8 @@ struct wideMove_Operand{
 };
 
 void DPI(int* memory, struct Registers* registers, struct send_DPI divide);
-void arithmetic (struct Registers* registers, struct instruction str , struct arithmetic_Operand opr);
-void wideMove (struct Registers* registers, struct instruction str, struct wideMove_Operand opr);
+void arithmetic (struct Registers* registers, struct instruction instr , struct arithmetic_Operand opr);
+void wideMove (struct Registers* registers, struct instruction instr, struct wideMove_Operand opr);
 void intToReg (int reg); 
 int hasCarryOut(int a, int b);
 int hasBorrow(int a, int b);

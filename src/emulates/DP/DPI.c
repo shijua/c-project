@@ -7,13 +7,13 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
     instr.sf = divide.sf;
     instr.opc = divide.opc;
     instr.opi = divide.opi == 0x2;
-    instr.rd = divide.rd == 31 ? registers->ZR: registers->general + divide.rd;
+    instr.rd = divide.rd == 31 ? &(registers->ZR) : &(registers->general[divide.rd]);
     instr.operand = divide.operand;
     struct arithmetic_Operand opra;
     struct wideMove_Operand oprw;
     if (instr.sf){
-        opra.max_value = 9223372036854775807;
-        opra.min_value = -9223372036854775808;
+        opra.max_value = (long long) 9223372036854775807;
+        opra.min_value = (long long)-9223372036854775807;
     }
     else{
         opra.max_value = 2147483647 ;
@@ -23,7 +23,7 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
         
         opra.sh = get_bit (17 , 1 , instr.operand);
         opra.imm12 = get_bit (16 , 12 , instr.operand);
-        opra.rn = get_bit (4 , 5 , instr.operand) == 31 ? registers->ZR:registers->general + get_bit (4 , 5 , instr.operand);
+        opra.rn = get_bit (4 , 5 , instr.operand) == 31 ? &(registers->ZR):&(registers->general [get_bit (4 , 5 , instr.operand)]);
         arithmetic (registers, instr , opra);
     }
     else{
