@@ -32,7 +32,7 @@ assemble
 *.vrb
 *.nav
 *.toc
-
+*.a
 #ignore files from the Clion IDE
 .cmake
 cmake-build-debug

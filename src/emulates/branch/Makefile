@@ -6,7 +6,7 @@ CFLAGS  ?= -std=c17 -g\
 # define library name generated
 LIBOUT = branch.a
 # define source file
-SOURCES = branch.c
+SOURCES = branch.c ../Util.c ../inputformat.c
 # define object file
 OBJECTS = $(SOURCES:.c=.o)
 # define library flags
@@ -19,7 +19,7 @@ $(LIBOUT): $(OBJECTS)
 	ar $(LIBFLAGS) $(LIBOUT) $(OBJECTS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -L $(LIBDIR) -l $(LIBNAME) $< -o $@
 
 clean:
 	$(RM) *.o $(LIBOUT)
