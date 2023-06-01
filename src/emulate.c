@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
 
   // fetch and decode steps
   int instruction = memory[registers.PC / 4];
+  // decode(memory, &registers, instruction);
   while (instruction != 0 && registers.PC != -1)
   {
     decode(memory, &registers, instruction);
