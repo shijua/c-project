@@ -25,7 +25,7 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
             int simm9 = get_bit(10, 9, offset);
             if (bit11 == 1) {
                 //Pre-Index
-                address = getRegisterValue(n, regs) + ((long long) simm9) * 8;
+                address = getRegisterValue(n, regs) + ((long long) simm9);
                 if (rt <= 30) {
                     regs->general[rt] = address;
                 } else {
@@ -35,9 +35,9 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
                 //Post-Index
                 address = getRegisterValue(n, regs);
                 if (rt <= 30) {
-                    regs->general[rt] = address + ((long long) simm9) * 8;
+                    regs->general[rt] = address + ((long long) simm9);
                 } else {
-                    regs->SP = address + ((long long) simm9) * 8;
+                    regs->SP = address + ((long long) simm9);
                 }
             }
         } else {
