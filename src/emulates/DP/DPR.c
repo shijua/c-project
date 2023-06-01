@@ -1,16 +1,16 @@
-#include <DPR.h>
-#include <inputformat.h>
-#include <emulates/Util.h>
-#include <bitwiseShift.h>
+#include "DPR.h"
+#include "inputformat.h"
+#include "emulates/Util.h"
+#include "bitwiseShift.h"
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
     int length;
     struct instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;
-    instr.rd = divide.rd == 0b11111 ? registers->ZR:registers->general + divide.rd;
-    instr.rm = divide.rm == 0b11111 ? registers->ZR:registers->general + divide.rm;
-    instr.rn = divide.rn == 0b11111 ? registers->ZR:registers->general + divide.rn;
+    *instr.rd = divide.rd == 31 ? registers->ZR:registers->general + divide.rd;
+    *instr.rm = divide.rm == 31 ? registers->ZR:registers->general + divide.rm;
+    *instr.rn = divide.rn == 31 ? registers->ZR:registers->general + divide.rn;
     instr.M = divide.M;
     instr.opr = divide.opr;
     instr.operand = divide.operand;
@@ -47,7 +47,7 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
         
         
         if(instr.M){
-            long long * ra = get_bit (4 , 5 , instr.operand) == 0b11111 ? registers->ZR:registers->general + get_bit (4 , 5 , instr.operand);
+            long long * ra = get_bit (4 , 5 , instr.operand) == 31 ? registers->ZR:registers->general + get_bit (4 , 5 , instr.operand);
             if(get_bit (5 , 1 , instr.operand)){
                 *instr.rd = *ra - *instr.rn * (*instr.rm);
             }

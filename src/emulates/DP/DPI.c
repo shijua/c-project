@@ -1,16 +1,16 @@
 #include <string.h>
 #include <stdbool.h>
-#include <DPI.h>
-#include <input.h>
-#include <inputformat.h>
-#include <emulates/Util.h>
+#include "DPI.h"
+#include "input.h"
+#include "inputformat.h"
+#include "emulates/Util.h"
 
 void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
     struct instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;
     instr.opi = divide.opi == 0x2;
-    instr.rd = divide.rd == 0b11111 ? registers->ZR: registers->general + divide.rd;
+    instr.rd = divide.rd == 31 ? registers->ZR: registers->general + divide.rd;
     instr.operand = divide.operand;
     struct arithmetic_Operand opra;
     struct wideMove_Operand oprw;
@@ -26,7 +26,7 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
         
         opra.sh = get_bit (17 , 1 , instr.operand);
         opra.imm12 = get_bit (16 , 12 , instr.operand);
-        opra.rn = get_bit (4 , 5 , instr.operand) == 0b11111 ? registers->ZR:registers->general + get_bit (4 , 5 , instr.operand);
+        opra.rn = get_bit (4 , 5 , instr.operand) == 31 ? registers->ZR:registers->general + get_bit (4 , 5 , instr.operand);
         arithmetic (registers, instr , opra);
     }
     else{
