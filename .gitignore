@@ -38,5 +38,4 @@ assemble
 cmake-build-debug
 .idea
 .vscode
-.DS_Store
-
+*.DS_Store
