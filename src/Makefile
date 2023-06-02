@@ -31,7 +31,6 @@ clean:
 
 copy:
 	rm -r ../../armv8_testsuite/solution
-	rm -r ../../armv8_testsuite/test/actual_results
 	mkdir ../../armv8_testsuite/solution
 	cp emulate ../../armv8_testsuite/solution
 	cp assemble ../../armv8_testsuite/solution

@@ -17,8 +17,11 @@ int main(int argc, char **argv) {
   int instruction = memory[registers.PC / 4];
   int count = 0;
   while (instruction != 0 && registers.PC != -1 && registers.PC <= MAX_MEMORY && count < 1919810){
+    if (instruction == 0x8a000000) {
+      registers.PC += 4;
+      break;
+    }
     decode(memory, &registers, instruction);
-    registers.PC += 4;
     instruction = memory[registers.PC / 4];
     count++;
   }
