@@ -27,16 +27,16 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
             if (bit11 == 1) {
                 //Pre-Index
                 address = getRegisterValue(n, regs) + ((long long) simm9);
-                if (rt <= 30) {
-                    regs->general[rt] = address;
+                if (n <= 30) {
+                    regs->general[n] = address;
                 } else {
                     regs->SP = address;
                 }
             } else {
                 //Post-Index
                 address = getRegisterValue(n, regs);
-                if (rt <= 30) {
-                    regs->general[rt] = address + ((long long) simm9);
+                if (n <= 30) {
+                    regs->general[n] = address + ((long long) simm9);
                 } else {
                     regs->SP = address + ((long long) simm9);
                 }
