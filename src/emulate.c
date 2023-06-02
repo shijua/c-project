@@ -5,6 +5,7 @@
 #include "emulates/pipeline/output.h"
 int memory[MAX_MEMORY / 4];
 struct Registers registers;
+// input format: ./emulate <input .bin file> <output .out file>
 int main(int argc, char **argv) {
   readfile(argv[1], memory);
   // initialise PC to 0
@@ -21,7 +22,7 @@ int main(int argc, char **argv) {
     instruction = memory[registers.PC / 4];
     count++;
   }
-
+  registers.PC -= 4;
   //output an empty file named argv[2]
   FILE *fp = fopen(argv[2], "w");
   // output the registers and memory
