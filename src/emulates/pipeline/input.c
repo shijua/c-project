@@ -9,10 +9,12 @@
 #include "../branch/branch.h"
 #include "../special/halting.h"
 #include "../special/nop.h"
-extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
-extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
-// extern void SDT(int* memory, struct Registers* registers, struct sdtp divide){return;}
-// extern void LL(int* memory, struct Registers* registers, struct loadliteral divide){return;}
+#include "../DP/DPI.h"
+#include "../DP/DPR.h"
+// extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
+// extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
+// extern void SingleDataTransfer(int* memory, struct Registers* registers, struct sdtp divide){return;}
+// extern void LoadLiteral(int* memory, struct Registers* registers, struct loadliteral divide){return;}
 // extern void Branch(int* memory, struct Registers* registers, struct send_branch divide){return;}
 
 void decode(int* memory, struct Registers* registers, int instruction) {
@@ -67,7 +69,7 @@ void readfile(char* filename, int* memory) {
     free(buffer);
     fclose(file);
 
-    printf("Read file successfully\n");
+    // printf("Read file successfully\n");
 }
 
 // int main(int argc, char const *argv[]){

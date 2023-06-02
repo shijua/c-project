@@ -3,56 +3,56 @@
 #include "../Util.h"
 #include "output.h"
 
-void output_general(long long* general_register_ptr) {
+void output_general(long long* general_register_ptr, FILE* fp) {
     for (int i = 0; i < 31; i++) {
         // output 16 hexadecimals
-        printf("X%d=%016llX\n", i, *(general_register_ptr+i));
+        fprintf(fp, "X%02d    = %016llx\n", i, *(general_register_ptr+i));
     }
 }
 
-void output_Pstate(bool* pstate_ptr) {
+void output_Pstate(bool* pstate_ptr, FILE* fp) {
     for (int i = 0; i < 4; i++) {
         // if flag is 0
         if (*(pstate_ptr+i) == false) {
-            printf("-");
+            fprintf(fp, "-");
         } else {
             switch (i){
-                case 0: printf("N"); break;
-                case 1: printf("Z"); break;
-                case 2: printf("C"); break;
-                case 3: printf("V"); break;
+                case 0: fprintf(fp,"N"); break;
+                case 1: fprintf(fp,"Z"); break;
+                case 2: fprintf(fp,"C"); break;
+                case 3: fprintf(fp,"V"); break;
             }
         }
     }
 }
 
-void output_memory(int* memory){
+void output_memory(int* memory, FILE* fp){
     // output all memory that exists
     for (int i = 0; i < 524288; i++) // 2^19
     {
         if (memory[i] != 0) {
-            printf("0x%08X: 0x%08X\n", i*4, memory[i]);
+            fprintf(fp, "0x%08x : %08x\n", i*4, memory[i]);
         }
     }
 }
 
 
-void output(struct Registers* register_ptr, int* memory) { 
+void output(struct Registers* register_ptr, int* memory, FILE* fp) { 
     // output all general registers
-    printf("Registers:\n");
-    output_general(register_ptr->general);
+    fprintf(fp, "Registers:\n");
+    output_general(register_ptr->general, fp);
 
     // output PC
-    printf("PC: %016llX\n", register_ptr->PC);
+    fprintf(fp, "PC     = %016llX\n", register_ptr->PC);
 
     // output P-state
-    printf("PSTATE :");
-    output_Pstate(&(register_ptr->pstate.N));
-    printf("\n");
+    fprintf(fp, "PSTATE : ");
+    output_Pstate(&(register_ptr->pstate.N), fp);
+    fprintf(fp, "\n");
 
     //output memory
-    printf("Non-zero memory:\n");
-    output_memory(memory);
+    fprintf(fp, "Non-Zero Memory:\n");
+    output_memory(memory, fp);
 }
 
 // int main(int argc, char const *argv[])

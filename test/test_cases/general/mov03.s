@@ -1,6 +1,0 @@
-movz x1,#0x0F
-movz x2,#0xFF
-movz x3,#0xAB
-movz x4,#0xCD
-
-and x0, x0, x0

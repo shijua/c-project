@@ -14,7 +14,7 @@ LIBSRCEMULATE = emulates/Util.a \
 
 .PHONY: all clean
 
-all: libemulates emulate assemble 
+all: libemulates emulate assemble
 
 assemble: assemble.o
 emulate: emulate.o $(LIBSRCEMULATE)
@@ -28,6 +28,13 @@ clean:
 	rm -rf **/**/*.o
 	rm -rf **/*.a
 	rm -rf **/*.o
+
+copy:
+	rm -r ../../armv8_testsuite/solution
+	rm -r ../../armv8_testsuite/test/actual_results
+	mkdir ../../armv8_testsuite/solution
+	cp emulate ../../armv8_testsuite/solution
+	cp assemble ../../armv8_testsuite/solution
 
 # writing dependencies for emulate
 libemulates:

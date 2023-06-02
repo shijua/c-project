@@ -2,6 +2,7 @@
 #define UTIL_H
 #include <stdbool.h>
 #define MAX_MEMORY 2100000
+// TODO memory size
 // extern int const MAX_MEMORY = 2100000; // 2^21  2097152
 struct PSTATE
 {

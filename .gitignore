@@ -32,11 +32,10 @@ assemble
 *.vrb
 *.nav
 *.toc
-
+*.a
 #ignore files from the Clion IDE
 .cmake
 cmake-build-debug
 .idea
 .vscode
-.DS_Store
-
+*.DS_Store

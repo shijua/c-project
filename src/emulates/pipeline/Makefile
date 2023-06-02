@@ -6,7 +6,7 @@ CFLAGS  ?= -std=c17 -g\
 # define library name generated
 LIBOUT = pipelines.a
 # define source file
-SOURCES = input.c output.c
+SOURCES = input.c output.c ../Util.c ../inputformat.c
 # define object file
 OBJECTS = $(SOURCES:.c=.o)
 # define library flags
