@@ -6,7 +6,7 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;
-    instr.opi = divide.opi == 0x2;
+    instr.opi = divide.opi == 2;
     instr.rd = divide.rd == 31 ? &(registers->ZR) : &(registers->general[divide.rd]);
     instr.operand = divide.operand;
     struct arithmetic_Operand opra;
