@@ -1,5 +1,6 @@
 #include "DPR.h"
 #include "bitwiseShift.h"
+#include <string.h>
 
 void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     struct DPR_instruction instr;//instr parses the binary instruction to parameters usable for the function
@@ -93,23 +94,38 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
 
 
 void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers){
+    long long addition = OP2 + *instr.rn;
+    long long subtraction = *instr.rn - OP2;
     switch (instr.opc) //perform operation based on opc(operation code)
     {
     case 0:
-        *instr.rd = OP2 + *instr.rn; //addition
+        if (!instr.sf)
+            memcpy(instr.rd, &addition, 4);
+        else
+            *instr.rd = addition; //addition
         break;
     case 1:
-        *instr.rd = OP2 + *instr.rn; //addition with changing PSTATE
+        if (!instr.sf)
+            memcpy(instr.rd, &addition, 4);
+        else
+            *instr.rd = addition;  //addition with changing PSTATE
+
         registers->pstate.N = get_bit (4 , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(OP2, *instr.rn); //set C to 1 if it addition has carry out
         registers->pstate.V = (OP2> instr.max_value - *instr.rn || OP2 < instr.max_value + *instr.rn); //set V to 1 if there is overflow or underflow
         break;
     case 2:
-        *instr.rd = OP2 - *instr.rn; //subtraction
+        if (!instr.sf)
+            memcpy(instr.rd, &subtraction, 4);
+        else
+            *instr.rd = subtraction; //subtraction
         break;
     case 3:
-        *instr.rd = OP2 - *instr.rn; //subtraction with changing PSTATE
+        if (!instr.sf)
+            memcpy(instr.rd, &subtraction, 4);
+        else
+            *instr.rd = subtraction; //subtraction with changing PSTATE
         registers->pstate.N = get_bit (4 , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(OP2, *instr.rn);//set C to 1 if it addition has borrow
