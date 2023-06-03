@@ -51,10 +51,10 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         registers->pstate.V = (opr.imm12 > opr.max_value - *opr.rn || opr.imm12 < opr.max_value + *opr.rn); //set V to 1 if there is overflow or underflow
         break;
     case 2:
-        *instr.rd = opr.imm12 - *opr.rn; //subtraction
+        *instr.rd = *opr.rn - opr.imm12; //subtraction
         break;
     case 3:
-        *instr.rd = opr.imm12 - *opr.rn; //subtraction with changing PSTATE
+        *instr.rd = *opr.rn - opr.imm12; //subtraction with changing PSTATE
         registers->pstate.N = get_bit (4 , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(opr.imm12, *opr.rn);//set C to 1 if it addition has borrow
