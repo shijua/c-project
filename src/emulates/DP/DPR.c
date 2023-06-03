@@ -77,6 +77,7 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
         {
         case 0:
             res = *instr.rn & OP2;
+            *instr.rd = 0;
             memcpy(instr.rd, &res, 4 + 4*instr.sf);
             break;
         case 1:
@@ -90,7 +91,7 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
         case 3:
             res = *instr.rn & OP2;
             memcpy(instr.rd, &res, 4 + 4*instr.sf);
-            registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);
+            registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd);
             registers->pstate.Z = *instr.rd == 0;
             registers->pstate.C = 0;
             registers->pstate.V = 0;
@@ -114,7 +115,7 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
 
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasCarryOut(OP2, *instr.rn); //set C to 1 if it addition has carry out
+        registers->pstate.C = hasCarryOut(OP2, *instr.rn, instr.sf); //set C to 1 if it addition has carry out
         registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:

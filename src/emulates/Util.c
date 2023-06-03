@@ -27,37 +27,32 @@ unsigned int getBitRange(int num, int x, int y) {
     return (num >> x) & mask;
 }
 
-int hasCarryOut(long long a, long long b) {
-    long long topBit = 1;
-    while (topBit < a || topBit < b){
-        topBit = topBit*2;
-        if(topBit == 0){
-            return ((a + b) <= a && (a + b) <= b); 
-        }
+bool hasCarryOut(long long a, long long b, bool is_64) {
+    // if it is 32 then shifting for still detecting overflow as a, b is in long long
+    if (is_64) {
+        a <<= 32;
+        b <<= 32;
     }
-    return (a + b >= topBit);  
+    if ((a < 0 || b < 0)) return 0;
+    return a+b < a || a+b < b;
 }
 
-int hasBorrow(long long a, long long b) {
+bool hasBorrow(long long a, long long b) {
     return a < b;  
 }
 
+// function for overflow and underflow
 bool overflow(long long a, long long b, bool is_64)
 {
-    if ((a <= 0 && b >= 0 ) || (a >= 0 && b <= 0))
-        return false;
-    if (is_64){
-        if(a < 0)
-            return (a + b > a);
-        return (a + b < a);
+    // if it is 32 then shifting for still detecting overflow as a, b is in long long
+    if (!is_64) { 
+        a <<= 32;
+        b <<= 32;
     }
-    else{
-        if(a < 0)
-            return ((int)a + (int)b > (int)a);
-        return ((int)a + (int)b < (int)a);
-    }
+    if ((a <= 0 && b >= 0 ) || (a >= 0 && b <= 0)) return false;
+    if(a < 0) return (a + b > a);
+    return (a + b < a);
 }
-
 // int main(int argc, char const *argv[])
 // {
 //     printf("%d\n", get_bit(28, 4, 335544322));
