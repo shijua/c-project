@@ -47,7 +47,7 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &addition, 4 + instr.sf * 4);//addition with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn); //set C to 1 if it addition has carry out
+        registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn, instr.sf); //set C to 1 if it addition has carry out
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
@@ -88,8 +88,10 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
 
 
 void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
-    instr.operand = opr.imm16 << (opr.hw * 16); //
+    instr.operand = opr.imm16;
+    // doing separately as imm16 is int
     int shift = opr.hw * 16;
+    instr.operand <<= shift;
     // 64 0 bits
     long long lon0 = 0LL;
     // 64 1 bits
@@ -107,8 +109,9 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         // put the imm16 into the rd accoring to the shift
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
         // copyBits(~opr.imm16, instr.rd, shift, shift + 15);
+        // clear left part if it is 32 bits
         if(instr.sf == 0){
-            memcpy(instr.rd, &lon0, 4);
+            memcpy(rd+4, &lon0, 4);
             // copyBits(0, instr.rd, 32, 63);
         }
         break;
@@ -120,6 +123,11 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         // Move certain part of the register while keep the rest of the bits
         // copyBits(instr.operand, instr.rd, shift, shift + 15) ;
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
+        // clear left part if it is 32 bits
+        if(instr.sf == 0){
+            memcpy(rd+4, &lon0, 4);
+            // copyBits(0, instr.rd, 32, 63);
+        }
         break;
     default:
         printf("Error: invalid instruction\n");

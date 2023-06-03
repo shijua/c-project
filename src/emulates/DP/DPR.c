@@ -123,9 +123,10 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         break;
     case 3:
         memcpy(instr.rd, &subtraction, 4 + 4*instr.sf);//subtraction with changing PSTATE
-        registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
+        registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasBorrow(OP2, *instr.rn);//set C to 1 if it addition has borrow
+        registers->pstate.C = hasBorrow(*instr.rn, OP2, instr.sf);//set C to 1 if it addition has borrow
+        // registers->pstate.C = *instr.rn > subtraction;
         registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:

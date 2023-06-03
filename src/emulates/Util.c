@@ -29,16 +29,21 @@ unsigned int getBitRange(int num, int x, int y) {
 
 bool hasCarryOut(long long a, long long b, bool is_64) {
     // if it is 32 then shifting for still detecting overflow as a, b is in long long
-    if (is_64) {
+    if (!is_64) {
         a <<= 32;
         b <<= 32;
     }
     if ((a < 0 || b < 0)) return 0;
-    return a+b < a || a+b < b;
+    return a + b < a || a + b < b;
 }
 
-bool hasBorrow(long long a, long long b) {
-    return a < b;  
+bool hasBorrow(long long a, long long b, bool is_64) {
+    if (!is_64) {
+        a <<= 32;
+        b <<= 32;
+    };
+    if (a < 0) return hasCarryOut(-a, b, is_64);
+    return a - b > a;
 }
 
 // function for overflow and underflow
