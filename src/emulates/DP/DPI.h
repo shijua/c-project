@@ -7,6 +7,7 @@ struct DPI_instruction
     int opc;
     long long operand;
     bool opi;
+    int topBit;
 };
 
 struct arithmetic_Operand{
