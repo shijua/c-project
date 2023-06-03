@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "DPI.h"
 
 void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
@@ -66,22 +67,49 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
 
 }
 
+// void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
+//     instr.operand = opr.imm16<<(opr.hw * 16);
+//     switch (instr.opc)
+//     {
+//     case 0: // movn
+//         *instr.rd = -1LL; // Move certain part of the register while all the rest bits are 1
+//         copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16); 
+//         break;
+//     case 2: // movz
+//         *instr.rd = instr.operand; // Move certain part of the register while all the rest bits are 0
+//         break;
+//     case 3: // movk
+//         copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16);// Move certain part of the register while keep the rest of the bits
+//         break;
+//     default:
+//         printf("Error: invalid instruction\n");
+//         registers->PC = -1;
+//     }
+// }
+
+
 void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
-    instr.operand = opr.imm16<<(opr.hw * 16);
+    instr.operand = opr.imm16 << (opr.hw * 16); //
+    int shift = opr.hw * 16;
     switch (instr.opc)
     {
-    case 1:
-        *instr.rd = instr.operand; // Move certain part of the register while all the rest bits are 0
+    case 0: // movn
+        copyBits(instr.operand, instr.rd, shift, shift + 15);
+        if(instr.sf == 0){
+            copyBits(0, instr.rd, 32, 63);
+        }
         break;
-    case 0:
-        *instr.rd = -1LL; // Move certain part of the register while all the rest bits are 1
-        copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16);
+    case 2: // movz
+        // Move certain part of the register while all the rest bits are 0
+        *instr.rd = instr.operand;
         break;
-    case 2:
-        copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16);// Move certain part of the register while keep the rest of the bits
+    case 3: // movk
+        // Move certain part of the register while keep the rest of the bits
+        copyBits(instr.operand, instr.rd, shift, shift + 15) ;
         break;
     default:
-        break;
+        printf("Error: invalid instruction\n");
+        registers->PC = -1;
     }
 }
 
