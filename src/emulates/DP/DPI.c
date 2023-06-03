@@ -105,12 +105,25 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
 void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
     instr.operand = opr.imm16 << (opr.hw * 16); //
     int shift = opr.hw * 16;
+    // 64 0 bits
+    long long lon0 = 0LL;
+    // 64 1 bits
+    long long lon1 = ~0LL;
+    char* rd = &(*instr.rd);
     switch (instr.opc)
     {
     case 0: // movn
-        copyBits(instr.operand, instr.rd, shift, shift + 15);
+        // copyBits(~0LL, instr.rd, 0, 63);
+        // set all bits to 1
+        memcpy(instr.rd, &lon1, 8);
+        // reveerse the bits
+        opr.imm16 = ~opr.imm16;
+        // put the imm16 into the rd accoring to the shift
+        memcpy(rd + (shift / 8), &opr.imm16 , 2);
+        // copyBits(~opr.imm16, instr.rd, shift, shift + 15);
         if(instr.sf == 0){
-            copyBits(0, instr.rd, 32, 63);
+            memcpy(instr.rd, &lon0, 4);
+            // copyBits(0, instr.rd, 32, 63);
         }
         break;
     case 2: // movz
@@ -119,7 +132,8 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         break;
     case 3: // movk
         // Move certain part of the register while keep the rest of the bits
-        copyBits(instr.operand, instr.rd, shift, shift + 15) ;
+        // copyBits(instr.operand, instr.rd, shift, shift + 15) ;
+        memcpy(rd + (shift / 8), &instr.operand , 2);
         break;
     default:
         printf("Error: invalid instruction\n");
@@ -127,17 +141,13 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     }
 }
 
+// void copyBits(long long source, long long* destination, int startBit, int endBit) {
+//     // Copy bits from source to destination
+//     for (int i = startBit; i < endBit; i++) {
+//         int bit = get_bit(i, 1, source);
+//         *destination = set_bit(i, 1, bit, *destination);
+//     }
+// }
 
-void copyBits(long long source, long long* destination, int startBit, int endBit) {
-    // creat a mask, this will set the bits that we want to copy to 1 and all the rest to 0
-    // it will be used to set the bits in the destination that we care about to 0
-    long long mask = ((1LL << (endBit - startBit + 1)) - 1) << startBit;
-    
-    // erase the bits that we want to move on destination
-    *destination &= ~mask;
-    
-    // move the bits to destination
-    *destination |= (source & mask);
-}
 
 
