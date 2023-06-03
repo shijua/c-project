@@ -110,7 +110,8 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     long long lon0 = 0LL;
     // 64 1 bits
     long long lon1 = ~0LL;
-    char* rd = &(*instr.rd);
+    // use char as pointer I can modify long long byte by byte
+    char* rd = (char*)instr.rd;
     switch (instr.opc)
     {
     case 0: // movn
@@ -134,7 +135,7 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     case 3: // movk
         // Move certain part of the register while keep the rest of the bits
         // copyBits(instr.operand, instr.rd, shift, shift + 15) ;
-        memcpy(rd + (shift / 8), &instr.operand , 2);
+        memcpy(rd + (shift / 8), &opr.imm16 , 2);
         break;
     default:
         printf("Error: invalid instruction\n");
