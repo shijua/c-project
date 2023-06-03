@@ -6,8 +6,8 @@ void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr; //instr parses the binary instruction to parameters usable for the function
     instr.sf = divide.sf;//coppy sf opc the same way it is in divide
     instr.opc = divide.opc;
-    instr.opi = divide.opi == 0x2; //there's only two value for opi so we can present it as bool.
-    instr.rd = divide.rd == 31 ? &(registers->ZR) : &(registers->general[divide.rd]);//if rd is 11111 then it points to ZR, otherwise it points to gneral register
+    instr.opi = divide.opi == 0x2;
+    instr.rd = divide.rd == 31 ? &(registers->ZR) : &(registers->general[divide.rd]);
     instr.operand = divide.operand;
     struct arithmetic_Operand opra; // arithmetic operation and wide move operation are parsed different so we construct them with different struct.
     struct wideMove_Operand oprw;

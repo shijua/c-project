@@ -45,8 +45,8 @@ struct send_branch
     int operand;
 };
 #endif
-extern struct send_DPI to_DPI(int instruction);
-extern struct send_DPR to_DPR(int instruction);
-extern struct sdtp to_SDT(int instruction);
-extern struct loadliteral to_LL(int instruction);
-extern struct send_branch to_branch(int instruction);
+extern struct send_DPI to_DPI(unsigned int instruction);
+extern struct send_DPR to_DPR(unsigned int instruction);
+extern struct sdtp to_SDT(unsigned int instruction);
+extern struct loadliteral to_LL(unsigned int instruction);
+extern struct send_branch to_branch(unsigned int instruction);
