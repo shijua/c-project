@@ -35,7 +35,7 @@ struct sdtp
 struct loadliteral
 {
     bool sf;
-    int simm19;
+    long long simm19;
     int rt;
 };
 

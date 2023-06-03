@@ -16,22 +16,17 @@ int sget_bit(int startBit, int numBits, int number) {
 void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
     // init variables
     unsigned long long address;
-    int offset = s.offset;
     int n = s.xn;
-    int rt = s.rt;
-    bool sf = s.sf;
-    bool L = s.L;
-    bool U = s.U;
-    if (U == 1) {
+    if (s.U == 1) {
         // Unsigned Immediate Offset
-        address = getRegisterValue(n, regs) + (unsigned long long) offset;
+        address = getRegisterValue(n, regs) + (unsigned long long) s.offset;
     } else {
         // check bit 21
-        unsigned int bit21 = get_bit(11, 1, offset);
+        unsigned int bit21 = get_bit(11, 1, s.offset);
         if (bit21 == 0) {
             // Pre/Post-Index
-            unsigned int bit11 = get_bit(1, 1, offset);
-            int simm9 = sget_bit(10, 9, offset);
+            unsigned int bit11 = get_bit(1, 1, s.offset);
+            int simm9 = sget_bit(10, 9, s.offset);
             if (bit11 == 1) {
                 // Pre-Index
                 address = getRegisterValue(n, regs) + ((long long) simm9);
@@ -51,7 +46,7 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
             }
         } else {
             // Register Offset
-            unsigned int m = get_bit(10, 5, offset);
+            unsigned int m = get_bit(10, 5, s.offset);
             long long xm = getRegisterValue((int) m, regs);
             long long xn = getRegisterValue(n, regs);
             address = xm + xn;
@@ -59,32 +54,32 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
     }
 
     // start process
-    if (sf == 0) {
+    if (s.sf == 0) {
         // target reg is 32-bits
-        if (L == 1) {
+        if (s.L == 1) {
             // load
-            if (rt <= 30) {
-                memcpy(&(regs->general[rt]), memory+address, 4);
+            if (s.rt <= 30) {
+                memcpy(&(regs->general[s.rt]), memory+address, 4);
             } else {
                 memcpy(&(regs->SP), memory+address, 4);
             }
         } else {
             // store
-            if (rt <= 30) {
-                memcpy(memory+address, &(regs->general[rt])+4, 4);
+            if (s.rt <= 30) {
+                memcpy(memory+address, &(regs->general[s.rt])+4, 4);
             } else {
                 memcpy(memory+address, &(regs->SP)+4, 4);
             }
         }
     } else {
         // target reg is 64-bits
-        if (L == 1) {
+        if (s.L == 1) {
             //load
             long long content;
             // get content from memory
             memcpy(&content, memory+address, 8);
-            if (rt <= 30) {
-                regs->general[rt] = content;
+            if (s.rt <= 30) {
+                regs->general[s.rt] = content;
             } else {
                 regs->SP = content;
             }
@@ -92,8 +87,8 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
             //store
             long long value;
             // get content from register
-            if (rt <= 30) {
-                value = regs->general[rt];
+            if (s.rt <= 30) {
+                value = regs->general[s.rt];
             } else {
                 value = regs->SP;
             }

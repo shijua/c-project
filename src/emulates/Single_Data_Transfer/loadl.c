@@ -6,9 +6,8 @@ void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
     // init variables
     unsigned long long address;
     bool sf = l.sf;
-    long long simm19 = l.simm19;
     int rt = l.rt;
-    address = (simm19 + regs->PC);
+    address = (l.simm19 + regs->PC);
     if (sf == 0) {
         // target reg is 32-bits
         if (rt <= 30) {
