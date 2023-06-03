@@ -2,18 +2,18 @@
 #include "bitwiseShift.h"
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
-    struct DPR_instruction instr;
+    struct DPR_instruction instr;//instr parses the binary instruction to parameters usable for the function
     instr.sf = divide.sf;
     instr.opc = divide.opc;
-    instr.rd = divide.rd == 31 ? &(registers->ZR):&(registers->general [divide.rd]);
-    instr.rm = divide.rm == 31 ? &(registers->ZR):&(registers->general [divide.rm]);
+    instr.rd = divide.rd == 31 ? &(registers->ZR):&(registers->general [divide.rd]); //point rd , rm , and rn to the correct register
+    instr.rm = divide.rm == 31 ? &(registers->ZR):&(registers->general [divide.rm]); //when they are 11111 , point to ZR, otherwise general register
     instr.rn = divide.rn == 31 ? &(registers->ZR):&(registers->general [divide.rn]);
     instr.M = divide.M;
     instr.opr = divide.opr;
     instr.operand = divide.operand;
     int shift = get_bit (2 , 2 , instr.opr);
     long long OP2;
-    switch (shift)
+    switch (shift) // perform shift based on the mid two bits of opr
     {
     case 0:
         OP2 = logicalShiftLeft(*instr.rm , instr.operand , instr.sf); 
@@ -37,8 +37,8 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
     }
 
     if(instr.opr>=8){
-        
-        
+        //check if opr is 1xxx or 0xxx, if it is 1xxx then we perform arithmetic operation or Multiplication
+        //otherwise perform logic operation.
         if(instr.M){
             long long * ra = get_bit (4 , 5 , instr.operand) == 31 ? &(registers->ZR):&(registers->general [get_bit (4 , 5 , instr.operand)]);
             if(get_bit (5 , 1 , instr.operand)){
@@ -54,7 +54,7 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
     }
     else{
         if(get_bit (0 , 1 , instr.opr)){
-            OP2 = ~OP2;
+            OP2 = ~OP2; // perfrom negation if N 
         }
         arithAndLogic (instr , OP2 , registers); 
     }
