@@ -11,6 +11,8 @@ struct DPR_instruction
     long long operand;
     int opr;
     bool M;
+    long long max_value;
+    long long min_value;
 };
 
 void DPR(int* memory, struct Registers* registers, struct send_DPR divide);

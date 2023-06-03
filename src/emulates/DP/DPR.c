@@ -34,6 +34,12 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
 
     if(!instr.sf){
         OP2 = (int) OP2;
+        instr.max_value = 2147483647 ; //this is useful for detecting overflow and underflow for 32-bit arithmetic
+        instr.min_value = -2147483648 ;
+    }
+    else{
+        instr.max_value = (long long) 9223372036854775807; //this is useful for detecting overflow and underflow for 64-bit arithmetic
+        instr.min_value = (long long)-9223372036854775807;
     }
 
     if(instr.opr>=8){
@@ -49,19 +55,19 @@ void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
             }
         }
         else{
-            arithAndLogic (instr , OP2 , registers);
+            Arithmetic_Operation (instr , OP2 , registers);
         }
     }
     else{
         if(get_bit (0 , 1 , instr.opr)){
             OP2 = ~OP2; // perfrom negation if N 
         }
-        arithAndLogic (instr , OP2 , registers); 
+        Loical_Operation (instr , OP2 , registers); 
     }
 
 }
 
-void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
+void Loical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
     switch (instr.opc)
         {
         case 0:
@@ -85,3 +91,32 @@ void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registe
         }
 }
 
+
+void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers){
+    switch (instr.opc) //perform operation based on opc(operation code)
+    {
+    case 0:
+        *instr.rd = OP2 + *instr.rn; //addition
+        break;
+    case 1:
+        *instr.rd = OP2 + *instr.rn; //addition with changing PSTATE
+        registers->pstate.N = get_bit (4 , 1 , *instr.rd); //set N to the first bit of rd
+        registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
+        registers->pstate.C = hasCarryOut(OP2, *instr.rn); //set C to 1 if it addition has carry out
+        registers->pstate.V = (OP2> instr.max_value - *instr.rn || OP2 < instr.max_value + *instr.rn); //set V to 1 if there is overflow or underflow
+        break;
+    case 2:
+        *instr.rd = OP2 - *instr.rn; //subtraction
+        break;
+    case 3:
+        *instr.rd = OP2 - *instr.rn; //subtraction with changing PSTATE
+        registers->pstate.N = get_bit (4 , 1 , *instr.rd);//set N to the first bit of rd
+        registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
+        registers->pstate.C = hasBorrow(OP2, *instr.rn);//set C to 1 if it addition has borrow
+        registers->pstate.V = (OP2 > instr.max_value + *instr.rn || OP2 < instr.max_value - *instr.rn);//set V to 1 if there is overflow or underflow
+        break;
+    default:
+        break;
+    }
+
+}
