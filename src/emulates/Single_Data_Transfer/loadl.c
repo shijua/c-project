@@ -1,17 +1,14 @@
 #include "loadl.h"
-#include <stdbool.h>
 #include <string.h>
 
 void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
     // init variables
     unsigned long long address;
-    bool sf = l.sf;
-    int rt = l.rt;
     address = (l.simm19 + regs->PC);
-    if (sf == 0) {
+    if (l.sf == 0) {
         // target reg is 32-bits
-        if (rt <= 30) {
-            memcpy(&(regs->general[rt]), memory+address, 4);
+        if (l.rt <= 30) {
+            memcpy(&(regs->general[l.rt]), memory+address, 4);
         } else {
             memcpy(&(regs->SP), memory+address, 4);
         }
@@ -20,8 +17,8 @@ void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
         long long content;
         // get content from memory
         memcpy(&content, memory+address, 8);
-        if (rt <= 30) {
-            regs->general[rt] = content;
+        if (l.rt <= 30) {
+            regs->general[l.rt] = content;
         } else {
             regs->SP = content;
         }
