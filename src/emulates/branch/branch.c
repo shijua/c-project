@@ -10,8 +10,8 @@ void process(struct send_branch pre, struct literal *lit){
     lit->SimM19 = getBitRange(pre.operand, 5, 23);
     lit->cond = getBitRange(pre.operand, 0, 3);
 }
-//extern void branch(int* memory, struct Registers registers, struct send_branch divide){return;}
-void Branch(int* memory, struct Registers *r, struct send_branch pre){
+//extern void branch(char* memory, struct Registers registers, struct send_branch divide){return;}
+void Branch(char* memory, struct Registers *r, struct send_branch pre){
     struct literal *lit = malloc(sizeof(struct literal));
     process(pre, lit);
     switch (lit->sf) {

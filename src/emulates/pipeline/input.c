@@ -11,13 +11,13 @@
 #include "../special/nop.h"
 #include "../DP/DPI.h"
 #include "../DP/DPR.h"
-// extern void DPI(int* memory, struct Registers* registers, struct send_DPI divide){return;}
-// extern void DPR(int* memory, struct Registers* registers, struct send_DPR divide){return;}
-// extern void SingleDataTransfer(int* memory, struct Registers* registers, struct sdtp divide){return;}
-// extern void LoadLiteral(int* memory, struct Registers* registers, struct loadliteral divide){return;}
-// extern void Branch(int* memory, struct Registers* registers, struct send_branch divide){return;}
+// extern void DPI(char* memory, struct Registers* registers, struct send_DPI divide){return;}
+// extern void DPR(char* memory, struct Registers* registers, struct send_DPR divide){return;}
+// extern void SingleDataTransfer(char* memory, struct Registers* registers, struct sdtp divide){return;}
+// extern void LoadLiteral(char* memory, struct Registers* registers, struct loadliteral divide){return;}
+// extern void Branch(char* memory, struct Registers* registers, struct send_branch divide){return;}
 
-void decode(int* memory, struct Registers* registers, unsigned int instruction) {
+void decode(char* memory, struct Registers* registers, unsigned int instruction) {
     int op0 = get_bit(28, 4, instruction);
     // printf("op0: %d\n", op0);
     if (op0 == 8 || op0 == 9) {  // 1000 1001
@@ -46,15 +46,14 @@ void decode(int* memory, struct Registers* registers, unsigned int instruction) 
     }
 }
 
-void get_instruction(char* buffer, int file_size, int* memory) {
+void get_instruction(char* buffer, int file_size, char* memory) {
     // getting binary format of each instruction
-    int const BYTE_PER_INSTRCUTION = 4;
-    for (int i = 0; i < file_size / BYTE_PER_INSTRCUTION; i++) {
-        memcpy(memory + i, buffer + i * BYTE_PER_INSTRCUTION, BYTE_PER_INSTRCUTION);
+    for (int i = 0; i < file_size; i++) {
+        memcpy(memory + i, buffer + i, 1);
     }
 }
 
-void readfile(char* filename, int* memory) {
+void readfile(char* filename, char* memory) {
     FILE *file = fopen(filename, "rb");  // Open the binary file in read 
     assert(file != NULL);
 

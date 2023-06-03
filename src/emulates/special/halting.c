@@ -1,4 +1,4 @@
 #include"halting.h"
-void halting(int* memory, struct Registers* r){
+void halting(char* memory, struct Registers* r){
     r->PC = -1;
 }

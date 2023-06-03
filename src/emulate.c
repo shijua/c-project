@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "emulates/Util.h"
 #include "emulates/pipeline/input.h"
 #include "emulates/pipeline/output.h"
-int memory[MAX_MEMORY / 4];
+char memory[MAX_MEMORY];
 struct Registers registers;
 // input format: ./emulate <input .bin file> <output .out file>
 int main(int argc, char **argv) {
@@ -14,7 +15,8 @@ int main(int argc, char **argv) {
   registers.pstate.Z = 1;
 
   // fetch and decode steps
-  int instruction = memory[registers.PC / 4];
+  int instruction;
+  memcpy(&instruction, memory+registers.PC, 4);
   int count = 0;
   while (instruction != 0 && registers.PC != -1 && registers.PC <= MAX_MEMORY && count < 1919810){
     if (instruction == 0x8a000000) {
@@ -22,7 +24,7 @@ int main(int argc, char **argv) {
       break;
     }
     decode(memory, &registers, instruction);
-    instruction = memory[registers.PC / 4];
+    memcpy(&instruction, memory+registers.PC, 4);
     count++;
   }
   registers.PC -= 4;

@@ -1,7 +1,7 @@
 #include "DPR.h"
 #include "bitwiseShift.h"
 
-void DPR(int* memory, struct Registers* registers, struct send_DPR divide){
+void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     struct DPR_instruction instr;//instr parses the binary instruction to parameters usable for the function
     instr.sf = divide.sf;
     instr.opc = divide.opc;

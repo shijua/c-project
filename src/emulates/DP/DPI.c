@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "DPI.h"
 
-void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
+void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr; //instr parses the binary instruction to parameters usable for the function
     instr.sf = divide.sf;//coppy sf opc the same way it is in divide
     instr.opc = divide.opc;
