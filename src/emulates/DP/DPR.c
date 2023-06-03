@@ -54,6 +54,10 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
             else{
                 *instr.rd = *ra + *instr.rn * (*instr.rm);
             }
+            if(!instr.sf) {
+                // if 32 bit register
+                *instr.rd = (*instr.rd) & (0xFFFFFFFF);
+            }
         }
         else{
             Arithmetic_Operation (instr , OP2 , registers);
@@ -93,7 +97,7 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
 }
 
 
-void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers){
+void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers){
     long long addition = OP2 + *instr.rn;
     long long subtraction = *instr.rn - OP2;
     switch (instr.opc) //perform operation based on opc(operation code)

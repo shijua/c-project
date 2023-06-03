@@ -26,7 +26,6 @@ void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
         arithmetic (registers, instr , opra); // do arithmetic operation 
     }
     else{
-        
         oprw.hw = get_bit (17 , 2 , instr.operand);//parsing wide move operator. details see in spec
         oprw.imm16 = get_bit (15 , 16 , instr.operand);
         wideMove (registers, instr , oprw); //do wide move operation
