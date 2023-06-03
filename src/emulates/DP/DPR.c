@@ -111,7 +111,7 @@ void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct 
         else
             *instr.rd = addition;  //addition with changing PSTATE
 
-        registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
+        registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(OP2, *instr.rn); //set C to 1 if it addition has carry out
         registers->pstate.V = (OP2> instr.max_value - *instr.rn || OP2 < instr.min_value + *instr.rn); //set V to 1 if there is overflow or underflow
