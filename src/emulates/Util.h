@@ -24,3 +24,4 @@ extern unsigned int get_bit(int startBit, int numBits, unsigned int number);
 extern unsigned long long get_bitl(int startBit, int numBits, unsigned long long number);
 int hasCarryOut(long long a, long long b);
 int hasBorrow(long long a, long long b);
+bool overflow (long long a , long long b , bool is_64);
