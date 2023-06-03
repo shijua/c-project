@@ -27,14 +27,16 @@ unsigned int getBitRange(int num, int x, int y) {
     return (num >> x) & mask;
 }
 
-int hasCarryOut(int a, int b) {
-    int carry = a & b;  
-    return carry != 0;  
+int hasCarryOut(long long a, long long b) {
+    long long topBit = 1;
+    while (topBit < a || topBit < b){
+        topBit = topBit<<1;
+    }
+    return (a + b >= topBit);  
 }
 
-int hasBorrow(int a, int b) {
-    int borrow = (~a) & b;  
-    return borrow != 0;  
+int hasBorrow(long long a, long long b) {
+    return a < b;  
 }
 
 // int main(int argc, char const *argv[])
