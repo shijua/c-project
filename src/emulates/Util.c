@@ -30,7 +30,10 @@ unsigned int getBitRange(int num, int x, int y) {
 int hasCarryOut(long long a, long long b) {
     long long topBit = 1;
     while (topBit < a || topBit < b){
-        topBit = topBit<<1;
+        topBit = topBit*2;
+        if(topBit == 0){
+            return ((a + b) <= a && (a + b) <= b); 
+        }
     }
     return (a + b >= topBit);  
 }
