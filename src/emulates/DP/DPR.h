@@ -13,6 +13,7 @@ struct DPR_instruction
     bool M;
     long long max_value;
     long long min_value;
+    int topBit;
 };
 
 void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
