@@ -14,8 +14,6 @@ struct arithmetic_Operand{
     bool sh;
     long long * rn;
     int imm12;
-    long long max_value;
-    long long min_value;
 
 };
 

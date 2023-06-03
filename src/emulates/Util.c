@@ -42,6 +42,22 @@ int hasBorrow(long long a, long long b) {
     return a < b;  
 }
 
+bool overflow(long long a, long long b, bool is_64)
+{
+    if ((a <= 0 && b >= 0 ) || (a >= 0 && b <= 0))
+        return false;
+    if (is_64){
+        if(a < 0)
+            return (a + b > a);
+        return (a + b < a);
+    }
+    else{
+        if(a < 0)
+            return ((int)a + (int)b > (int)a);
+        return ((int)a + (int)b < (int)a);
+    }
+}
+
 // int main(int argc, char const *argv[])
 // {
 //     printf("%d\n", get_bit(28, 4, 335544322));

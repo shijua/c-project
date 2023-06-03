@@ -35,13 +35,11 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
 
     if(!instr.sf){
         instr.topBit = 31;
-        instr.max_value = 2147483647 ; //this is useful for detecting overflow and underflow for 32-bit arithmetic
-        instr.min_value = -2147483648 ;
+
     }
     else{
         instr.topBit = 63;
-        instr.max_value = (long long) 9223372036854775807; //this is useful for detecting overflow and underflow for 64-bit arithmetic
-        instr.min_value = (long long)-9223372036854775807;
+
     }
 
     if(instr.opr>=8){
@@ -118,7 +116,7 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(OP2, *instr.rn); //set C to 1 if it addition has carry out
-        registers->pstate.V = (OP2> instr.max_value - *instr.rn || OP2 < instr.min_value + *instr.rn); //set V to 1 if there is overflow or underflow
+        registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
         if (!instr.sf)
@@ -134,7 +132,7 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(OP2, *instr.rn);//set C to 1 if it addition has borrow
-        registers->pstate.V = (*instr.rn > instr.max_value + OP2 || *instr.rn < instr.min_value - OP2);//set V to 1 if there is overflow or underflow
+        registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:
         break;
