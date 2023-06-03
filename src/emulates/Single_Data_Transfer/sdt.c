@@ -66,9 +66,9 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
         } else {
             // store
             if (s.rt <= 30) {
-                memcpy(memory+address, &(regs->general[s.rt])+4, 4);
+                memcpy(memory+address, &(regs->general[s.rt]), 4);
             } else {
-                memcpy(memory+address, &(regs->SP)+4, 4);
+                memcpy(memory+address, &(regs->SP), 4);
             }
         }
     } else {
