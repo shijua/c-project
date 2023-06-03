@@ -39,23 +39,37 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
     if(opr.sh){
         opr.imm12 = opr.imm12<<12; //if sh is 1 then right move by 12
     }
+    long long addition = opr.imm12 + *opr.rn;
+    long long subtraction = *opr.rn - opr.imm12;
     switch (instr.opc) //perform operation based on opc(operation code)
     {
     case 0:
-        *instr.rd = opr.imm12 + *opr.rn; //addition
+        if (!instr.sf)
+            memcpy(instr.rd, &addition, 4);
+        else
+            *instr.rd = addition;  //addition
         break;
     case 1:
-        *instr.rd = opr.imm12 + *opr.rn; //addition with changing PSTATE
+        if (!instr.sf)
+            memcpy(instr.rd, &addition, 4);
+        else
+            *instr.rd = addition;//addition with changing PSTATE
         registers->pstate.N = get_bit (4 , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn); //set C to 1 if it addition has carry out
         registers->pstate.V = (opr.imm12 > opr.max_value - *opr.rn || opr.imm12 < opr.max_value + *opr.rn); //set V to 1 if there is overflow or underflow
         break;
     case 2:
-        *instr.rd = *opr.rn - opr.imm12; //subtraction
+        if (!instr.sf)
+            memcpy(instr.rd, &subtraction, 4);
+        else
+            *instr.rd = subtraction; //subtraction
         break;
     case 3:
-        *instr.rd = *opr.rn - opr.imm12; //subtraction with changing PSTATE
+        if (!instr.sf)
+            memcpy(instr.rd, &subtraction, 4);
+        else
+            *instr.rd = subtraction; //subtraction with changing PSTATE
         registers->pstate.N = get_bit (4 , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(opr.imm12, *opr.rn);//set C to 1 if it addition has borrow
