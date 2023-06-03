@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "DPI.h"
 
-void DPI(int* memory, struct Registers* registers, struct send_DPI divide){
+void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr;
     instr.sf = divide.sf;
     instr.opc = divide.opc;

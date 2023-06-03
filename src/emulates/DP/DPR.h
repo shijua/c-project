@@ -13,6 +13,6 @@ struct DPR_instruction
     bool M;
 };
 
-void DPR(int* memory, struct Registers* registers, struct send_DPR divide);
+void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
 void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
 

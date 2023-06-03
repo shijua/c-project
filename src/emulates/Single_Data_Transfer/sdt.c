@@ -1,4 +1,5 @@
 #include "sdt.h"
+#include <string.h>
 long long getRegisterValue(int n, struct Registers* regs) {
     /*if (n <= 30) {
         return regs->general[n];
@@ -17,7 +18,7 @@ int sget_bit(int startBit, int numBits, int number) {
     if ((result & 256) != 0) result -= 512;
     return result;
 }
-void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
+void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
     unsigned long long address;
     int offset = s.offset;
     int n = s.xn;
@@ -59,7 +60,6 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
             address = xm + xn;
         }
     }
-    address /= 4;
 
     // start process
     if (sf == 0) {
@@ -67,25 +67,24 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
         if (L == 1) {
             //load
             if (rt <= 30) {
-                regs->general[rt] = memory[address];
+                memcpy(&(regs->general[rt]), memory+address, 4);
             } else {
-                regs->SP = memory[address];
+                memcpy(&(regs->SP), memory+address, 4);
             }
         } else {
             //store
             if (rt <= 30) {
-                memory[address] = regs->general[rt];
+                memcpy(memory+address, &(regs->general[rt])+4, 4);
             } else {
-                memory[address] = regs->SP;
+                memcpy(memory+address, &(regs->SP)+4, 4);
             }
         }
     } else {
         // target reg is 64-bits
         if (L == 1) {
             //load
-            int intValue1 = memory[address];
-            int intValue2 = memory[address + 1];
-            long long content = ((long long)intValue2 & 0xFFFFFFFF) + (((long long)intValue1 & 0xFFFFFFFF) << 32);
+            long long content;
+            memcpy(&content, memory+address, 8);
             if (rt <= 30) {
                 regs->general[rt] = content;
             } else {
@@ -99,11 +98,7 @@ void SingleDataTransfer(int* memory, struct Registers* regs, struct sdtp s) {
             } else {
                 value = regs->SP;
             }
-            int intvalue1 = (int) value & 0x00000000FFFFFFFF;
-            int intvalue2 = (int) ((value & 0xFFFFFFFF00000000) >> 32);
-            //long long content = ((long long)intvalue1 & 0xFFFFFFFF) + (((long long)intvalue2 & 0xFFFFFFFF) << 32);
-            memory[address] = intvalue2;
-            memory[address + 1] = intvalue1;
+            memcpy(memory+address, &value, 8);
         }
     }
 }

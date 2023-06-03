@@ -1,24 +1,24 @@
 #include "loadl.h"
 #include <stdbool.h>
+#include <string.h>
 
-void LoadLiteral(int* memory, struct Registers* regs, struct loadliteral l) {
+void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
     unsigned long long address;
     bool sf = l.sf;
     long long simm19 = l.simm19;
     int rt = l.rt;
-    address = (simm19 + regs->PC) / 4;
+    address = (simm19 + regs->PC);
     if (sf == 0) {
         // target reg is 32-bits
         if (rt <= 30) {
-            regs->general[rt] = memory[address];
+            memcpy(&(regs->general[rt]), memory+address, 4);
         } else {
-            regs->SP = memory[address];
+            memcpy(&(regs->SP), memory+address, 4);
         }
     } else {
         // target reg is 64-bits
-        int intValue1 = memory[address];
-        int intValue2 = memory[address + 1];
-        long long content = ((long long)intValue2 & 0xFFFFFFFF) + (((long long)intValue1 & 0xFFFFFFFF) << 32);
+        long long content;
+        memcpy(&content, memory+address, 8);
         if (rt <= 30) {
             regs->general[rt] = content;
         } else {

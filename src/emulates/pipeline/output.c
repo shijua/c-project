@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "../Util.h"
 #include "output.h"
 
@@ -26,18 +27,20 @@ void output_Pstate(bool* pstate_ptr, FILE* fp) {
     }
 }
 
-void output_memory(int* memory, FILE* fp){
+void output_memory(char* memory, FILE* fp){
     // output all memory that exists
     for (int i = 0; i < 524288; i++) // 2^19
     {
-        if (memory[i] != 0) {
-            fprintf(fp, "0x%08x : %08x\n", i*4, memory[i]);
+        int instruction;
+        memcpy(&instruction, memory+i*4, 4);
+        if (instruction != 0) {
+            fprintf(fp, "0x%08x : %08x\n", i*4, instruction);
         }
     }
 }
 
 
-void output(struct Registers* register_ptr, int* memory, FILE* fp) { 
+void output(struct Registers* register_ptr, char* memory, FILE* fp) { 
     // output all general registers
     fprintf(fp, "Registers:\n");
     output_general(register_ptr->general, fp);
