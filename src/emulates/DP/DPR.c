@@ -72,19 +72,24 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
 }
 
 void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
+    long long res;
     switch (instr.opc)
         {
         case 0:
-            *instr.rd = *instr.rn & OP2;
+            res = *instr.rn & OP2;
+            memcpy(instr.rd, &res, 4 + 4*instr.sf);
             break;
         case 1:
-            *instr.rd = *instr.rn | OP2;
+            res = *instr.rn | OP2;
+            memcpy(instr.rd, &res, 4 + 4*instr.sf);
             break;
         case 2:
-            *instr.rd = *instr.rn ^ OP2;
+            res = *instr.rn ^ OP2;
+            memcpy(instr.rd, &res, 4 + 4*instr.sf);
             break;
         case 3:
-            *instr.rd = *instr.rn & OP2;
+            res = *instr.rn & OP2;
+            memcpy(instr.rd, &res, 4 + 4*instr.sf);
             registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);
             registers->pstate.Z = *instr.rd == 0;
             registers->pstate.C = 0;
