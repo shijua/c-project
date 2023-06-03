@@ -100,13 +100,13 @@ void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct 
     {
     case 0:
         if (!instr.sf)
-            memcpy(instr.rd + 4, &addition, 4);
+            memcpy(instr.rd, &addition, 4);
         else
             *instr.rd = addition; //addition
         break;
     case 1:
         if (!instr.sf)
-            memcpy(instr.rd + 4, &addition, 4);
+            memcpy(instr.rd, &addition, 4);
         else
             *instr.rd = addition;  //addition with changing PSTATE
 
@@ -117,13 +117,13 @@ void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct 
         break;
     case 2:
         if (!instr.sf)
-            memcpy(instr.rd + 4, &subtraction, 4);
+            memcpy(instr.rd, &subtraction, 4);
         else
             *instr.rd = subtraction; //subtraction
         break;
     case 3:
         if (!instr.sf)
-            memcpy(instr.rd + 4, &subtraction, 4);
+            memcpy(instr.rd, &subtraction, 4);
         else
             *instr.rd = subtraction; //subtraction with changing PSTATE
         registers->pstate.N = get_bit (4 , 1 , *instr.rd);//set N to the first bit of rd
