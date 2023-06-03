@@ -85,15 +85,6 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     }
 }
 
-int hasCarryOut(int a, int b) {
-    int carry = a & b;  
-    return carry != 0;  
-}
-
-int hasBorrow(int a, int b) {
-    int borrow = (~a) & b;  
-    return borrow != 0;  
-}
 
 void copyBits(long long source, long long* destination, int startBit, int endBit) {
     // creat a mask, this will set the bits that we want to copy to 1 and all the rest to 0

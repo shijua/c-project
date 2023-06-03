@@ -21,3 +21,5 @@ struct Registers {
 
 extern unsigned int getBitRange(int num, int x, int y);
 extern unsigned int get_bit(int startBit, int numBits, unsigned int number);
+int hasCarryOut(int a, int b);
+int hasBorrow(int a, int b);

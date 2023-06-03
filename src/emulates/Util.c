@@ -16,6 +16,16 @@ unsigned int getBitRange(int num, int x, int y) {
     return (num >> x) & mask;
 }
 
+int hasCarryOut(int a, int b) {
+    int carry = a & b;  
+    return carry != 0;  
+}
+
+int hasBorrow(int a, int b) {
+    int borrow = (~a) & b;  
+    return borrow != 0;  
+}
+
 // int main(int argc, char const *argv[])
 // {
 //     printf("%d\n", get_bit(28, 4, 335544322));

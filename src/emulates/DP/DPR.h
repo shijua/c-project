@@ -16,5 +16,5 @@ struct DPR_instruction
 };
 
 void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
-void arithAndLogic(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
-
+void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
+void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers);

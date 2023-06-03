@@ -62,12 +62,12 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         if(get_bit (0 , 1 , instr.opr)){
             OP2 = ~OP2; // perfrom negation if N 
         }
-        Loical_Operation (instr , OP2 , registers); 
+        Logical_Operation (instr , OP2 , registers); 
     }
 
 }
 
-void Loical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
+void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
     switch (instr.opc)
         {
         case 0:

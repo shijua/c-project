@@ -27,8 +27,7 @@ void DPI(char* memory, struct Registers* registers, struct send_DPI divide);
 void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr);
 void wideMove (struct Registers* registers, struct DPI_instruction instr, struct wideMove_Operand opr);
 void intToReg (int reg); 
-int hasCarryOut(int a, int b);
-int hasBorrow(int a, int b);
+
 void copyBits(long long source, long long* destination, int startBit, int endBit);
 
 
