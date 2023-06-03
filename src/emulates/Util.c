@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Util.h"
 // Function to get the value of specific bits
 unsigned int get_bit(int startBit, int numBits, unsigned int number) {
     // Create a bitmask with the desired number of bits
