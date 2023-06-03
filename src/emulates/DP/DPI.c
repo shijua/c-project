@@ -40,32 +40,20 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
     switch (instr.opc) //perform operation based on opc(operation code)
     {
     case 0:
-        if (!instr.sf)
-            memcpy(instr.rd, &addition, 4);
-        else
-            *instr.rd = addition;  //addition
+        memcpy(instr.rd, &addition, 4 + instr.sf * 4);
         break;
     case 1:
-        if (!instr.sf)
-            memcpy(instr.rd, &addition, 4);
-        else
-            *instr.rd = addition;//addition with changing PSTATE
+        memcpy(instr.rd, &addition, 4 + instr.sf * 4);//addition with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn); //set C to 1 if it addition has carry out
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
-        if (!instr.sf)
-            memcpy(instr.rd, &subtraction, 4);
-        else
-            *instr.rd = subtraction; //subtraction
+        memcpy(instr.rd, &subtraction, 4 + instr.sf * 4);//subtraction
         break;
     case 3:
-        if (!instr.sf)
-            memcpy(instr.rd, &subtraction, 4);
-        else
-            *instr.rd = subtraction; //subtraction with changing PSTATE
+        memcpy(instr.rd, &subtraction, 4 + instr.sf * 4);//subtraction with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(opr.imm12, *opr.rn);//set C to 1 if it addition has borrow
