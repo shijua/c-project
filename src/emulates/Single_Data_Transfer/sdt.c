@@ -1,11 +1,6 @@
 #include "sdt.h"
 #include <string.h>
 long long getRegisterValue(int n, struct Registers* regs) {
-    /*if (n <= 30) {
-        return regs->general[n];
-    } else {
-        return regs->SP;
-    }*/
     return n <= 30 ? regs -> general[n] : regs -> SP;
 }
 int sget_bit(int startBit, int numBits, int number) {
@@ -19,6 +14,7 @@ int sget_bit(int startBit, int numBits, int number) {
     return result;
 }
 void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
+    // init variables
     unsigned long long address;
     int offset = s.offset;
     int n = s.xn;
@@ -30,13 +26,14 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
         // Unsigned Immediate Offset
         address = getRegisterValue(n, regs) + (unsigned long long) offset;
     } else {
+        // check bit 21
         unsigned int bit21 = get_bit(11, 1, offset);
         if (bit21 == 0) {
-            //Pre/Post-Index
+            // Pre/Post-Index
             unsigned int bit11 = get_bit(1, 1, offset);
             int simm9 = sget_bit(10, 9, offset);
             if (bit11 == 1) {
-                //Pre-Index
+                // Pre-Index
                 address = getRegisterValue(n, regs) + ((long long) simm9);
                 if (n <= 30) {
                     regs->general[n] = address;
@@ -44,7 +41,7 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
                     regs->SP = address;
                 }
             } else {
-                //Post-Index
+                // Post-Index
                 address = getRegisterValue(n, regs);
                 if (n <= 30) {
                     regs->general[n] = address + ((long long) simm9);
@@ -65,14 +62,14 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
     if (sf == 0) {
         // target reg is 32-bits
         if (L == 1) {
-            //load
+            // load
             if (rt <= 30) {
                 memcpy(&(regs->general[rt]), memory+address, 4);
             } else {
                 memcpy(&(regs->SP), memory+address, 4);
             }
         } else {
-            //store
+            // store
             if (rt <= 30) {
                 memcpy(memory+address, &(regs->general[rt])+4, 4);
             } else {
@@ -84,6 +81,7 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
         if (L == 1) {
             //load
             long long content;
+            // get content from memory
             memcpy(&content, memory+address, 8);
             if (rt <= 30) {
                 regs->general[rt] = content;
@@ -93,6 +91,7 @@ void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
         } else {
             //store
             long long value;
+            // get content from register
             if (rt <= 30) {
                 value = regs->general[rt];
             } else {
