@@ -20,24 +20,24 @@
 void decode(char* memory, struct Registers* registers, unsigned int instruction) {
     int op0 = get_bit(28, 4, instruction);
     // printf("op0: %d\n", op0);
-    if (op0 == 8 || op0 == 9) {  // 1000 1001
-        DPI(memory, registers, to_DPI(instruction));
-        registers->PC += 4;
-    }else if (op0 == 5 || op0 == 13) { // 0101 1101
-        DPR(memory, registers, to_DPR(instruction));
-        registers->PC += 4;
-    }else if (op0 == 12 && get_bit(29, 1, instruction) == 1) { // 1100
-        SingleDataTransfer(memory, registers, to_SDT(instruction));
-        registers->PC += 4;
-    }else if (op0 == 12 && get_bit(29, 1, instruction) == 0) { // 1100
-        LoadLiteral(memory, registers, to_LL(instruction));
-        registers->PC += 4;
-    }else if (op0 == 10 || op0 == 11) { // 1010 1011
-        Branch(memory, registers, to_branch(instruction));
-    } else if (instruction == -721215457) {
+    if (instruction == -721215457) {
         nop(memory, registers);
     } else if (instruction == -1979711488) {
         halting(memory, registers);
+    } else if (op0 == 8 || op0 == 9) {  // 1000 1001
+        DPI(memory, registers, to_DPI(instruction));
+        registers->PC += 4;
+    } else if (op0 == 5 || op0 == 13) { // 0101 1101
+        DPR(memory, registers, to_DPR(instruction));
+        registers->PC += 4;
+    } else if (op0 == 12 && get_bit(29, 1, instruction) == 1) { // 1100
+        SingleDataTransfer(memory, registers, to_SDT(instruction));
+        registers->PC += 4;
+    } else if (op0 == 12 && get_bit(29, 1, instruction) == 0) { // 1100
+        LoadLiteral(memory, registers, to_LL(instruction));
+        registers->PC += 4;
+    } else if (op0 == 10 || op0 == 11) { // 1010 1011
+        Branch(memory, registers, to_branch(instruction));
     } else {
         printf("Error: invalid instruction\n");
         printf("op0: %d\n", op0);

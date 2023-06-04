@@ -24,6 +24,8 @@ void Branch(char* memory, struct Registers *r, struct send_branch pre){
         case 1:
             if (conditional_branch(r, lit->cond)) {
                 r->PC += (lit->SimM19)*4;
+            } else {
+                r->PC += 4;
             }
             break;
         default:

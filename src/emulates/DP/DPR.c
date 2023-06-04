@@ -1,6 +1,7 @@
 #include "DPR.h"
 #include "bitwiseShift.h"
 #include <string.h>
+#include <stdio.h>
 
 void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     struct DPR_instruction instr;//instr parses the binary instruction to parameters usable for the function
@@ -29,7 +30,7 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         OP2 = rotateRight(*instr.rm , instr.operand , instr.sf); 
         break;
     default:
-        break;
+        printf("Error in OP2\n");
     }
     
 
@@ -99,6 +100,10 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
         default:
             break;
         }
+    // clear left part if it is 32 bits
+    if(!instr.sf) {
+        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
+    }
 }
 
 
@@ -112,7 +117,6 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         break;
     case 1:
         memcpy(instr.rd, &addition, 4 + 4*instr.sf);//addition with changing PSTATE
-
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryOut(OP2, *instr.rn, instr.sf); //set C to 1 if it addition has carry out
@@ -126,7 +130,6 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasBorrow(*instr.rn, OP2, instr.sf);//set C to 1 if it addition has borrow
-        // registers->pstate.C = *instr.rn > subtraction;
         registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:

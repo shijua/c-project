@@ -37,13 +37,38 @@ bool hasCarryOut(long long a, long long b, bool is_64) {
     return a + b < a || a + b < b;
 }
 
+// output binary format of long long
+// void printBinary(long long num) {
+//     int count = 0;
+//     long long next = 1;
+//     while (count < 64) {
+//         printf("%lld", (num & next) >> count);
+//         next <<= 1;
+//         count++;
+//     }
+//     printf("\n");
+// }
+
 bool hasBorrow(long long a, long long b, bool is_64) {
     if (!is_64) {
         a <<= 32;
         b <<= 32;
-    };
-    if (a < 0) return hasCarryOut(-a, b, is_64);
-    return a - b > a;
+    }
+    bool carry = 1;
+    b = ~b+1;
+    // printBinary(b);
+    // printBinary(a);
+    long long next = 1;
+    int count = 0;
+    while (count < 64) {
+        // compare the bit in a and b (emulate full adder to get borrow)
+        bool bita = (a & next) >> count;
+        bool bitb = (b & next) >> count;
+        carry = (bita + bitb) + carry > 1;
+        next <<= 1;
+        count++;
+    }
+    return carry;
 }
 
 // function for overflow and underflow

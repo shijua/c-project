@@ -57,7 +57,7 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &subtraction, 4 + instr.sf * 4);//subtraction with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasBorrow(opr.imm12, *opr.rn);//set C to 1 if it addition has borrow
+        registers->pstate.C = hasBorrow(opr.imm12, *opr.rn, instr.sf);//set C to 1 if it addition has borrow
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:
@@ -92,8 +92,6 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     // doing separately as imm16 is int
     int shift = opr.hw * 16;
     instr.operand <<= shift;
-    // 64 0 bits
-    long long lon0 = 0LL;
     // 64 1 bits
     long long lon1 = ~0LL;
     // use char as pointer I can modify long long byte by byte
@@ -109,11 +107,6 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         // put the imm16 into the rd accoring to the shift
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
         // copyBits(~opr.imm16, instr.rd, shift, shift + 15);
-        // clear left part if it is 32 bits
-        if(instr.sf == 0){
-            memcpy(rd+4, &lon0, 4);
-            // copyBits(0, instr.rd, 32, 63);
-        }
         break;
     case 2: // movz
         // Move certain part of the register while all the rest bits are 0
@@ -123,15 +116,14 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         // Move certain part of the register while keep the rest of the bits
         // copyBits(instr.operand, instr.rd, shift, shift + 15) ;
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
-        // clear left part if it is 32 bits
-        if(instr.sf == 0){
-            memcpy(rd+4, &lon0, 4);
-            // copyBits(0, instr.rd, 32, 63);
-        }
         break;
     default:
         printf("Error: invalid instruction\n");
         registers->PC = -1;
+    }
+    // clear left part if it is 32 bits
+    if(!instr.sf) {
+        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
     }
 }
 

@@ -17,16 +17,16 @@ int main(int argc, char **argv) {
   // fetch and decode steps
   int instruction;
   memcpy(&instruction, memory+registers.PC, 4);
-  int count = 0;
-  while (instruction != 0 && registers.PC != -1 && registers.PC <= MAX_MEMORY && count < 1919810){
+  while (instruction != 0 && registers.PC != -1 && registers.PC <= MAX_MEMORY){
+    // means ended
     if (instruction == 0x8a000000) {
       registers.PC += 4;
       break;
     }
     decode(memory, &registers, instruction);
     memcpy(&instruction, memory+registers.PC, 4);
-    count++;
   }
+  // get backwords
   registers.PC -= 4;
   //output an empty file named argv[2]
   FILE *fp = fopen(argv[2], "w");
