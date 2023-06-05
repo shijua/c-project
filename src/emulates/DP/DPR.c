@@ -56,10 +56,6 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
             else{
                 *instr.rd = *ra + *instr.rn * (*instr.rm);
             }
-            if(!instr.sf) {
-                // if 32 bit register
-                *instr.rd = (*instr.rd) & (0xFFFFFFFF);
-            }
         }
         else{
             Arithmetic_Operation (instr , OP2 , registers);
@@ -71,7 +67,10 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         }
         Logical_Operation (instr , OP2 , registers); 
     }
-
+    // clear left part if it is 32 bits
+    if(!instr.sf) {
+        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
+    }
 }
 
 void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
@@ -103,10 +102,6 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
             printf("Error in OPC\n");
             assert(false);
         }
-    // clear left part if it is 32 bits
-    if(!instr.sf) {
-        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
-    }
 }
 
 

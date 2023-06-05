@@ -30,7 +30,10 @@ void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
         oprw.imm16 = get_bit (15 , 16 , instr.operand);
         wideMove (registers, instr , oprw); //do wide move operation
     }
-
+    // clear left part if it is 32 bits
+    if(!instr.sf) {
+        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
+    }
 }
 
 void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr){
@@ -123,10 +126,6 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     default:
         printf("Error: invalid instruction\n");
         assert(false);
-    }
-    // clear left part if it is 32 bits
-    if(!instr.sf) {
-        *instr.rd = (*instr.rd) & (0xFFFFFFFF);
     }
 }
 

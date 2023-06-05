@@ -13,7 +13,6 @@ long long logicalShiftLeft(long long value, int shiftAmount, bool is64Bit) {
 long long logicalShiftRight(long long value, int shiftAmount, bool is64Bit) {
     if (is64Bit) {
         return (unsigned long long)(value) >> shiftAmount; //shift right with long long (64-bit)
-        
     } else {
         return (unsigned int)(value) >> shiftAmount; //shift right with int (32-bit)
     }
