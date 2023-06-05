@@ -22,6 +22,17 @@ unsigned long long get_bitl(int startBit, int numBits, unsigned long long number
     return result;
 }
 
+int sget_bit(int startBit, int numBits, int number) {
+    // Create a bitmask with the desired number of bits
+    unsigned int bitmask = (1 << numBits) - 1;
+    // Shift the result back to the rightmost bits
+    int result = number >> (startBit - numBits + 1);
+    // Apply the bitmask to the number using bitwise AND operation
+    result &= bitmask;
+    if ((result & (1 << (numBits - 1))) != 0) result -= 1 << numBits;
+    return result;
+}
+
 unsigned int getBitRange(int num, int x, int y) {
     unsigned int mask = (1u << (y - x + 1)) - 1;
     return (num >> x) & mask;
