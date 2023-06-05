@@ -2,6 +2,7 @@
 #include "bitwiseShift.h"
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     struct DPR_instruction instr;//instr parses the binary instruction to parameters usable for the function
@@ -31,6 +32,7 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         break;
     default:
         printf("Error in OP2\n");
+        assert(false);
     }
     
 
@@ -98,7 +100,8 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
             registers->pstate.V = 0;
             break;
         default:
-            break;
+            printf("Error in OPC\n");
+            assert(false);
         }
     // clear left part if it is 32 bits
     if(!instr.sf) {
@@ -133,7 +136,8 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:
-        break;
+        printf("Error in OPC\n");
+        assert(false);
     }
 
 }

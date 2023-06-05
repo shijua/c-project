@@ -30,7 +30,7 @@ void Branch(char* memory, struct Registers *r, struct send_branch pre){
             break;
         default:
             printf("Error: invalid instruction\n");
-            exit(1);
+            assert(false);
     }
     free(lit);
 }
@@ -53,7 +53,7 @@ bool conditional_branch(struct Registers * r, unsigned int condition) {
             return true;
         default:
             printf("Error: invalid instruction\n");
-            exit(1);
+            assert(false);
     }
     return false;
 }

@@ -14,6 +14,6 @@ struct DPR_instruction
     int topBit;
 };
 
-void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
-void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
-void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers);
+extern void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
+extern void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
+extern void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers);

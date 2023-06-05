@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "DPI.h"
+#include <assert.h>
 
 void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr; //instr parses the binary instruction to parameters usable for the function
@@ -61,7 +62,8 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:
-        break;
+        printf("Error in OPC\n");
+        assert(false);
     }
 
 }
@@ -119,7 +121,7 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         break;
     default:
         printf("Error: invalid instruction\n");
-        registers->PC = -1;
+        assert(false);
     }
     // clear left part if it is 32 bits
     if(!instr.sf) {

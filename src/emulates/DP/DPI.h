@@ -22,11 +22,9 @@ struct wideMove_Operand{
     int imm16;
 };
 
-void DPI(char* memory, struct Registers* registers, struct send_DPI divide);
-void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr);
-void wideMove (struct Registers* registers, struct DPI_instruction instr, struct wideMove_Operand opr);
-void intToReg (int reg); 
+extern void DPI(char* memory, struct Registers* registers, struct send_DPI divide);
+extern void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr);
+extern void wideMove (struct Registers* registers, struct DPI_instruction instr, struct wideMove_Operand opr);
 
-void copyBits(long long source, long long* destination, int startBit, int endBit);
 
 

@@ -8,7 +8,5 @@ struct literal{
     int cond;
 };
 extern void process(struct send_branch pre, struct literal* lit);
-extern unsigned int getBitRange(int num, int x, int y);
-extern void printBinary(unsigned int num);
 extern void Branch(char* memory, struct Registers* r, struct send_branch pre);
 extern bool conditional_branch(struct Registers* r, unsigned int condition);

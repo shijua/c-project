@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
       break;
     }
     decode(memory, &registers, instruction);
+    // fetch next instruction
     memcpy(&instruction, memory+registers.PC, 4);
   }
   // get backwords
