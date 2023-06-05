@@ -48,7 +48,8 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &addition, 4 + instr.sf * 4);//addition with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn, instr.sf); //set C to 1 if it addition has carry out
+        // registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn, instr.sf); //set C to 1 if it addition has carry out
+        registers->pstate.C = hasBorrow(opr.imm12, *opr.rn, instr.sf, 0); //set C to 1 if it addition has carry out
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
@@ -58,7 +59,7 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &subtraction, 4 + instr.sf * 4);//subtraction with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasBorrow(opr.imm12, *opr.rn, instr.sf);//set C to 1 if it addition has borrow
+        registers->pstate.C = hasBorrow(*opr.rn, opr.imm12, instr.sf, 1);//set C to 1 if it addition has borrow
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:

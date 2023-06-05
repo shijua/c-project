@@ -41,8 +41,7 @@ void decode(char* memory, struct Registers* registers, unsigned int instruction)
     } else {
         printf("Error: invalid instruction\n");
         printf("op0: %d\n", op0);
-        registers->PC = -1;
-        // exit(1);
+        assert(false);
     }
 }
 

@@ -49,26 +49,29 @@ bool hasCarryOut(long long a, long long b, bool is_64) {
 }
 
 // output binary format of long long
-// void printBinary(long long num) {
-//     int count = 0;
-//     long long next = 1;
-//     while (count < 64) {
-//         printf("%lld", (num & next) >> count);
-//         next <<= 1;
-//         count++;
-//     }
-//     printf("\n");
-// }
+void printBinary(long long num) {
+    int count = 0;
+    long long next = 1;
+    while (count < 64) {
+        printf("%lld", (num & next) >> count);
+        next <<= 1;
+        count++;
+    }
+    printf("\n");
+}
 
-bool hasBorrow(long long a, long long b, bool is_64) {
+bool hasBorrow(long long a, long long b, bool is_64, bool is_sub) {
     if (!is_64) {
         a <<= 32;
         b <<= 32;
     }
-    bool carry = 1;
-    b = ~b+1;
-    // printBinary(b);
-    // printBinary(a);
+    bool carry = 0;
+    if (is_sub) {
+        carry = 1;
+        b = ~b;
+    }
+    printBinary(b);
+    printBinary(a);
     long long next = 1;
     int count = 0;
     while (count < 64) {
