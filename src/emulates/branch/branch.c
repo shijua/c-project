@@ -7,7 +7,7 @@ void process(struct send_branch pre, struct literal *lit){
     lit->sf = pre.sf;
     lit->simM26 = pre.operand;
     lit->Xn = getBitRange(pre.operand, 5, 9);
-    lit->SimM19 = getBitRange(pre.operand, 5, 23);
+    lit->SimM19 = sget_bit(23, 19, pre.operand);
     lit->cond = getBitRange(pre.operand, 0, 3);
 }
 //extern void branch(char* memory, struct Registers registers, struct send_branch divide){return;}

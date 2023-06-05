@@ -46,7 +46,7 @@ struct loadliteral to_LL(unsigned int instruction) {
 struct send_branch to_branch(unsigned int instruction) {
     struct send_branch divide;
     divide.sf = get_bit(31, 2, instruction);
-    divide.operand = get_bit(25, 26, instruction);
+    divide.operand = sget_bit(25, 26, instruction);
     return divide;
 }
 
