@@ -38,7 +38,7 @@ struct sdtp to_SDT(unsigned int instruction) {
 struct loadliteral to_LL(unsigned int instruction) {
     struct loadliteral divide;
     divide.sf = get_bit(30, 1, instruction);
-    divide.simm19 = get_bit(23, 19, instruction);
+    divide.simm19 = sget_bit(23, 19, instruction);
     divide.rt = get_bit(4, 5, instruction);
     return divide;
 }

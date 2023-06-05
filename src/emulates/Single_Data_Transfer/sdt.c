@@ -3,23 +3,14 @@
 long long getRegisterValue(int n, struct Registers* regs) {
     return n <= 30 ? regs -> general[n] : regs -> SP;
 }
-int sget_bit(int startBit, int numBits, int number) {
-    // Create a bitmask with the desired number of bits
-    unsigned int bitmask = (1 << numBits) - 1;
-    // Shift the result back to the rightmost bits
-    int result = number >> (startBit - numBits + 1);
-    // Apply the bitmask to the number using bitwise AND operation
-    result &= bitmask;
-    if ((result & 256) != 0) result -= 512;
-    return result;
-}
+
 void SingleDataTransfer(char* memory, struct Registers* regs, struct sdtp s) {
     // init variables
     unsigned long long address;
     int n = s.xn;
     if (s.U == 1) {
         // Unsigned Immediate Offset
-        address = getRegisterValue(n, regs) + (unsigned long long) s.offset;
+        address = getRegisterValue(n, regs) + (unsigned long long) s.offset * 8;
     } else {
         // check bit 21
         unsigned int bit21 = get_bit(11, 1, s.offset);
