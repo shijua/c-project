@@ -49,7 +49,15 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         //check if opr is 1xxx or 0xxx, if it is 1xxx then we perform arithmetic operation or Multiplication
         //otherwise perform logic operation.
         if(instr.M){
-            long long * ra = get_bit (4 , 5 , instr.operand) == 31 ? &(registers->ZR):&(registers->general [get_bit (4 , 5 , instr.operand)]);
+            // long long * ra = get_bitl (4 , 5 , instr.operand) == 31 ? &(registers->ZR):&(registers->general [get_bitl (4 , 5 , instr.operand)]);
+            long long * ra;
+            if(get_bitl (4 , 5 , instr.operand) == 31){
+                ra = &(registers->ZR);
+            }
+            else{
+                ra = &(registers->general [get_bitl (4 , 5 , instr.operand)]);
+            }
+            
             if(get_bit (5 , 1 , instr.operand)){
                 *instr.rd = *ra - *instr.rn * (*instr.rm);
             }

@@ -23,6 +23,8 @@ int main(int argc, char **argv) {
       registers.PC += 4;
       break;
     }
+    // set ZR to 0 everytime as it may be changed
+    registers.ZR = 0;
     decode(memory, &registers, instruction);
     // fetch next instruction
     memcpy(&instruction, memory+registers.PC, 4);
