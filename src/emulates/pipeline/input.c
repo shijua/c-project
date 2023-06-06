@@ -11,11 +11,6 @@
 #include "../special/nop.h"
 #include "../DP/DPI.h"
 #include "../DP/DPR.h"
-// extern void DPI(char* memory, struct Registers* registers, struct send_DPI divide){return;}
-// extern void DPR(char* memory, struct Registers* registers, struct send_DPR divide){return;}
-// extern void SingleDataTransfer(char* memory, struct Registers* registers, struct sdtp divide){return;}
-// extern void LoadLiteral(char* memory, struct Registers* registers, struct loadliteral divide){return;}
-// extern void Branch(char* memory, struct Registers* registers, struct send_branch divide){return;}
 
 void decode(char* memory, struct Registers* registers, unsigned int instruction) {
     int op0 = get_bit(28, 4, instruction);
@@ -67,16 +62,9 @@ void readfile(char* filename, char* memory) {
     fread(buffer, file_size, 1, file);
     buffer[file_size] = '\0';
 
+    // copies instructions into memory
     get_instruction(buffer, file_size, memory);
     // Close the file
     free(buffer);
     fclose(file);
-
-    // printf("Read file successfully\n");
 }
-
-// int main(int argc, char const *argv[]){
-//     readfile("b1_exp.bin", memory);
-//     decode(memory[registers.PC / 4]);
-//     return 0;
-// }

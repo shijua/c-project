@@ -22,6 +22,7 @@ unsigned long long get_bitl(int startBit, int numBits, unsigned long long number
     return result;
 }
 
+// get bit that will return signed int
 int sget_bit(int startBit, int numBits, int number) {
     // Create a bitmask with the desired number of bits
     unsigned int bitmask = (1 << numBits) - 1;
@@ -38,44 +39,22 @@ unsigned int getBitRange(int num, int x, int y) {
     return (num >> x) & mask;
 }
 
-bool hasCarryOut(long long a, long long b, bool is_64) {
-    // if it is 32 then shifting for still detecting overflow as a, b is in long long
-    if (!is_64) {
-        a <<= 32;
-        b <<= 32;
-    }
-    if ((a < 0 || b < 0)) return 0;
-    return a + b < a || a + b < b;
-}
-
-// output binary format of long long
-void printBinary(long long num) {
-    int count = 0;
-    long long next = 1;
-    while (count < 64) {
-        printf("%lld", (num & next) >> count);
-        next <<= 1;
-        count++;
-    }
-    printf("\n");
-}
-
-bool hasBorrow(long long a, long long b, bool is_64, bool is_sub) {
+// function to check whether it has borrow if sub is 1 or carry if sub is 0
+bool hasCarryBorrow(long long a, long long b, bool is_64, bool is_sub) {
     if (!is_64) {
         a <<= 32;
         b <<= 32;
     }
     bool carry = 0;
+    // if it is subtraction
     if (is_sub) {
         carry = 1;
         b = ~b;
     }
-    printBinary(b);
-    printBinary(a);
     long long next = 1;
     int count = 0;
+    // compare the bit in a and b (emulate full adder to get borrow/carry)
     while (count < 64) {
-        // compare the bit in a and b (emulate full adder to get borrow)
         bool bita = (a & next) >> count;
         bool bitb = (b & next) >> count;
         carry = (bita + bitb) + carry > 1;
@@ -97,8 +76,3 @@ bool overflow(long long a, long long b, bool is_64)
     if(a < 0) return (a + b > a);
     return (a + b < a);
 }
-// int main(int argc, char const *argv[])
-// {
-//     printf("%d\n", get_bit(28, 4, 335544322));
-//     return 0;
-// }

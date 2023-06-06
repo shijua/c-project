@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "DPI.h"
 #include <assert.h>
+#include "DPI.h"
 
 void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
     struct DPI_instruction instr; //instr parses the binary instruction to parameters usable for the function
@@ -38,7 +38,7 @@ void DPI(char* memory, struct Registers* registers, struct send_DPI divide){
 
 void arithmetic (struct Registers* registers, struct DPI_instruction instr , struct arithmetic_Operand opr){
     if(opr.sh){
-        opr.imm12 = opr.imm12<<12; //if sh is 1 then right move by 12
+        opr.imm12 = opr.imm12 << 12; //if sh is 1 then right move by 12
     }
     long long addition = opr.imm12 + *opr.rn;
     long long subtraction = *opr.rn - opr.imm12;
@@ -51,8 +51,7 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &addition, 4 + instr.sf * 4);//addition with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
-        // registers->pstate.C = hasCarryOut(opr.imm12, *opr.rn, instr.sf); //set C to 1 if it addition has carry out
-        registers->pstate.C = hasBorrow(opr.imm12, *opr.rn, instr.sf, 0); //set C to 1 if it addition has carry out
+        registers->pstate.C = hasCarryBorrow(opr.imm12, *opr.rn, instr.sf, 0); //set C to 1 if it addition has carry out
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
@@ -62,7 +61,7 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
         memcpy(instr.rd, &subtraction, 4 + instr.sf * 4);//subtraction with changing PSTATE
         registers->pstate.N = get_bit (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasBorrow(*opr.rn, opr.imm12, instr.sf, 1);//set C to 1 if it addition has borrow
+        registers->pstate.C = hasCarryBorrow(*opr.rn, opr.imm12, instr.sf, 1);//set C to 1 if it addition has borrow
         registers->pstate.V = overflow(opr.imm12 , *opr.rn , instr.sf);//set V to 1 if there is overflow or underflow
         break;
     default:
@@ -71,27 +70,6 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
     }
 
 }
-
-// void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
-//     instr.operand = opr.imm16<<(opr.hw * 16);
-//     switch (instr.opc)
-//     {
-//     case 0: // movn
-//         *instr.rd = -1LL; // Move certain part of the register while all the rest bits are 1
-//         copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16); 
-//         break;
-//     case 2: // movz
-//         *instr.rd = instr.operand; // Move certain part of the register while all the rest bits are 0
-//         break;
-//     case 3: // movk
-//         copyBits(*instr.rd , instr.rd , opr.hw*16 , (opr.hw+1)*16);// Move certain part of the register while keep the rest of the bits
-//         break;
-//     default:
-//         printf("Error: invalid instruction\n");
-//         registers->PC = -1;
-//     }
-// }
-
 
 void wideMove (struct Registers* registers , struct DPI_instruction instr , struct wideMove_Operand opr){
     instr.operand = opr.imm16;
@@ -105,14 +83,12 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     switch (instr.opc)
     {
     case 0: // movn
-        // copyBits(~0LL, instr.rd, 0, 63);
-        // set all bits to 1
+        // set all 64 bits to 1
         memcpy(instr.rd, &lon1, 8);
         // reveerse the bits
         opr.imm16 = ~opr.imm16;
         // put the imm16 into the rd accoring to the shift
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
-        // copyBits(~opr.imm16, instr.rd, shift, shift + 15);
         break;
     case 2: // movz
         // Move certain part of the register while all the rest bits are 0
@@ -120,7 +96,6 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         break;
     case 3: // movk
         // Move certain part of the register while keep the rest of the bits
-        // copyBits(instr.operand, instr.rd, shift, shift + 15) ;
         memcpy(rd + (shift / 8), &opr.imm16 , 2);
         break;
     default:
@@ -128,14 +103,3 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
         assert(false);
     }
 }
-
-// void copyBits(long long source, long long* destination, int startBit, int endBit) {
-//     // Copy bits from source to destination
-//     for (int i = startBit; i < endBit; i++) {
-//         int bit = get_bit(i, 1, source);
-//         *destination = set_bit(i, 1, bit, *destination);
-//     }
-// }
-
-
-

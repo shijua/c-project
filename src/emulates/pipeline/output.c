@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../Util.h"
 #include "output.h"
 
 void output_general(long long* general_register_ptr, FILE* fp) {
@@ -17,7 +16,7 @@ void output_Pstate(bool* pstate_ptr, FILE* fp) {
         if (*(pstate_ptr+i) == false) {
             fprintf(fp, "-");
         } else {
-            switch (i){
+            switch (i) {
                 case 0: fprintf(fp,"N"); break;
                 case 1: fprintf(fp,"Z"); break;
                 case 2: fprintf(fp,"C"); break;
@@ -57,35 +56,3 @@ void output(struct Registers* register_ptr, char* memory, FILE* fp) {
     fprintf(fp, "Non-Zero Memory:\n");
     output_memory(memory, fp);
 }
-
-// int main(int argc, char const *argv[])
-// {
-//     struct Registers registers;
-
-//     // initialise 
-//     long long* general_register_ptr = registers.general;
-//     for (int i = 0; i < 31; i++) {
-//         *general_register_ptr++ = 0;
-//     }
-//     registers.general[0] = 3;
-//     registers.general[1] = 1;
-//     registers.general[2] = 2;
-
-//     // initialise pstate
-//     registers.pstate.N = false;
-//     registers.pstate.Z = false;
-//     registers.pstate.C = true;
-//     registers.pstate.V = false;
-
-//     // initialise memory
-//     for (int i = 0; i < 524288; i++) // 2^19
-//     {
-//         memory[i] = 0;
-//     }
-//     memory[0] = 114514;
-//     memory[114514] = 1919810;
-
-//     output(&registers);
-
-//     return 0;
-// }
