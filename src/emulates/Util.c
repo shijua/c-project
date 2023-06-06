@@ -73,6 +73,6 @@ bool overflow(long long a, long long b, bool is_64)
         b <<= 32;
     }
     if ((a <= 0 && b >= 0 ) || (a >= 0 && b <= 0)) return false;
-    if(a < 0) return (a + b > a);
+    if(b < 0) return (a + b > a);
     return (a + b < a);
 }

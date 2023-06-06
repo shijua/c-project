@@ -46,9 +46,8 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         //check if opr is 1xxx or 0xxx, if it is 1xxx then we perform arithmetic operation or Multiplication
         //otherwise perform logic operation.
         if(instr.M){
-            // long long * ra = get_bitl (4 , 5 , instr.operand) == 31 ? &(registers->ZR):&(registers->general [get_bitl (4 , 5 , instr.operand)]);
             long long * ra;
-            if(get_bitl (4 , 5 , instr.operand) == 31){
+            if(get_bitl (4 , 5 , instr.operand) == 31) {
                 ra = &(registers->ZR);
             }
             else{
@@ -122,8 +121,8 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         memcpy(instr.rd, &addition, 4 + 4*instr.sf);//addition with changing PSTATE
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd); //set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0; //set Z to 1 if all bits of rd are 0
-        registers->pstate.C = hasCarryBorrow(OP2, *instr.rn, instr.sf, 0); //set C to 1 if it addition has carry out
-        registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf); //set V to 1 if there is overflow or underflow
+        registers->pstate.C = hasCarryBorrow(*instr.rn, OP2, instr.sf, 0); //set C to 1 if it addition has carry out
+        registers->pstate.V = overflow(*instr.rn, OP2, instr.sf); //set V to 1 if there is overflow or underflow
         break;
     case 2:
         memcpy(instr.rd, &subtraction, 4 + 4*instr.sf);//subtraction
@@ -133,7 +132,7 @@ void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct
         registers->pstate.N = get_bitl (instr.topBit , 1 , *instr.rd);//set N to the first bit of rd
         registers->pstate.Z = *instr.rd == 0;//set Z to 1 if all bits of rd are 0
         registers->pstate.C = hasCarryBorrow(*instr.rn, OP2, instr.sf, 1);//set C to 1 if it addition has borrow
-        registers->pstate.V = overflow(OP2 , *instr.rn , instr.sf);//set V to 1 if there is overflow or underflow
+        registers->pstate.V = overflow(*instr.rn, OP2, instr.sf); //set V to 1 if there is overflow or underflow
         break;
     default:
         printf("Error in OPC\n");
