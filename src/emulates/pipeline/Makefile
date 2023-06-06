@@ -25,10 +25,10 @@ clean:
 	$(RM) *.o $(LIBOUT)
 
 libs:
-	cd ../Single_Data_Transfer; make
+	cd ../single_data_transfer; make
 	cd ../branch; make
 	cd ../special; make
-	cd ../DP; make
+	cd ../data_processing; make
 	cd ../; make
 
 # input.o: input.c input.h

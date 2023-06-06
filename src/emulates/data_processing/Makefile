@@ -4,7 +4,7 @@ CFLAGS  ?= -std=c17 -g\
 	-Wall -pedantic
 
 # define library name generated
-LIBOUT = DP.a
+LIBOUT = data_processing.a
 # define source file
 SOURCES = bitwiseShift.c DPI.c DPR.c
 # define object file

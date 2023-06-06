@@ -4,13 +4,13 @@
 #include <assert.h>
 #include "input.h"
 #include "../inputformat.h"
-#include "../Single_Data_Transfer/sdt.h"
-#include "../Single_Data_Transfer/loadl.h"
+#include "../single_data_transfer/sdt.h"
+#include "../single_data_transfer/loadl.h"
 #include "../branch/branch.h"
 #include "../special/halting.h"
 #include "../special/nop.h"
-#include "../DP/DPI.h"
-#include "../DP/DPR.h"
+#include "../data_processing/DPI.h"
+#include "../data_processing/DPR.h"
 
 void decode(char* memory, struct Registers* registers, unsigned int instruction) {
     int op0 = get_bit(28, 4, instruction);

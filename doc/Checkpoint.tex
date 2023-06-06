@@ -9,22 +9,81 @@
 
 \maketitle
 
-\section{Group Organisation}
+\section*{Emulator Report}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+\subsection*{Task Assignment}
 
-\section{Implementation Strategies}
+\textbf{Group Leader}: Weijun Huang
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+\begin{itemize}
+  \item Implement pipelining, input and output
+  \item Implement makefiles
+\end{itemize}
+
+\textbf{Group Members}:
+
+\begin{itemize}
+  \item Lihaomin Qiu:
+    \begin{itemize}
+      \item Implement Single Data Transfer
+      \item Design and write the report
+    \end{itemize}
+  \item Molan Yang:
+    \begin{itemize}
+      \item Implement Data Processing Instruction
+      \item Implement Bitwise Shifts
+    \end{itemize}
+  \item Yifan Jiang:
+    \begin{itemize}
+      \item Implement Branch Instructions
+      \item Help Molan Yang debug
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Working Process}
+
+\subsubsection*{Points for Improvement}
+
+To be honest, it wasn't actually as smooth sailing as we thought it would be at the beginning when we were working on this project. We didn't know enough about the spec and the project as a whole initially, so the workload was a bit unequal when it came to assigning tasks, which led to some members of the team not finishing their code while others were finishing. We adjusted the situation so that the team members who had finished the task could help the team member who had not finished the code to finish it and debug it together.
+
+\subsubsection*{Future Changes}
+
+Based on the experience, we discussed and decided to improve the following points to better our future work:
+
+\begin{enumerate}
+  \item Communication: Clear and frequent communication is crucial for a successful group. If there are communication gaps or issues, it might be necessary to improve our communication channels and establish more regular meetings.
+  \item Skill Sets and Expertise: Evaluate the skills and expertise of the group members before task assignment. It might be necessary to provide additional training for our team members.
+  \item Time Management: Consider how well our group manages time and meets deadlines. Emulator projects can have complex development timelines, and delays can impact the overall progress. So it might be necessary to establish clear deadlines, break down tasks into manageable chunks, and monitor progress regularly to ensure timely completion.
+\end{enumerate}
+
+\subsection*{Development Process}
+
+Since the first part of the spec was clearly divided into several sections, we assigned the different sections to different team members after roughly estimating the amount of work to be done, and then the team leader, Weijun Huang, was responsible for writing the input/output and makefile sections.
+
+After everyone had completed their code, we got together during a lab session and worked on the interface code. We then did a simple test with the main emulator program. But unfortunately, on the first test, we saw very little of the green part.
+
+By setting breakpoints and changing the input file, we found some problems in the interface between the main program and the function. After we had fixed the interface problems, we found that some of the tests passed.
+
+We then started to find out which functions had more errors in the corresponding generated tests (as this meant that the function itself was faulty and easy to troubleshoot), and with this, we quickly fixed the bugs in the \textbf{Single Data Transfer} and \textbf{Load Literal} sections.
+
+We then chose to continue debugging the \textbf{Arithmetic operations} section, but at this point we encountered an unprecedented difficulty. In this part of the code, we had to consider whether to store the result in 32 bits or 64 bits. Moreover, it was also a great challenge to set the flags according to the result (especially when combined with the two result formats).
+
+After modifying all these parts, the four of us went over the \textbf{Branch} part and finished the debug in the scheduled time.
+
+\subsection*{Future Considerations}
+
+\subsubsection*{Reuse of Emulator}
+
+\begin{itemize}
+  \item The emulator is designed to help us simulate the execution of an assembly program, and therefore has a similar format to the assembly language that our assembler translates. We can apply the ideas we used to implement the emulator to our assembler. At the same time, we can use our emulator as a base for our assembler and implement most of the features in our assembler using the emulator.
+  \item More importantly, we have analyzed the commands in the A64 instruction set in the process of writing the emulator and have engraved its contents in our minds. When we write the assembler, we don't need to analyze the A64 instruction set again, which I believe will speed up the completion of the assembler considerably.
+\end{itemize}
+
+\subsubsection*{Future Challenges}
+
+\begin{itemize}
+  \item As we read through the contents of the assembler, we also found some potentially difficult bits, the biggest challenge of which would be the difference between \textbf{one-pass assembler} and \textbf{two-pass assembler} and switching between them when writing.
+  \item We also found some problems with group work during the completion of the simulator, for which we will make adjustments to tasks and staffing arrangements in time for future work.
+\end{itemize}
 
 \end{document}

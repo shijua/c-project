@@ -5,10 +5,10 @@ CFLAGS  ?= -std=c17 -g\
 
 LIBSRCEMULATE = emulates/Util.a \
 	emulates/pipeline/pipelines.a \
-	emulates/Single_Data_Transfer/single_data_transfer.a \
+	emulates/single_data_transfer/single_data_transfer.a \
 	emulates/special/special.a \
 	emulates/branch/branch.a \
-	emulates/DP/DP.a
+	emulates/data_processing/data_processing.a
 	
 # .SUFFIXES: .c .o  # Suffixes for implicit rules so that .o would not be deleted automatically
 

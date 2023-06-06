@@ -42,3 +42,7 @@ cmake-build-debug
 *.bin
 *.txt
 *.cbuild
+doc/out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
