@@ -1,0 +1,1 @@
+extern int readfile(char *buffer, char *filename);
