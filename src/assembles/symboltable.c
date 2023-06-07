@@ -22,7 +22,7 @@ int symbol_table_get(struct symbol_table *table, char *in)
 {
     int data = -1;
     for (int i = 0; i < table->len; i++)
-        if (strcmp(table->name[i], in) == 0)
+        if (!strcmp(table->name[i], in))
             data = table->address[i];
     assert(data != -1);
     return data;
@@ -45,13 +45,19 @@ static void grow(struct symbol_table *table)
 void symbol_table_push(struct symbol_table *table, char *name_in, int address_in)
 {
     grow(table);
-    table->name[table->len++] = name_in;
+    // allocate memory for the name
+    char* temp = malloc(strlen(name_in) + 1);
+    strcpy(temp, name_in);
+    temp[strlen(name_in)] = '\0';
+    table->name[table->len] = temp;
     table->address[table->len++] = address_in;
 }
 
 // free the table
 void symbol_table_free(struct symbol_table *table)
 {
+    for (int i = 0; i < table->len; i++)
+        free(table->name[i]);
     free(table->name);
     free(table->address);
     free(table);

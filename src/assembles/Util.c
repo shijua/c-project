@@ -6,17 +6,14 @@
 // convert a register string into binary
 // format: ror or x[num] or w[num] (ex: x10 w0)
 char register_to_bin(char *in) {
-    if (strcmp("rzr", in) == 0)
-    {
-        // zero register gives 11111;
+    // zero register gives 11111;
+    if (!strcmp("rzr", in)) 
         return 0x1F;
-    }
-    else {
-        // otherwise check the rest characters(except the first x or w)
-        // convert string into integer
-        int num = atoi(in + 1);
-        return num;
-    }
+    // otherwise check the rest characters(except the first x or w)
+    // convert string into integer
+    else 
+        return atoi(in + 1);
+    
 }
 
 // copy the bit from change into *in
@@ -34,8 +31,6 @@ void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     // firstly mask then replace 0 position with change
     *in = (*in & mask) | change;
 }
-
-
 
 // check it is in 32 or 64 bit
 bool check_bit(char *in) {
