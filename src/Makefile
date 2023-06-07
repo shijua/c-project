@@ -14,10 +14,11 @@ LIBSRCEMULATE = emulates/Util.a \
 
 .PHONY: all clean
 
-all: libemulates emulate assemble
+all: runemulate assemble
 
 assemble: assemble.o
 emulate: emulate.o $(LIBSRCEMULATE)
+runemulate: libemulates emulate
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
