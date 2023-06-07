@@ -5,21 +5,21 @@
 #include "../Util.h"
 
 // will be comment later after include other header file for tokenise
-void tokenise_add_sub_immediate(int *instruction, struct add_sub_immediate divide){return;}
-void tokenise_add_sub_register(int *instruction, struct add_sub_register divide){return;}
-void tokenise_logical(int *instruction, struct logical divide){return;}
-void tokenise_move_wide(int *instruction, struct move_wide divide){return;}
-void tokenise_multiply(int *instruction, struct multiply divide){return;}
-void tokenise_branch(int *instruction, struct branch divide, struct symbol_table *table){return;}
-void tokenise_load_store(int *instruction, struct load_store divide, struct symbol_table *table){return;}
-void tokenise_load_store_shift(int *instruction, struct load_store_shift divide, struct symbol_table *table){return;}
-void tokenise_load_store_literal(int *instruction, struct load_store_literal divide, struct symbol_table *table){return;}
-void tokenise_int(int *instruction, struct constant divide){return;}
+void tokenise_add_sub_immediate(unsigned int *instruction, struct add_sub_immediate divide){return;}
+void tokenise_add_sub_register(unsigned int *instruction, struct add_sub_register divide){return;}
+void tokenise_logical(unsigned int *instruction, struct logical divide){return;}
+void tokenise_move_wide(unsigned int *instruction, struct move_wide divide){return;}
+void tokenise_multiply(unsigned int *instruction, struct multiply divide){return;}
+void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table){return;}
+void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table){return;}
+void tokenise_load_store_shift(unsigned int *instruction, struct load_store_shift divide, struct symbol_table *table){return;}
+void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table){return;}
+void tokenise_int(unsigned int *instruction, struct constant divide){return;}
 
 // TODO: implement this function
 void to_alias(char *operand, char *remain) {return;}
 // parsing each specific operation
-void parse_add_sub(int *instruction, char *operand, char *in)
+void parse_add_sub(unsigned int *instruction, char *operand, char *in)
 {
     char *rd = strtok(in, ", ");
     char *rn = strtok(in, ", ");
@@ -37,7 +37,7 @@ void parse_add_sub(int *instruction, char *operand, char *in)
     }
 }
 
-void parse_logical(int *instruction, char *operand, char *in)
+void parse_logical(unsigned int *instruction, char *operand, char *in)
 {
     char *rd = strtok(in, ", ");
     char *rn = strtok(in, ", ");
@@ -46,7 +46,7 @@ void parse_logical(int *instruction, char *operand, char *in)
     tokenise_logical(instruction, logical_init(operand, rd, rn, rm, shift));
 }
 
-void parse_move_wide(int *instruction, char *operand, char *in)
+void parse_move_wide(unsigned int *instruction, char *operand, char *in)
 {
     char *rd = strtok(in, ", ");
     char *imm = strtok(in, ", ");
@@ -54,7 +54,7 @@ void parse_move_wide(int *instruction, char *operand, char *in)
     tokenise_move_wide(instruction, move_wide_init(operand, rd, imm, shift));
 }
 
-void parse_multiply(int *instruction, char *operand, char *in)
+void parse_multiply(unsigned int *instruction, char *operand, char *in)
 {
     char *rd = strtok(in, ", ");
     char *rn = strtok(in, ", ");
@@ -63,7 +63,7 @@ void parse_multiply(int *instruction, char *operand, char *in)
     tokenise_multiply(instruction, multiply_init(operand, rd, rn, rm, ra));
 }
 
-void parse_load_store(int *instruction, char *operand, char *in, struct symbol_table *table)
+void parse_load_store(unsigned int *instruction, char *operand, char *in, struct symbol_table *table)
 {
     char *rt = strtok(in, ", ");
     char *xn = strtok(in, ", ");
@@ -88,7 +88,7 @@ void parse_load_store(int *instruction, char *operand, char *in, struct symbol_t
 }
 
 // overall parsing for each line
-void parse(char *in, int address, int *instruction, struct symbol_table *table)
+void parse(char *in, int address, unsigned int *instruction, struct symbol_table *table)
 {
     char *operand = strtok(in, " ");
     // if operend is analias shown in spec, then change it to the real one
