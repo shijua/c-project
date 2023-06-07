@@ -2,13 +2,11 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "assembles/parser/parse.h"
 #include "assembles/parser/input.h"
 #include "assembles/symboltable.h"
-#include "Util.h"
 int main(int argc, char **argv) {
-    char *buffer;
-    int file_size = readfile(buffer, argv[1]);
+    char *buffer = readfile(argv[1]);
+    int file_size = strlen(buffer - 1);
 
     // first pass
     // construct a symbol table
@@ -25,6 +23,3 @@ int main(int argc, char **argv) {
     symbol_table_free(table);
     return EXIT_SUCCESS;
 }
-
-
-

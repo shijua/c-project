@@ -1,21 +1,23 @@
-#include "parse.h"
-#include "../Util.h"
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include "parser.h"
+#include "../Util.h"
 
 // will be comment later after include other header file for tokenise
-void tokenise_add_sub_immediate(int *instruction, struct add_sub_immediate divide);
-void tokenise_add_sub_register(int *instruction, struct add_sub_register divide);
-void tokenise_logical(int *instruction, struct logical divide);
-void tokenise_move_wide(int *instruction, struct move_wide divide);
-void tokenise_multiply(int *instruction, struct multiply divide);
-void tokenise_branch(int *instruction, struct branch divide, struct symbol_table *table);
-void tokenise_load_store(int *instruction, struct load_store divide, struct symbol_table *table);
-void tokenise_load_store_shift(int *instruction, struct load_store_shift divide, struct symbol_table *table);
-void tokenise_load_store_literal(int *instruction, struct load_store_literal divide, struct symbol_table *table);
-void tokenise_int(int *instruction, struct constant divide);
+void tokenise_add_sub_immediate(int *instruction, struct add_sub_immediate divide){return;}
+void tokenise_add_sub_register(int *instruction, struct add_sub_register divide){return;}
+void tokenise_logical(int *instruction, struct logical divide){return;}
+void tokenise_move_wide(int *instruction, struct move_wide divide){return;}
+void tokenise_multiply(int *instruction, struct multiply divide){return;}
+void tokenise_branch(int *instruction, struct branch divide, struct symbol_table *table){return;}
+void tokenise_load_store(int *instruction, struct load_store divide, struct symbol_table *table){return;}
+void tokenise_load_store_shift(int *instruction, struct load_store_shift divide, struct symbol_table *table){return;}
+void tokenise_load_store_literal(int *instruction, struct load_store_literal divide, struct symbol_table *table){return;}
+void tokenise_int(int *instruction, struct constant divide){return;}
 
+// TODO: implement this function
+void to_alias(char *operand, char *remain) {return;}
 // parsing each specific operation
 void parse_add_sub(int *instruction, char *operand, char *in)
 {
@@ -143,8 +145,8 @@ void parse(char *in, int address, int *instruction, struct symbol_table *table)
     }
 }
 
-int main(int argc, char const *argv[])
-{
-    parse("add x0, x1, x2", 0, NULL, NULL);
-    return 0;
-}
+// int main(int argc, char const *argv[])
+// {
+//     parse("add x0, x1, x2", 0, NULL, NULL);
+//     return 0;
+// }

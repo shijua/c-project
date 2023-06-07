@@ -3,9 +3,9 @@
 #include <assert.h>
 #include <string.h>
 #include "input.h"
-#include "parse.h"
+#include "parser.h"
 #include "../Util.h"
-int readfile(char *buffer, char *filename)
+char *readfile(char *filename)
 {
     FILE *input = fopen(filename, "r"); // Open the file in read
     assert(input != NULL);
@@ -14,11 +14,11 @@ int readfile(char *buffer, char *filename)
     int file_size = ftell(input);
     fseek(input, 0, SEEK_SET); // Go back to the beginning of the file
     // Read the file into a buffer
-    buffer = malloc(file_size + 1);
+    char *buffer = malloc(file_size + 1);
     fread(buffer, file_size, 1, input);
     // close file after store into buffer
     fclose(input);
-    return file_size;
+    return buffer;
 }
 
 void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)

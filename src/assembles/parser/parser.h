@@ -1,4 +1,5 @@
 #include "../parseformat.h"
+#include "../symboltable.h"
 extern void to_alias(char *operand, char *remain);
 extern void parse_add_sub(int *instruction, char *operand, char *in);
 extern void parse_logical(int *instruction, char *operand, char *in);

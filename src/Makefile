@@ -9,16 +9,23 @@ LIBSRCEMULATE = emulates/Util.a \
 	emulates/special/special.a \
 	emulates/branch/branch.a \
 	emulates/data_processing/data_processing.a
-	
+
+LIBSRCASSEMBLE = assembles/Util.a \
+	assembles/parser/parser.a \
+	assembles/single_data_transfer/single_data_transfer.a \
+	assembles/special/special.a \
+	assembles/branch/branch.a \
+	assembles/data_processing/data_processing.a
 # .SUFFIXES: .c .o  # Suffixes for implicit rules so that .o would not be deleted automatically
 
 .PHONY: all clean
 
-all: runemulate assemble
+all: runemulate runassemble
 
-assemble: assemble.o
+assemble: assemble.o $(LIBSRCASSEMBLE)
 emulate: emulate.o $(LIBSRCEMULATE)
 runemulate: libemulates emulate
+runassemble: libassembles assemble
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -41,16 +48,8 @@ libemulates:
 	cd emulates/pipeline; make
 	cd emulates; make
 
-
-# emulate.o: emulate.c emulate.h 
-# emulates/pipeline/input.o: emulates/pipeline/input.c emulates/pipeline/input.h emulates/pipeline/inputformat.o emulates/Util.o emulates/memory.o
-# emulates/pipeline/inputformat.o: emulates/pipeline/inputformat.c emulates/pipeline/inputformat.h emulates/Util.o emulates/memory.o
-# emulates/pipeline/output.o: emulates/pipeline/output.c emulates/pipeline/output.h emulates/memory.o
-# emulates/memory.o: emulates/memory.h emulates/memory.c
-# emulates/Util.o: emulates/Util.c emulates/Util.h
-
-
-# # writing dependencies for assemble
-
+libassembles:
+	cd assembles/parser; make
+	cd assembles; make
 
 

@@ -1,6 +1,6 @@
-#include "Util.h"
 #include <stdlib.h>
 #include <string.h>
+#include "Util.h"
 // get the substring of a string
 // remember to free the returned pointer
 char* substring(char* str, int start, int end) {
