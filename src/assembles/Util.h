@@ -1,6 +1,6 @@
 #include <stdbool.h>
-extern char register_to_bin(char* in);
-extern void copy_bit(unsigned int* in, unsigned int change, int start, int end);
+extern char register_to_bin(char *in);
+extern void copy_bit(unsigned int *in, unsigned int change, int start, int end);
 // check in 32 bit or 64 bit;
-extern bool check_bit(char* in, int bit);
-extern char* substring(char* str, int start, int end);
+extern bool check_bit(char *in);
+extern char *substring(char *str, int start, int end);
