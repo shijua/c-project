@@ -1,4 +1,5 @@
 #include "single_data_transfer.h"
+/*
 void load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
     // single data transfer without shift and not literal
     bool isldr = *(divide.operend + 0) == "l";
@@ -28,3 +29,4 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
     }
 
 }
+*/

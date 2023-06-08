@@ -2,6 +2,7 @@
 #include "string.h"
 #include "stdio.h"
 #include "assert.h"
+/*
 void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) {
     char *op = divide.opcode; // the pointer of operand of the branch instruction
     int sf = 1; //condition case
@@ -53,3 +54,4 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
     copy_bit(instruction,0x5, 26, 29); // 0101 to bit 26 to 29
     copy_bit(instruction, operand, 0, 3); // cond to bit 0 to 3
 }
+*/
