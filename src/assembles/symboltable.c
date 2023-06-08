@@ -46,7 +46,7 @@ void symbol_table_push(struct symbol_table *table, char *name_in, int address_in
 {
     grow(table);
     // allocate memory for the name
-    char* temp = malloc(strlen(name_in) + 1);
+    char *temp = malloc(strlen(name_in) + 1);
     strcpy(temp, name_in);
     temp[strlen(name_in)] = '\0';
     table->name[table->len] = temp;
