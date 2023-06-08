@@ -3,9 +3,9 @@
 #include "stdio.h"
 #include "assert.h"
 void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) {
-    char *op = divide.operend; // the pointer of operand of the branch instruction
+    char *op = divide.opcode; // the pointer of operand of the branch instruction
     int sf = 1; //condition case
-    int opread;
+    int operand;
     if (strcmp(op, "b") == 0) {
         // PC = literal
         sf = 0;
@@ -51,5 +51,5 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
     }
     copy_bit(instruction, sf, 30, 31); // sf to bit 30 and 31
     copy_bit(instruction,0x5, 26, 29); // 0101 to bit 26 to 29
-    copy_bit(instruction, divide.cond, 0, 3); // cond to bit 0 to 3
+    copy_bit(instruction, operand, 0, 3); // cond to bit 0 to 3
 }
