@@ -1,7 +1,7 @@
 #include "single_data_transfer.h"
 void load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
     // single data transfer without shift and not literal
-    bool isldr = *(divide.operend + 0) == "l";
+    bool isldr = *(divide.opcode + 0) == "l";
     bool rt = check_bit(divide.rt);
     char offset_last = *(divide.simm + strlen(divide.simm) - 1);
     if (rt) {
@@ -17,14 +17,41 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
         copy_bit(instruction, 0, 22, 22);
     }
     if (offset_last == "]") {
-        // unsigned offset
-        copy_bit(instruction, 1, 24, 24);
+        if (*(divide.simm + 0) == '#') {
+            // unsigned offset
+            copy_bit(instruction, 1, 24, 24);
+            if (rt) {
+                // When Rt is an X-register
+                unsigned int imm12 = atoi(divide.simm + 1) / 8;
+                copy_bit(instruction, imm12, 10, 21);
+            } else {
+                // When Rt is an W-register
+                unsigned int imm12 = atoi(divide.simm + 1) / 4;
+                copy_bit(instruction, imm12, 10, 21);
+            }
+        } else {
+            // register offset
+            copy_bit(instruction, 1, 21, 21);
+            copy_bit(instruction, 1, 11, 11);
+            copy_bit(instruction, 3, 13, 14);
+            divide.simm[strlen(divide.simm) - 1] = '\0'; // remove the last ']'
+            int xm = (unsigned int) register_to_bin(divide.simm);
+            copy_bit(instruction, xm, 16, 20);
+        }
     } else if (offset_last == "!") {
         // pre-index
+        copy_bit(instruction, 1, 10, 10);
         copy_bit(instruction, 1, 11, 11);
+        divide.simm[strlen(divide.simm) - 2] = '\0'; // remove the last ']!'
+        int simm9 = atoi(divide.simm + 1);
+        simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
+        copy_bit(instruction, simm9, 12, 20);
     } else {
         // post-index
+        copy_bit(instruction, 1, 10, 10);
         copy_bit(instruction, 0, 11, 11);
+        int simm9 = atoi(divide.simm + 1);
+        simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
+        copy_bit(instruction, simm9, 12, 20);
     }
-
 }
