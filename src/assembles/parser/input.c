@@ -64,7 +64,7 @@ void remove_whitespace(char* str) {
         }
     }
     new_str[j] = '\0'; // add null terminator to the end of the new string
-    free(new_str);
+    free(str);
     strcpy(str, new_str);
 }
 
