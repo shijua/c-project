@@ -22,8 +22,7 @@ void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     // get the length of change
     int len = end - start + 1;
     // ensure change is in the right range
-    assert((change < (1 << len) && change >= (1 << (len - 1))) || 
-           (change == 0 && len == 1));
+    assert(change < (1 << len));
     // get the mask (11110001 for example above)
     int mask = ~0 - (((1 << len) - 1) << start);
     // shift the change to the right position
