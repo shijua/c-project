@@ -20,18 +20,19 @@ void copy_arithm_opc (unsigned int *instr , char* opcode){
 }
 
 void copy_opr (unsigned int *instr , char* shift , bool is_arith , bool N){
-    if (!strcmp(substring(shift , 0 , 2) , "lsl")){
+    // TODO string cost lots of time
+    if (!strcmp(substring(shift , 0 , 3) , "lsl")){
         copy_bit (instr , 8*is_arith + N , 21 , 24);//shift type : lsl
     }
-    if (!strcmp(substring(shift , 0 , 2) , "lsr"))
+    if (!strcmp(substring(shift , 0 , 3) , "lsr"))
     {
         copy_bit (instr , 8*is_arith + N + 2 , 21 , 24);//shift type : lsr
     }
-    if (!strcmp(substring(shift , 0 , 2) , "asr"))
+    if (!strcmp(substring(shift , 0 , 3) , "asr"))
     {
         copy_bit (instr , 8*is_arith + N + 4 , 21 , 24);//shift type : asr
     }
-    if (!strcmp(substring(shift , 0 , 2) , "ror") && !is_arith)
+    if (!strcmp(substring(shift , 0 , 3) , "ror") && !is_arith)
     {
         copy_bit (instr , 8*is_arith + N + 6 , 21 , 24);//shift type : ror
     }

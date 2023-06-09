@@ -61,6 +61,7 @@ bool check_bit(char *in) {
 
 // get the substring of a string
 // remember to free the returned pointer
+// ex: substring("hello world", 0, 5) gives "hell"
 char* substring(char* str, int start, int end) {
     int len = end - start;
     char* substr = malloc(len + 1);
@@ -74,8 +75,8 @@ unsigned int to_num(const char *hex_string) {
     return (unsigned int) number;
 }
 
-int to_int (char * in){
-    if(!strcmp (substring(in , 0 , 2),"#0x")||!strcmp (substring(in , 0 , 2),"#0X")) 
+int to_int(char * in) {
+    if(!strcmp (substring(in , 0 , 3),"#0x")||!strcmp (substring(in , 0 , 3),"#0X")) 
         return strtol(in + 3, NULL, 16);
     int x = atoi(in + 1);
     return x;
