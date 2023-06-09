@@ -23,5 +23,5 @@ $(LIBOUT): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) *.o $(LIBOUT)
+	$(RM) *.o $(LIBOUT) assemble emulate
 

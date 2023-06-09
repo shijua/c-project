@@ -5,13 +5,15 @@
 #include "parser.h"
 #include "../Util.h"
 #include "../single_data_transfer/single_data_transfer.h"
+#include "../data_processing/data_processing.h"
+#include "../branch/branch.h"
 // will be comment later after include other header file for tokenise
-void tokenise_add_sub_immediate(unsigned int *instruction, struct add_sub_immediate divide) { return; }
-void tokenise_add_sub_register(unsigned int *instruction, struct add_sub_register divide) { return; }
-void tokenise_logical(unsigned int *instruction, struct logical divide) { return; }
-void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) { return; }
-void tokenise_multiply(unsigned int *instruction, struct multiply divide) { return; }
-void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) { return; }
+// void tokenise_add_sub_immediate(unsigned int *instruction, struct add_sub_immediate divide) { return; }
+// void tokenise_add_sub_register(unsigned int *instruction, struct add_sub_register divide) { return; }
+// void tokenise_logical(unsigned int *instruction, struct logical divide) { return; }
+// void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) { return; }
+// void tokenise_multiply(unsigned int *instruction, struct multiply divide) { return; }
+// void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) { return; }
 // void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) { return; }
 // void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table, int address) { return; }
 void tokenise_int(unsigned int *instruction, struct constant divide) { return; }
@@ -250,7 +252,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
     }
     else if (!strcmp(opcode, ".int"))
     {
-        char *constant = strtok(NULL, ","); // literal or xn
+        char *constant = strtok(NULL, " "); // literal or xn
         tokenise_int(instruction, constant_init(opcode, constant));
     }
     else
