@@ -25,8 +25,6 @@ static void concat(char *str1, char *str2)
 {
     // let temp be the pointer of str1
     str1 = realloc(str1, strlen(str1) + strlen(str2) + 1);
-    printf("str1: %lu\n", strlen(str1));
-    printf("str2: %lu\n", strlen(str2));
     strcat(str1, str2);
 }
 
@@ -59,7 +57,7 @@ static void insert_right(char *new, char *first, char *second, char *third)
 }
 
 // returns the alias of original line
-char *to_alias(char *opcode, char *remain)
+void to_alias(char *opcode, char *remain)
 {
     // get remaining token from instruction
     char *first = strtok(NULL, ",");
@@ -123,8 +121,9 @@ char *to_alias(char *opcode, char *remain)
         strcpy(new, "msub ");
         insert_right(new, first, second, third);
     }
-    free(remain);
-    return new;
+    remain = realloc(remain, strlen(new) + 1);
+    strcpy(remain, new);
+    free(new);
 }
 
 // parsing each specific operation
@@ -200,7 +199,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
         !strcmp(opcode, "negs") || !strcmp(opcode, "tst") || !strcmp(opcode, "mvn") ||
         !strcmp(opcode, "mov") || !strcmp(opcode, "mul") || !strcmp(opcode, "meng"))
     {
-        in = to_alias(opcode, in);
+        to_alias(opcode, in);
         opcode = strtok(in, " ");
     }
     // data processing
