@@ -13,62 +13,117 @@ void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) { re
 void tokenise_multiply(unsigned int *instruction, struct multiply divide) { return; }
 void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) { return; }
 void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) { return; }
-void tokenise_load_store_shift(unsigned int *instruction, struct load_store_shift divide, struct symbol_table *table) { return; }
+void tokenise_load_store_register(unsigned int *instruction, struct load_store_register divide, struct symbol_table *table) { return; }
 void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table) { return; }
 void tokenise_int(unsigned int *instruction, struct constant divide) { return; }
 
-// void concat(char *str1, char *str2) {
-//     char *result = malloc(strlen(str1) + strlen(str2) + 1);
-//     strcpy(result, str1);
-//     strcat(result, str2);
-//     return result;
-// }
+// concat str2 to str1
+// pre: new will be given to the variable of str1
+static void concat(char *str1, char *str2)
+{
+    // let temp be the pointer of str1
+    str1 = realloc(str1, strlen(str1) + strlen(str2) + 1);
+    printf("str1: %lu\n", strlen(str1));
+    printf("str2: %lu\n", strlen(str2));
+    strcat(str1, str2);
+}
 
+// insert rzr to the left of the string
+static void insert_left(char *new, char *first, char *second)
+{
+    concat(new, "rzr,");
+    concat(new, first);
+    concat(new, ",");
+    concat(new, second);
+}
+
+// insert rzr to the middle of the string
+static void insert_middle(char *new, char *first, char *second)
+{
+    concat(new, first);
+    concat(new, ",rzr,");
+    concat(new, second);
+}
+
+// insert rzr to the right of the string
+static void insert_right(char *new, char *first, char *second, char *third)
+{
+    concat(new, first);
+    concat(new, ",");
+    concat(new, second);
+    concat(new, ",");
+    concat(new, third);
+    concat(new, ",rzr");
+}
 
 // TODO: implement this function
 // returns the alias of the opcode and remain part of the string
-void to_alias(char *opcode, char *remain)
+char *to_alias(char *opcode, char *remain)
 {
-    return;
-    // if (!strcmp(opcode, "cmp"))
-    // {
-    //     opcode = "sub";
+    // get remaining token from instruction
+    char *first = strtok(NULL, ",");
+    char *second = strtok(NULL, ",");
+    char *third = strtok(NULL, ",");
+    // use to free at the end
+    char *new = malloc(6);
+    if (!strcmp(opcode, "cmp"))
+    {
+        // subs rzr,rn,<op2>
+        strcpy(new, "subs ");
+        insert_left(new, first, second);
+    }
+    else if (!strcmp(opcode, "cmn"))
+    {
+        // adds rzr,rn,<op2>
+        strcpy(new, "adds ");
+        insert_left(new, first, second);
+    }
+    else if (!strcmp(opcode, "neg"))
+    {
+        // sub rd,rzr,<op2>
+        strcpy(new, "sub ");
+        insert_middle(new, first, second);
+    }
+    else if (!strcmp(opcode, "negs"))
+    {
+        // subs rd,rzr,<op2>
+        strcpy(new, "subs ");
+        insert_middle(new, first, second);
+    }
+    else if (!strcmp(opcode, "tst"))
+    {
+        // ands rzr,rn,<op2>
+        strcpy(new, "ands ");
+        insert_left(new, first, second);
+    }
+    else if (!strcmp(opcode, "mvn"))
+    {
+        // orn rd,rzr,<op2>
+        strcpy(new, "orn ");
+        insert_middle(new, first, second);
+    }
 
-    // }
-    // else if (!strcmp(opcode, "cmn"))
-    // {
-    //     /* code */
-    // }
-    // else if (!strcmp(opcode, "neg"))
-    // {
-    //     /* code */
-    // }
-    // else if (!strcmp(opcode, "negs"))
-    // {
-    //     /* code */
-    // }
-    // else if (!strcmp(opcode, "tst"))
-    // {
-    //     /* code */
-    // }
-    // else if (!strcmp(opcode, "mvn"))
-    // {
-    //     /* code */
-    // }
+    else if (!strcmp(opcode, "mov"))
+    {
+        // orr rd,rzr,<op2>
+        strcpy(new, "orr ");
+        insert_middle(new, first, second);
+    }
 
-    // else if (!strcmp(opcode, "mov"))
-    // {
-    //     /* code */
-    // }
-
-    // else if (!strcmp(opcode, "mul"))
-    // {
-    //     /* code */
-    // }
-    // else if (!strcmp(opcode, "mneg"))
-    // {
-    //     /* code */
-    // }
+    else if (!strcmp(opcode, "mul"))
+    {
+        // madd rd,rn,rm,rzr
+        strcpy(new, "madd ");
+        insert_right(new, first, second, third);
+    }
+    else if (!strcmp(opcode, "mneg"))
+    {
+        // msub rd,rn,rm,rzr
+        strcpy(new, "msub ");
+        insert_right(new, first, second, third);
+    }
+    free(remain);
+    return new;
 }
 
 // parsing each specific operation
@@ -135,8 +190,7 @@ void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_tab
     else
     {
         // then it is register offset
-        char *shift = strtok(NULL, ",");
-        tokenise_load_store_shift(instruction, load_store_shift_init(opcode, rt, xn, simm, shift), table);
+        tokenise_load_store_register(instruction, load_store_register_init(opcode, rt, xn, simm), table);
     }
 }
 
@@ -145,12 +199,13 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
 {
     // printf("Parsing: %s\n", in);
     char *opcode = strtok(in, " ");
-    // if operend is analias shown in spec, then change it to the real one
+    // if opcode is analias shown in spec, then change it to the real one
     if (!strcmp(opcode, "cmp") || !strcmp(opcode, "cmn") || !strcmp(opcode, "neg") ||
         !strcmp(opcode, "negs") || !strcmp(opcode, "tst") || !strcmp(opcode, "mvn") ||
         !strcmp(opcode, "mov") || !strcmp(opcode, "mul") || !strcmp(opcode, "meng"))
     {
-        to_alias(opcode, in);
+        in = to_alias(opcode, in);
+        opcode = strtok(in, " ");
     }
     // data processing
     if (!strcmp(opcode, "add") || !strcmp(opcode, "adds") ||

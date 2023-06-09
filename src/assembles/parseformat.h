@@ -40,10 +40,10 @@ struct load_store
     // simm will be imm in unsigned offset, simm in pre and post
     char *opcode, *rt, *xn, *simm;
 };
-// shift is optional
-struct load_store_shift
+
+struct load_store_register
 {
-    char *opcode, *rt, *xn, *rm, *shift;
+    char *opcode, *rt, *xn, *xm;
 };
 
 struct load_store_literal
@@ -65,6 +65,6 @@ extern struct move_wide move_wide_init(char *opcode, char *rd, char *imm, char *
 extern struct multiply multiply_init(char *opcode, char *rd, char *rn, char *rm, char *ra);
 extern struct branch branch_init(char *opcode, char *literal);
 extern struct load_store load_store_init(char *opcode, char *rt, char *xn, char *simm);
-extern struct load_store_shift load_store_shift_init(char *opcode, char *rt, char *xn, char *rm, char *shift);
+extern struct load_store_register load_store_register_init(char *opcode, char *rt, char *xn, char *rm);
 extern struct load_store_literal load_store_literal_init(char *opcode, char *literal);
 extern struct constant constant_init(char *opcode, char *simm);

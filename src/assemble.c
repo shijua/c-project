@@ -25,7 +25,8 @@ int main(int argc, char **argv) {
 
 
     // write test case for parse
-    // char test[] = "nop";
+    // char *test = malloc(sizeof(char) * 100);
+    // strcpy(test, "cmp x0,x1");
     // unsigned int *instruction = malloc(sizeof(int));
     // parse(test, 0, instruction, NULL);
 
