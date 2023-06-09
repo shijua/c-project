@@ -5,7 +5,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
     bool sf = check_bit(divide.rt);
     bool is_zero = false;
     char offset_last;
-    if (!divide.simm) {
+    if (divide.simm) {
         offset_last = *(divide.simm + strlen(divide.simm) - 1);
     } else {
         is_zero = true;
@@ -58,7 +58,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
                 copy_bit(instruction, 1, 11, 11);
                 copy_bit(instruction, 3, 13, 14);
                 divide.simm[strlen(divide.simm) - 1] = '\0'; // remove the last ']'
-                int xm = (unsigned int) register_to_bin(divide.simm);
+                int xm = register_to_bin(divide.simm);
                 copy_bit(instruction, xm, 16, 20);
             }
         } else if (offset_last == '!') {
