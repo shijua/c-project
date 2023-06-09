@@ -16,7 +16,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
     copy_bit(instruction, 1, 31, 31);
     copy_bit(instruction, 7, 27, 29);
     copy_bit(instruction, register_to_bin(divide.rt), 0, 4);
-    copy_bit(instruction, register_to_bin(divide.xn + 1), 9, 5);
+    copy_bit(instruction, register_to_bin(divide.xn + 1), 5, 9);
 
     //set specific bits
     if (sf) {
@@ -38,7 +38,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
         copy_bit(instruction, 0, 10, 21);
         char *newreg = divide.xn + 1; // remove the front [
         newreg[strlen(newreg) - 1] = '\0'; // remove the last ]
-        copy_bit(instruction, register_to_bin(newreg), 9, 5); // reset xn
+        copy_bit(instruction, register_to_bin(newreg), 5, 9); // reset xn
     } else if (offset_last == ']') {
         if (*(divide.simm + 0) == '#') {
             // unsigned offset

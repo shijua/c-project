@@ -48,6 +48,7 @@ extern void tokenise_add_sub_immediate (unsigned int* instr , struct add_sub_imm
     //strtol is turns a string representing hex to a int.
     copy_bit (instr , to_int(divide.imm) , 10 , 21); //imm12
     copy_bit (instr , register_to_bin(divide.rn) , 5 , 9); //rn
+
 }
 
 extern void tokenise_add_sub_register (unsigned int* instr , struct add_sub_register divide){
@@ -113,6 +114,7 @@ extern void tokenise_move_wide (unsigned int* instr , struct move_wide divide){
     if(!strcmp (divide.opcode, "movk")){
         copy_bit (instr , 3 , 29 , 30);
     }
+    copy_bit (instr , 2 , 23 , 25);//opi
     copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
     copy_bit (instr , 4 , 26 , 28);//op0
     copy_bit (instr , 2 , 23 , 25);//opi

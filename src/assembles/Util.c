@@ -18,18 +18,38 @@ char register_to_bin(char *in) {
 
 // copy the bit from change into *in
 // ex: 10011001 in *in, 101 in change, start = 2, end = 4 gives 100 101 01(middle is changing)
+//void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
+//    // get the length of change
+//    int len = end - start + 1;
+//    // ensure change is in the right range
+//    assert(change < (1 << len));
+//    // get the mask (11110001 for example above)
+//    int mask = ~0 - (((1 << len) - 1) << start);
+//    // shift the change to the right position
+//    change = change << start;
+//    // firstly mask then replace 0 position with change
+//    *in = (*in & mask) | change;
+//}
+
 void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     // get the length of change
+    assert(end >= start);
     int len = end - start + 1;
+
     // ensure change is in the right range
-    assert(change < (1 << len));
-    // get the mask (11110001 for example above)
-    int mask = ~0 - (((1 << len) - 1) << start);
+    assert(change < (1U << len));
+
+    // get the mask (11110001 for example)
+    unsigned int mask = ~(((1U << len) - 1) << start);
+
     // shift the change to the right position
     change = change << start;
+
     // firstly mask then replace 0 position with change
     *in = (*in & mask) | change;
 }
+
+
 
 // check it is in 32 or 64 bit
 bool check_bit(char *in) {
