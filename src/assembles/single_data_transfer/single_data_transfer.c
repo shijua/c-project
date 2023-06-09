@@ -3,7 +3,14 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
     // single data transfer without shift and not literal
     bool isldr = *(divide.opcode + 0) == "l";
     bool sf = check_bit(divide.rt);
-    char offset_last = *(divide.simm + strlen(divide.simm) - 1);
+    bool is_zero = false;
+    char offset_last;
+    if (*divide.simm != NULL) {
+        offset_last = *(divide.simm + strlen(divide.simm) - 1);
+    } else {
+        is_zero = true;
+    }
+
 
     //set common bits
     copy_bit(instruction, 1, 31, 31);
@@ -24,7 +31,15 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
     } else {
         copy_bit(instruction, 0, 22, 22);
     }
-    if (offset_last == "]") {
+
+    if (is_zero) {
+        // Zero Unsigned Offset
+        copy_bit(instruction, 1, 24, 24);
+        copy_bit(instruction, 0, 10, 21);
+        char *newreg = divide.xn + 1; // remove the front [
+        newreg[strlen(newreg) - 1] = '\0'; // remove the last ]
+        copy_bit(instruction, register_to_bin(newreg), 9, 5); // reset xn
+    } else if (offset_last == "]") {
         if (*(divide.simm + 0) == '#') {
             // unsigned offset
             copy_bit(instruction, 1, 24, 24);
@@ -37,10 +52,6 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
                 unsigned int imm12 = atoi(divide.simm + 1) / 4;
                 copy_bit(instruction, imm12, 10, 21);
             }
-        } else if (*(divide.simm + 0) == ']') {
-            // Zero Unsigned Offset
-            copy_bit(instruction, 1, 24, 24);
-            copy_bit(instruction, 0, 10, 21);
         } else {
                 // register offset
                 copy_bit(instruction, 1, 21, 21);
