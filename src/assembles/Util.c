@@ -33,6 +33,7 @@ char register_to_bin(char *in) {
 
 void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     // get the length of change
+    assert(end >= start);
     int len = end - start + 1;
 
     // ensure change is in the right range
