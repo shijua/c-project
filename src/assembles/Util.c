@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <assert.h>
 #include "Util.h"
 
@@ -74,9 +75,10 @@ unsigned int to_num(const char *hex_string) {
 }
 
 int to_int (char * in){
-    if(strcmp (substring(in , 0 , 2),"#0x")||strcmp (substring(in , 0 , 2),"#0X")) 
+    if(!strcmp (substring(in , 0 , 2),"#0x")||!strcmp (substring(in , 0 , 2),"#0X")) 
         return strtol(in + 3, NULL, 16);
-    return atoi(in+ 1);
+    printf("%d", atoi(in + 1));
+    return atoi(in + 1);
 }
 
 // #include <stdio.h>
