@@ -47,6 +47,11 @@ char* substring(char* str, int start, int end) {
     substr[len] = '\0';
     return substr;
 }
+unsigned int to_num(const char *hex_string) {
+    char *end;
+    long number = strtol(hex_string, &end, 16);
+    return (unsigned int) number;
+}
 
 
 // #include <stdio.h>

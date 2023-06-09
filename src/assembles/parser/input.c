@@ -50,6 +50,7 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
 }
 
 // remove unused white space
+// TODO comment on whitespace
 void remove_whitespace(char* str) {
     char* new_str = malloc(strlen(str) + 1); // allocate memory for the new string
     if (new_str == NULL) {
@@ -64,8 +65,8 @@ void remove_whitespace(char* str) {
         }
     }
     new_str[j] = '\0'; // add null terminator to the end of the new string
-    free(str);
     strcpy(str, new_str);
+    free(new_str);
 }
 
 
