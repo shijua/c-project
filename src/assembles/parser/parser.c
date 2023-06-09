@@ -29,20 +29,28 @@ static void concat(char *str1, char *str2)
 }
 
 // insert rzr to the left of the string
-static void insert_left(char *new, char *first, char *second)
+static void insert_left(char *new, char *first, char *second, char *third)
 {
     concat(new, "rzr,");
     concat(new, first);
     concat(new, ",");
     concat(new, second);
+    if (third) {
+        concat(new, ",");
+        concat(new, third);
+    }
 }
 
 // insert rzr to the middle of the string
-static void insert_middle(char *new, char *first, char *second)
+static void insert_middle(char *new, char *first, char *second, char *third)
 {
     concat(new, first);
     concat(new, ",rzr,");
     concat(new, second);
+    if (third) {
+        concat(new, ",");
+        concat(new, third);
+    }
 }
 
 // insert rzr to the right of the string
@@ -64,49 +72,49 @@ void to_alias(char *opcode, char *remain)
     char *second = strtok(NULL, ",");
     char *third = strtok(NULL, ",");
     // use to free at the end
-    char *new = malloc(6);
+    char *new = malloc(7 * sizeof(char));
     if (!strcmp(opcode, "cmp"))
     {
         // subs rzr,rn,<op2>
         strcpy(new, "subs ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "cmn"))
     {
         // adds rzr,rn,<op2>
         strcpy(new, "adds ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "neg"))
     {
         // sub rd,rzr,<op2>
         strcpy(new, "sub ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
     else if (!strcmp(opcode, "negs"))
     {
         // subs rd,rzr,<op2>
         strcpy(new, "subs ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
     else if (!strcmp(opcode, "tst"))
     {
         // ands rzr,rn,<op2>
         strcpy(new, "ands ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "mvn"))
     {
         // orn rd,rzr,<op2>
         strcpy(new, "orn ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
 
     else if (!strcmp(opcode, "mov"))
     {
         // orr rd,rzr,<op2>
         strcpy(new, "orr ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
 
     else if (!strcmp(opcode, "mul"))

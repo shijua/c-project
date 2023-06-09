@@ -40,7 +40,13 @@ void copy_opr (unsigned int *instr , char* shift , bool is_arith , bool N){
 
 extern void tokenise_add_sub_immediate (unsigned int* instr , struct add_sub_immediate divide){
     copy_arithm_opc (instr , divide.opcode); //opc
-    copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
+    // if first is not rzr then get sf by rn else rm
+    // pre: at most one rzr
+    if (strcmp(divide.rd, "rzr")) {
+        copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
+    } else {
+        copy_bit (instr , (check_bit (divide.rn)) , 31 , 31);//sf
+    }
     copy_bit (instr , 4 , 26 , 28);//op0
     copy_bit (instr , 2 , 23 , 25);//opi
     copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
@@ -59,7 +65,7 @@ extern void tokenise_add_sub_register (unsigned int* instr , struct add_sub_regi
     copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
     copy_bit (instr , register_to_bin(divide.rn) , 5 , 9); //rn
     copy_bit (instr , register_to_bin(divide.rm) , 16 , 20); //rm
-    copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
+    copy_bit (instr , (check_bit (divide.rn)) , 31 , 31);//sf
     copy_arithm_opc (instr , divide.opcode); // opc
     copy_bit (instr , 5 , 25 , 28);//M and bit 25 to 27 are constant, being 0101 which is equal to 5
     if(divide.shift != NULL){
@@ -78,7 +84,7 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
     copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
     copy_bit (instr , register_to_bin(divide.rn) , 5 , 9); //rn
     copy_bit (instr , register_to_bin(divide.rm) , 16 , 20); //rm
-    copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
+    copy_bit (instr , (check_bit (divide.rn)) , 31 , 31);//sf
     copy_bit (instr , 5 , 25 , 28);//M and bit 25 to 27 are constant, being 0101 which is equal to 5
     bool N = 0;
     if(!strcmp (divide.opcode, "and") || !strcmp (divide.opcode, "bic")){
