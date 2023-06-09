@@ -6,3 +6,4 @@ extern bool check_bit(char *in);
 extern char *substring(char *str, int start, int end);
 unsigned int to_num(const char *hex_string);
 int to_int (char * in);
+int to_int_2(char * in);

@@ -81,6 +81,12 @@ int to_int(char * in) {
     int x = atoi(in + 1);
     return x;
 }
+int to_int_2(char * in) {  // without #
+    if(!strcmp (substring(in , 0 , 3),"0x")||!strcmp (substring(in , 0 , 3),"0X"))
+        return strtol(in + 3, NULL, 16);
+    int x = atoi(in + 2);
+    return x;
+}
 
 // #include <stdio.h>
 // int main() {

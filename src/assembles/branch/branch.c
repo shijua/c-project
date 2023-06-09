@@ -14,19 +14,19 @@ void set_condition_label(unsigned int *instruction, char *label, struct symbol_t
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
-    copy_bit(instruction, symbol_table_get(table, label), 5, 23); //sim19
+    copy_bit(instruction, symbol_table_get(table, label) / 4, 5, 23); //sim19
 }
 void set_condition_num(unsigned int *instruction, int num, struct symbol_table *table, int cond){
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
-    copy_bit(instruction, num, 5, 23); //sim19
+    copy_bit(instruction, num / 4, 5, 23); //sim19
 }
 void set_condition(unsigned int *instruction, struct branch divide, struct symbol_table *table, int cond){
     if (is_label(divide.literal)) {
         set_condition_label(instruction, divide.literal, table, cond);
     } else {
-        set_condition_num(instruction, to_int(divide.literal), table, cond);
+        set_condition_num(instruction, to_int_2(divide.literal), table, cond);
     }
 }
 
@@ -38,9 +38,9 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
         // PC = literal
         sf = 0;
         if(is_label(divide.literal)){
-            operand = symbol_table_get(table, divide.literal);
+            operand = symbol_table_get(table, divide.literal) / 4;
         }else{
-            operand = to_int(divide.literal);
+            operand = to_int_2(divide.literal) / 4;
         }
         copy_bit(instruction, operand, 0, 25);  //sim26
 
