@@ -83,12 +83,18 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
     unsigned int *instruction = malloc(sizeof(int));
     for (int i = 0; i < file_size; i++)
     {
-        if (buffer[i] == '\n')
+        // if the line is end or the file is end
+        if (buffer[i] == '\n' || i == file_size - 1)
         {
             *instruction = 0;
             if(line_start == i) continue;
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
+            // if the last character is ':' then it is a label or skip empty line
+            if (line[strlen(line) - 1] == ':' || line_start == i) {
+                line_start = i+1; 
+                continue;
+            }
             remove_whitespace(line);
             parse(line, address, instruction, table);
             // set for next line
