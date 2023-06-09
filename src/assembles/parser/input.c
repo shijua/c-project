@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 #include "input.h"
 #include "parser.h"
 #include "../Util.h"
@@ -48,6 +49,26 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
     }
 }
 
+// remove unused white space
+void remove_whitespace(char* str) {
+    char* new_str = malloc(strlen(str) + 1); // allocate memory for the new string
+    if (new_str == NULL) {
+        printf("Failed to allocate memory\n");
+        return;
+    }
+    int j = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!(isspace(str[i]) && (i == 0 || str[i-1] == ','|| str[i-1] == '#'))) { // check if the character is not a white space character
+            new_str[j] = str[i]; // copy the character to the new string
+            j++;
+        }
+    }
+    new_str[j] = '\0'; // add null terminator to the end of the new string
+    free(new_str);
+    strcpy(str, new_str);
+}
+
+
 void generate_binary(char *buffer, char *filename, struct symbol_table *table, int file_size)
 {
     // read the file for writing
@@ -63,9 +84,11 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
     {
         if (buffer[i] == '\n')
         {
+            *instruction = 0;
             if(line_start == i) continue;
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
+            remove_whitespace(line);
             parse(line, address, instruction, table);
             // set for next line
             line_start = i + 1;
