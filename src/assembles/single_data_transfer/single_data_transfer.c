@@ -81,6 +81,8 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
 void load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table) {
     // load literal
     bool sf = check_bit(divide.rt);
+    int simm19;
+
     //set common bits
     copy_bit(instruction, 3, 27, 28);
     copy_bit(instruction, register_to_bin(divide.rt), 0, 4);
@@ -91,4 +93,15 @@ void load_store_literal(unsigned int *instruction, struct load_store_literal div
     } else {
         copy_bit(instruction, 0, 30, 30);
     }
+    if (*(divide.literal + 0) != '#') {
+        // if it is a label
+        int literal_address = symbol_table_get(table, divide.literal);
+        simm19 = (literal_address - address) / 4;
+    } else {
+        // if it is an unsigned immediate address
+        int target_address = atoi(divide.literal + 1); // get the literal address (remove the front #)
+        simm19 = (target_address - address) / 4;
+    }
+    simm19 = simm19 < 0 ? simm19 & 0x7FFFF : simm19; // get corresponding unsigned 19 bit
+    copy_bit(instruction, simm19, 5, 23);
 }
