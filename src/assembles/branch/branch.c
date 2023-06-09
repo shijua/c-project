@@ -4,10 +4,11 @@
 #include "stdio.h"
 #include "assert.h"
 bool is_label(char *literal){
-    if (literal[0] == '#') {
-        return false;
+    char a = literal[0];
+    if (('a' <= a && a <= 'z') || ('A' <= a && a <= 'Z')){
+        return true;
     }
-    return true;
+    return false;
 }
 void set_condition_label(unsigned int *instruction, char *label, struct symbol_table *table, int cond) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3

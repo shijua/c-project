@@ -45,7 +45,7 @@ extern void tokenise_add_sub_immediate (unsigned int* instr , struct add_sub_imm
     divide.shift == NULL ? copy_bit (instr , 0 , 22 , 22) : copy_bit (instr , 1 , 22 , 22);//sh
     //divide.imm + 3 is for eliminating the prefix "#0x" of imm
     //strtol is turns a string representing hex to a int.
-    copy_bit (instr , strtol(divide.imm + 3, NULL, 16) , 16 , 21); //imm12
+    copy_bit (instr , strtol(divide.imm + 3, NULL, 16) , 10 , 21); //imm12
     copy_bit (instr , register_to_bin(divide.rn) , 5 , 9); //rn
 }
 

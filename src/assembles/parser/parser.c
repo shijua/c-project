@@ -25,8 +25,8 @@ static void concat(char *str1, char *str2)
 {
     // let temp be the pointer of str1
     str1 = realloc(str1, strlen(str1) + strlen(str2) + 1);
-    printf("str1: %lu\n", strlen(str1));
-    printf("str2: %lu\n", strlen(str2));
+//    printf("str1: %lu\n", strlen(str1));
+//    printf("str2: %lu\n", strlen(str2));
     strcat(str1, str2);
 }
 
