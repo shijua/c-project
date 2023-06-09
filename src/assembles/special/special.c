@@ -1,6 +1,6 @@
+#include <stdlib.h>
 #include "special.h"
-#include "../Util.h"
-#include "../parseformat.h"
-void special(){
-    return;
+
+void tokenise_int(unsigned int *instruction, struct constant divide) {
+    copy_bit(instruction, to_num(divide.simm), 0, 31);
 }

@@ -7,6 +7,7 @@
 #include "../single_data_transfer/single_data_transfer.h"
 #include "../data_processing/data_processing.h"
 #include "../branch/branch.h"
+#include "../special/special.h"
 // will be comment later after include other header file for tokenise
 // void tokenise_add_sub_immediate(unsigned int *instruction, struct add_sub_immediate divide) { return; }
 // void tokenise_add_sub_register(unsigned int *instruction, struct add_sub_register divide) { return; }
@@ -16,7 +17,7 @@
 // void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) { return; }
 // void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) { return; }
 // void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table, int address) { return; }
-void tokenise_int(unsigned int *instruction, struct constant divide) { return; }
+//void tokenise_int(unsigned int *instruction, struct constant divide) { return; }
 
 // concat str2 to str1
 // pre: new will be given to the variable of str1

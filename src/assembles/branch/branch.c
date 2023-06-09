@@ -9,11 +9,6 @@ bool is_label(char *literal){
     }
     return true;
 }
-int to_num(const char *hex_string) {
-    char *end;
-    long number = strtol(hex_string, &end, 16);
-    return number;
-}
 void set_condition_label(unsigned int *instruction, char *label, struct symbol_table *table, int cond) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
