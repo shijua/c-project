@@ -20,18 +20,18 @@ void copy_arithm_opc (unsigned int *instr , char* opcode){
 }
 
 void copy_opr (unsigned int *instr , char* shift , bool is_arith , bool N){
-    if(strcmp(substring(shift , 0 , 2) , "lsl")){
+    if (!strcmp(substring(shift , 0 , 2) , "lsl")){
         copy_bit (instr , 8*is_arith + N , 21 , 24);//shift type : lsl
     }
-    if (strcmp(substring(shift , 0 , 2) , "lsr"))
+    if (!strcmp(substring(shift , 0 , 2) , "lsr"))
     {
         copy_bit (instr , 8*is_arith + N + 2 , 21 , 24);//shift type : lsr
     }
-    if (strcmp(substring(shift , 0 , 2) , "asr"))
+    if (!strcmp(substring(shift , 0 , 2) , "asr"))
     {
         copy_bit (instr , 8*is_arith + N + 4 , 21 , 24);//shift type : asr
     }
-    if (strcmp(substring(shift , 0 , 2) , "ror"))
+    if (!strcmp(substring(shift , 0 , 2) , "ror") && !is_arith)
     {
         copy_bit (instr , 8*is_arith + N + 6 , 21 , 24);//shift type : ror
     }
@@ -43,7 +43,10 @@ extern void tokenise_add_sub_immediate (unsigned int* instr , struct add_sub_imm
     copy_bit (instr , 4 , 26 , 28);//op0
     copy_bit (instr , 2 , 23 , 25);//opi
     copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
-    divide.shift == NULL ? copy_bit (instr , 0 , 22 , 22) : copy_bit (instr , 1 , 22 , 22);//sh
+    if (divide.shift == NULL || to_int (divide.shift + 4) == 0)
+        copy_bit (instr , 0 , 22 , 22) ;
+    else
+        copy_bit (instr , 1 , 22 , 22);//sh
     //divide.imm + 3 is for eliminating the prefix "#0x" of imm
     //strtol is turns a string representing hex to a int.
     copy_bit (instr , to_int(divide.imm) , 10 , 21); //imm12
