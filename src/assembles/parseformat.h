@@ -41,14 +41,9 @@ struct load_store
     char *opcode, *rt, *xn, *simm;
 };
 
-struct load_store_register
-{
-    char *opcode, *rt, *xn, *xm;
-};
-
 struct load_store_literal
 {
-    char *opcode, *literal;
+    char *opcode, *rt, *literal;
 };
 
 // struct for .int
@@ -65,6 +60,5 @@ extern struct move_wide move_wide_init(char *opcode, char *rd, char *imm, char *
 extern struct multiply multiply_init(char *opcode, char *rd, char *rn, char *rm, char *ra);
 extern struct branch branch_init(char *opcode, char *literal);
 extern struct load_store load_store_init(char *opcode, char *rt, char *xn, char *simm);
-extern struct load_store_register load_store_register_init(char *opcode, char *rt, char *xn, char *rm);
-extern struct load_store_literal load_store_literal_init(char *opcode, char *literal);
+extern struct load_store_literal load_store_literal_init(char *opcode, char *rt, char *literal);
 extern struct constant constant_init(char *opcode, char *simm);
