@@ -1,5 +1,4 @@
 #include "single_data_transfer.h"
-/*
 void load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
     // single data transfer without shift and not literal
     bool isldr = *(divide.opcode + 0) == "l";
@@ -83,4 +82,4 @@ void load_store_literal(unsigned int *instruction, struct load_store_literal div
     simm19 = simm19 < 0 ? simm19 & 0x7FFFF : simm19; // get corresponding unsigned 19 bit
     copy_bit(instruction, simm19, 5, 23);
 }
-*/
+

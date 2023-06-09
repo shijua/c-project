@@ -4,7 +4,7 @@
 #include <string.h>
 #include "parser.h"
 #include "../Util.h"
-
+#include "../single_data_transfer/single_data_transfer.h"
 // will be comment later after include other header file for tokenise
 void tokenise_add_sub_immediate(unsigned int *instruction, struct add_sub_immediate divide) { return; }
 void tokenise_add_sub_register(unsigned int *instruction, struct add_sub_register divide) { return; }
@@ -12,9 +12,8 @@ void tokenise_logical(unsigned int *instruction, struct logical divide) { return
 void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) { return; }
 void tokenise_multiply(unsigned int *instruction, struct multiply divide) { return; }
 void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) { return; }
-void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) { return; }
-void tokenise_load_store_register(unsigned int *instruction, struct load_store_register divide, struct symbol_table *table) { return; }
-void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table) { return; }
+// void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) { return; }
+// void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table, int address) { return; }
 void tokenise_int(unsigned int *instruction, struct constant divide) { return; }
 
 // concat str2 to str1
@@ -56,8 +55,7 @@ static void insert_right(char *new, char *first, char *second, char *third)
     concat(new, ",rzr");
 }
 
-// TODO: implement this function
-// returns the alias of the opcode and remain part of the string
+// returns the alias of original line
 char *to_alias(char *opcode, char *remain)
 {
     // get remaining token from instruction
@@ -171,7 +169,7 @@ void parse_multiply(unsigned int *instruction, char *opcode)
     tokenise_multiply(instruction, multiply_init(opcode, rd, rn, rm, ra));
 }
 
-void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_table *table)
+void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_table *table, int address)
 {
     char *rt = strtok(NULL, ",");
     char *xn = strtok(NULL, ",");
@@ -179,18 +177,13 @@ void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_tab
     if (simm == NULL)
     {
         // then only two parameters (only for ldr)
-        assert(strcmp(opcode, "ldr") == 0);
-        tokenise_load_store_literal(instruction, load_store_literal_init(opcode, rt), table);
-    }
-    else if (simm[0] == '#')
-    {
-        // then it is post or pre or unsigned offset
-        tokenise_load_store(instruction, load_store_init(opcode, rt, xn, simm), table);
+        assert(!strcmp(opcode, "ldr"));
+        tokenise_load_store_literal(instruction, load_store_literal_init(opcode, rt, xn), table, address);
     }
     else
     {
-        // then it is register offset
-        tokenise_load_store_register(instruction, load_store_register_init(opcode, rt, xn, simm), table);
+        // then it is post or pre or unsigned offset
+        tokenise_load_store(instruction, load_store_init(opcode, rt, xn, simm), table);
     }
 }
 
@@ -248,7 +241,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
     // loads and stores
     else if (!strcmp(opcode, "ldr") || !strcmp(opcode, "str"))
     {
-        parse_load_store(instruction, opcode, table);
+        parse_load_store(instruction, opcode, table, address);
     }
     // special
     else if (!strcmp(opcode, "nop"))
