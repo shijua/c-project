@@ -53,6 +53,11 @@ unsigned int to_num(const char *hex_string) {
     return (unsigned int) number;
 }
 
+int to_int (char * in){
+    if(strcmp (substring(in , 0 , 2),"#0x")||strcmp (substring(in , 0 , 2),"#0X")) 
+        return strtol(in + 3, NULL, 16);
+    return atoi(in+ 1);
+}
 
 // #include <stdio.h>
 // int main() {
