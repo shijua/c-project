@@ -26,7 +26,7 @@ void set_condition(unsigned int *instruction, struct branch divide, struct symbo
     if (is_label(divide.literal)) {
         set_condition_label(instruction, divide.literal, table, cond);
     } else {
-        set_condition_num(instruction, to_num(divide.literal), table, cond);
+        set_condition_num(instruction, to_int(divide.literal), table, cond);
     }
 }
 
@@ -40,9 +40,9 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
         if(is_label(divide.literal)){
             operand = symbol_table_get(table, divide.literal);
         }else{
-            operand = to_num(divide.literal);
+            operand = to_int(divide.literal);
         }
-        copy_bit(instruction, operand, 0, 25); //sim26
+        copy_bit(instruction, operand, 0, 25);  //sim26
 
     } else if (strcmp(op, "br") == 0) {
         // PC = Xn

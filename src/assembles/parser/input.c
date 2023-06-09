@@ -43,7 +43,7 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
             }
             // set for next line
             line_start = i + 1;
-            address += 4;
+            address += 1;
             free(line);
         }
     }
@@ -99,7 +99,7 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
             parse(line, address, instruction, table);
             // set for next line
             line_start = i + 1;
-            address += 4;
+            address += 1;
             // write instrucion into file
             fwrite(instruction, 4, 1, output);
             free(line);
