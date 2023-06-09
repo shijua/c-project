@@ -1,11 +1,11 @@
 #include "single_data_transfer.h"
-void load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
+void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
     // single data transfer without shift and not literal
-    bool isldr = *(divide.opcode + 0) == "l";
+    bool isldr = divide.opcode[0] == 'l';
     bool sf = check_bit(divide.rt);
     bool is_zero = false;
     char offset_last;
-    if (*divide.simm != NULL) {
+    if (!divide.simm) {
         offset_last = *(divide.simm + strlen(divide.simm) - 1);
     } else {
         is_zero = true;
@@ -39,7 +39,7 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
         char *newreg = divide.xn + 1; // remove the front [
         newreg[strlen(newreg) - 1] = '\0'; // remove the last ]
         copy_bit(instruction, register_to_bin(newreg), 9, 5); // reset xn
-    } else if (offset_last == "]") {
+    } else if (offset_last == ']') {
         if (*(divide.simm + 0) == '#') {
             // unsigned offset
             copy_bit(instruction, 1, 24, 24);
@@ -61,7 +61,7 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
                 int xm = (unsigned int) register_to_bin(divide.simm);
                 copy_bit(instruction, xm, 16, 20);
             }
-        } else if (offset_last == "!") {
+        } else if (offset_last == '!') {
         // pre-index
             copy_bit(instruction, 1, 10, 10);
             copy_bit(instruction, 1, 11, 11);
@@ -78,7 +78,7 @@ void load_store(unsigned int *instruction, struct load_store divide, struct symb
             copy_bit(instruction, simm9, 12, 20);
         }
 }
-void load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table) {
+void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table, int address) {
     // load literal
     bool sf = check_bit(divide.rt);
     int simm19;

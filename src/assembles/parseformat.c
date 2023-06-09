@@ -41,15 +41,9 @@ struct load_store load_store_init(char *opcode, char *rt, char *xn, char *simm)
     return divide;
 }
 
-struct load_store_register load_store_register_init(char *opcode, char *rt, char *xn, char *rm)
+struct load_store_literal load_store_literal_init(char *opcode, char *rt, char *literal)
 {
-    struct load_store_register divide = {opcode, rt, xn, rm};
-    return divide;
-}
-
-struct load_store_literal load_store_literal_init(char *opcode, char *literal)
-{
-    struct load_store_literal divide = {opcode, literal};
+    struct load_store_literal divide = {opcode, rt, literal};
     return divide;
 }
 
