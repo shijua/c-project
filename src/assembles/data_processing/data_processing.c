@@ -1,5 +1,7 @@
 #include "data_processing.h"
 #include "../Util.h"
+#include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 void copy_arithm_opc (unsigned int *instr , char* opcode){
@@ -56,7 +58,7 @@ extern void tokenise_add_sub_register (unsigned int* instr , struct add_sub_regi
     copy_bit (instr , 5 , 25 , 28);//M and bit 25 to 27 are constant, being 0101 which is equal to 5
     if(divide.shift != NULL){
         copy_opr (instr , divide.shift , 1 , 0); //opr
-        char *ptr;
+        
         copy_bit(instr , atoi(divide.shift + 5) , 10 , 15);//operand
     }
     else{
@@ -75,24 +77,23 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
     bool N = 0;
     if(!strcmp (divide.opcode, "and") || !strcmp (divide.opcode, "bic")){
         copy_bit (instr , 0 , 29 , 30);
-        if(!strcmp (divide.opcode, "bic")) N ==1;
+        if(!strcmp (divide.opcode, "bic")) N =1;
     }
     if(!strcmp (divide.opcode, "orr") || !strcmp (divide.opcode, "orn")){
         copy_bit (instr , 1 , 29 , 30);
-        if(!strcmp (divide.opcode, "orn")) N ==1;
+        if(!strcmp (divide.opcode, "orn")) N =1;
     }
     if(!strcmp (divide.opcode, "eon") || !strcmp (divide.opcode, "eor")){
         copy_bit (instr , 2 , 29 , 30);
-        if(!strcmp (divide.opcode, "eor")) N ==1;
+        if(!strcmp (divide.opcode, "eor")) N =1;
     }
     if(!strcmp (divide.opcode, "ands") || !strcmp (divide.opcode, "bics")){
         copy_bit (instr , 3 , 29 , 30);
-        if(!strcmp (divide.opcode, "bics")) N ==1;
+        if(!strcmp (divide.opcode, "bics")) N =1;
     }
 
     if(divide.shift != NULL){
         copy_opr (instr , divide.shift , 0 , N); //opr
-        char *ptr;
         copy_bit(instr , atoi(divide.shift + 5) , 10 , 15);//operand
     }
     else{
@@ -139,6 +140,10 @@ void tokenise_multiply(unsigned int *instr, struct multiply divide){
     else{
         copy_bit(instr , 1 , 15 , 15);
     }
+}
+
+int main(){
+    
 }
 
 

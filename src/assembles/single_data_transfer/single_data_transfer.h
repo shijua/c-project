@@ -3,3 +3,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../symboltable.h"
+extern void load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table);
+extern void load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table);
