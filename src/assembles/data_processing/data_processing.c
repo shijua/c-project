@@ -93,7 +93,15 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
         copy_bit (instr , 3 , 29 , 30);
         if(!strcmp (divide.opcode, "bics")) N =1;
     }
-    copy_opr(instr, divide.shift , 0 , N);
+
+    if(divide.shift != NULL){
+        copy_opr (instr , divide.shift , 0 , N); //opr
+        copy_bit(instr , atoi(divide.shift + 5) , 10 , 15);//operand
+    }
+    else{
+        copy_bit (instr , N, 21 , 24);//opr
+        copy_bit(instr , 0 , 10 , 15);//operand
+    }
 }
 
 extern void tokenise_move_wide (unsigned int* instr , struct move_wide divide){
