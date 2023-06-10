@@ -52,6 +52,7 @@ void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
 
 
 
+
 // check it is in 32 or 64 bit
 bool check_bit(char *in) {
     // 32 return 0 and 64 return 1
@@ -83,8 +84,8 @@ int to_int(char * in) {
 }
 int to_int_2(char * in) {  // without #
     if(!strcmp (substring(in , 0 , 3),"0x")||!strcmp (substring(in , 0 , 3),"0X"))
-        return strtol(in + 3, NULL, 16);
-    int x = atoi(in + 2);
+        return strtol(in + 2, NULL, 16);
+    int x = atoi(in);
     return x;
 }
 
