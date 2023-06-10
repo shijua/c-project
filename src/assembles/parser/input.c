@@ -88,6 +88,8 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
         {
             *instruction = 0;
             if(line_start == i) continue;
+            // if file is end need to + 2
+            if( i == file_size - 1) i += 2;
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
             // if the last character is ':' then it is a label or skip empty line

@@ -55,7 +55,7 @@ void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
 // check it is in 32 or 64 bit
 bool check_bit(char *in) {
     // 32 return 0 and 64 return 1
-    if (*(in + 0) == 'w') return 0;
+    if (in[0] == 'w') return 0;
     return 1;
 }
 

@@ -204,7 +204,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
     // if opcode is analias shown in spec, then change it to the real one
     if (!strcmp(opcode, "cmp") || !strcmp(opcode, "cmn") || !strcmp(opcode, "neg") ||
         !strcmp(opcode, "negs") || !strcmp(opcode, "tst") || !strcmp(opcode, "mvn") ||
-        !strcmp(opcode, "mov") || !strcmp(opcode, "mul") || !strcmp(opcode, "meng"))
+        !strcmp(opcode, "mov") || !strcmp(opcode, "mul") || !strcmp(opcode, "mneg"))
     {
         in = to_alias(opcode, in);
         opcode = strtok(in, " ");
