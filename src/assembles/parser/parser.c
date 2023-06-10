@@ -234,7 +234,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
     else if (!strcmp(opcode, "b") || !strcmp(opcode, "br"))
     {
         char *literal = strtok(NULL, ","); // literal or xn
-        tokenise_branch(instruction, branch_init(opcode, literal), table);
+        tokenise_branch(instruction, branch_init(opcode, literal), table, address);
     }
     // brach with condition
     else if (!strcmp(opcode, "b.eq") || !strcmp(opcode, "b.ne") || !strcmp(opcode, "b.ge") ||
@@ -245,7 +245,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
         // only send eq ne .etc if it is branch condition
         char *cond = strtok(opcode, ".");
         cond = strtok(NULL, ".");
-        tokenise_branch(instruction, branch_init(cond, literal), table);
+        tokenise_branch(instruction, branch_init(cond, literal), table, address);
     }
     // loads and stores
     else if (!strcmp(opcode, "ldr") || !strcmp(opcode, "str"))

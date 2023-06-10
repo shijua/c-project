@@ -10,27 +10,27 @@ bool is_label(char *literal){
     }
     return false;
 }
-void set_condition_label(unsigned int *instruction, char *label, struct symbol_table *table, int cond) {
+void set_condition_label(unsigned int *instruction, char *label, struct symbol_table *table, int cond, int address) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
-    copy_bit(instruction, symbol_table_get(table, label) / 4, 5, 23); //sim19
+    copy_bit(instruction, (symbol_table_get(table, label)-address) / 4, 5, 23); //sim19
 }
-void set_condition_num(unsigned int *instruction, int num, struct symbol_table *table, int cond){
+void set_condition_num(unsigned int *instruction, int num, struct symbol_table *table, int cond, int address){
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
-    copy_bit(instruction, num / 4, 5, 23); //sim19
+    copy_bit(instruction, (num-address) / 4, 5, 23); //sim19
 }
-void set_condition(unsigned int *instruction, struct branch divide, struct symbol_table *table, int cond){
+void set_condition(unsigned int *instruction, struct branch divide, struct symbol_table *table, int cond, int address){
     if (is_label(divide.literal)) {
-        set_condition_label(instruction, divide.literal, table, cond);
+        set_condition_label(instruction, divide.literal, table, cond, address);
     } else {
-        set_condition_num(instruction, to_int_2(divide.literal), table, cond);
+        set_condition_num(instruction, to_int_2(divide.literal), table, cond, address);
     }
 }
 
-void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table) {
+void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table, int address){
     char *op = divide.opcode; // the pointer of operand of the branch instruction
     int sf = 1; //condition case
     int operand;
@@ -38,9 +38,9 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
         // PC = literal
         sf = 0;
         if(is_label(divide.literal)){
-            operand = symbol_table_get(table, divide.literal) / 4;
+            operand = (symbol_table_get(table, divide.literal) - address) / 4;
         }else{
-            operand = to_int_2(divide.literal) / 4;
+            operand = (to_int_2(divide.literal) - address) / 4;
         }
         copy_bit(instruction, operand, 0, 25);  //sim26
 
@@ -53,29 +53,29 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
 
     } else if (strcmp(op, "eq") == 0) {
         // equal
-        set_condition(instruction, divide, table, 0x0);
+        set_condition(instruction, divide, table, 0x0, address);
 
     } else if (strcmp(op, "ne") == 0) {
         // not equal
-        set_condition(instruction, divide, table, 0x1);
+        set_condition(instruction, divide, table, 0x1, address);
     } else if (strcmp(op, "ge") == 0) {
         // signed greater than or equal
-        set_condition(instruction, divide, table, 0xa);
+        set_condition(instruction, divide, table, 0xa, address);
     } else if (strcmp(op, "lt") == 0) {
         // signed less than
-        set_condition(instruction, divide, table, 0xb);
+        set_condition(instruction, divide, table, 0xb, address);
 
     } else if (strcmp(op, "gt") == 0) {
         // signed greater than
-        set_condition(instruction, divide, table, 0xc);
+        set_condition(instruction, divide, table, 0xc, address);
 
     } else if (strcmp(op, "le") == 0) {
         // signed less than or equal
-        set_condition(instruction, divide, table, 0xd);
+        set_condition(instruction, divide, table, 0xd, address);
 
     } else if (strcmp(op, "al") == 0) {
         // always
-        set_condition(instruction, divide, table, 0xe);
+        set_condition(instruction, divide, table, 0xe, address);
 
     } else {
         printf("Error: invalid instruction\n");
