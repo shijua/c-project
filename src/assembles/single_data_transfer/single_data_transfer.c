@@ -86,6 +86,7 @@ void tokenise_load_store_literal(unsigned int *instruction, struct load_store_li
     //set common bits
     copy_bit(instruction, 3, 27, 28);
     copy_bit(instruction, register_to_bin(divide.rt), 0, 4);
+
     //set specific bits
     if (sf) {
         // if the target register is 64 bit
