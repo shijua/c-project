@@ -40,7 +40,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
         newreg[strlen(newreg) - 1] = '\0'; // remove the last ]
         copy_bit(instruction, register_to_bin(newreg), 5, 9); // reset xn
     } else if (offset_last == ']') {
-        if (*(divide.simm + 0) == '#') {
+        if (divide.simm[0] == '#') {
             // unsigned offset
             copy_bit(instruction, 1, 24, 24);
             if (sf) {
@@ -93,7 +93,7 @@ void tokenise_load_store_literal(unsigned int *instruction, struct load_store_li
     } else {
         copy_bit(instruction, 0, 30, 30);
     }
-    if (*(divide.literal + 0) != '#') {
+    if (divide.literal[0] != '#') {
         // if it is a label
         int literal_address = symbol_table_get(table, divide.literal);
         simm19 = (literal_address - address) / 4;
