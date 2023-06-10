@@ -25,26 +25,32 @@ static void concat(char *str1, char *str2)
 {
     // let temp be the pointer of str1
     str1 = realloc(str1, strlen(str1) + strlen(str2) + 1);
-    printf("str1: %lu\n", strlen(str1));
-    printf("str2: %lu\n", strlen(str2));
     strcat(str1, str2);
 }
 
 // insert rzr to the left of the string
-static void insert_left(char *new, char *first, char *second)
+static void insert_left(char *new, char *first, char *second, char *third)
 {
     concat(new, "rzr,");
     concat(new, first);
     concat(new, ",");
     concat(new, second);
+    if (third) {
+        concat(new, ",");
+        concat(new, third);
+    }
 }
 
 // insert rzr to the middle of the string
-static void insert_middle(char *new, char *first, char *second)
+static void insert_middle(char *new, char *first, char *second, char *third)
 {
     concat(new, first);
     concat(new, ",rzr,");
     concat(new, second);
+    if (third) {
+        concat(new, ",");
+        concat(new, third);
+    }
 }
 
 // insert rzr to the right of the string
@@ -59,56 +65,56 @@ static void insert_right(char *new, char *first, char *second, char *third)
 }
 
 // returns the alias of original line
-char *to_alias(char *opcode, char *remain)
+void to_alias(char *opcode, char *remain)
 {
     // get remaining token from instruction
     char *first = strtok(NULL, ",");
     char *second = strtok(NULL, ",");
     char *third = strtok(NULL, ",");
     // use to free at the end
-    char *new = malloc(6);
+    char *new = malloc(7 * sizeof(char));
     if (!strcmp(opcode, "cmp"))
     {
         // subs rzr,rn,<op2>
         strcpy(new, "subs ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "cmn"))
     {
         // adds rzr,rn,<op2>
         strcpy(new, "adds ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "neg"))
     {
         // sub rd,rzr,<op2>
         strcpy(new, "sub ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
     else if (!strcmp(opcode, "negs"))
     {
         // subs rd,rzr,<op2>
         strcpy(new, "subs ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
     else if (!strcmp(opcode, "tst"))
     {
         // ands rzr,rn,<op2>
         strcpy(new, "ands ");
-        insert_left(new, first, second);
+        insert_left(new, first, second, third);
     }
     else if (!strcmp(opcode, "mvn"))
     {
         // orn rd,rzr,<op2>
         strcpy(new, "orn ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
 
     else if (!strcmp(opcode, "mov"))
     {
         // orr rd,rzr,<op2>
         strcpy(new, "orr ");
-        insert_middle(new, first, second);
+        insert_middle(new, first, second, third);
     }
 
     else if (!strcmp(opcode, "mul"))
@@ -123,8 +129,9 @@ char *to_alias(char *opcode, char *remain)
         strcpy(new, "msub ");
         insert_right(new, first, second, third);
     }
-    free(remain);
-    return new;
+    remain = realloc(remain, strlen(new) + 1);
+    strcpy(remain, new);
+    free(new);
 }
 
 // parsing each specific operation
@@ -200,7 +207,7 @@ void parse(char *in, int address, unsigned int *instruction, struct symbol_table
         !strcmp(opcode, "negs") || !strcmp(opcode, "tst") || !strcmp(opcode, "mvn") ||
         !strcmp(opcode, "mov") || !strcmp(opcode, "mul") || !strcmp(opcode, "meng"))
     {
-        in = to_alias(opcode, in);
+        to_alias(opcode, in);
         opcode = strtok(in, " ");
     }
     // data processing

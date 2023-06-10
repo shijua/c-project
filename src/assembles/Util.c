@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <assert.h>
 #include "Util.h"
 
@@ -18,18 +19,38 @@ char register_to_bin(char *in) {
 
 // copy the bit from change into *in
 // ex: 10011001 in *in, 101 in change, start = 2, end = 4 gives 100 101 01(middle is changing)
+//void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
+//    // get the length of change
+//    int len = end - start + 1;
+//    // ensure change is in the right range
+//    assert(change < (1 << len));
+//    // get the mask (11110001 for example above)
+//    int mask = ~0 - (((1 << len) - 1) << start);
+//    // shift the change to the right position
+//    change = change << start;
+//    // firstly mask then replace 0 position with change
+//    *in = (*in & mask) | change;
+//}
+
 void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     // get the length of change
+    assert(end >= start);
     int len = end - start + 1;
+
     // ensure change is in the right range
-    assert(change < (1 << len));
-    // get the mask (11110001 for example above)
-    int mask = ~0 - (((1 << len) - 1) << start);
+    assert(change < (1U << len));
+
+    // get the mask (11110001 for example)
+    unsigned int mask = ~(((1U << len) - 1) << start);
+
     // shift the change to the right position
     change = change << start;
+
     // firstly mask then replace 0 position with change
     *in = (*in & mask) | change;
 }
+
+
 
 // check it is in 32 or 64 bit
 bool check_bit(char *in) {
@@ -40,6 +61,7 @@ bool check_bit(char *in) {
 
 // get the substring of a string
 // remember to free the returned pointer
+// ex: substring("hello world", 0, 5) gives "hell"
 char* substring(char* str, int start, int end) {
     int len = end - start;
     char* substr = malloc(len + 1);
@@ -53,6 +75,18 @@ unsigned int to_num(const char *hex_string) {
     return (unsigned int) number;
 }
 
+int to_int(char * in) {
+    if(!strcmp (substring(in , 0 , 3),"#0x")||!strcmp (substring(in , 0 , 3),"#0X")) 
+        return strtol(in + 3, NULL, 16);
+    int x = atoi(in + 1);
+    return x;
+}
+int to_int_2(char * in) {  // without #
+    if(!strcmp (substring(in , 0 , 3),"0x")||!strcmp (substring(in , 0 , 3),"0X"))
+        return strtol(in + 3, NULL, 16);
+    int x = atoi(in + 2);
+    return x;
+}
 
 // #include <stdio.h>
 // int main() {
