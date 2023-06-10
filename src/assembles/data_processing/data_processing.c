@@ -99,7 +99,7 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
     }
     if(!strcmp (divide.opcode, "eon") || !strcmp (divide.opcode, "eor")){
         copy_bit (instr , 2 , 29 , 30);
-        if(!strcmp (divide.opcode, "eor")) N =1;
+        if(!strcmp (divide.opcode, "eon")) N =1;
     }
     if(!strcmp (divide.opcode, "ands") || !strcmp (divide.opcode, "bics")){
         copy_bit (instr , 3 , 29 , 30);
