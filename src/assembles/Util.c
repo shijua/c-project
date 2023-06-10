@@ -37,8 +37,8 @@ void copy_bit(unsigned int *in, unsigned int change, int start, int end) {
     assert(end >= start);
     int len = end - start + 1;
 
-    // ensure change is in the right range
-    assert(change < (1L << len));
+    // ensure change is in the right range (for supporting negative number)
+    change &= ((1L << len) - 1);
 
     // get the mask (11110001 for example)
     unsigned int mask = ~(((1U << len) - 1) << start);
@@ -83,7 +83,7 @@ int to_int(char * in) {
     return x;
 }
 int to_int_2(char * in) {  // without #
-    if(!strcmp (substring(in , 0 , 3),"0x")||!strcmp (substring(in , 0 , 3),"0X"))
+    if(!strcmp (substring(in , 0 , 2),"0x")||!strcmp (substring(in , 0 , 2),"0X"))
         return strtol(in + 2, NULL, 16);
     int x = atoi(in);
     return x;
