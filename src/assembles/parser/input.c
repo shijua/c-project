@@ -22,6 +22,35 @@ char *readfile(char *filename)
     return buffer;
 }
 
+
+// remove unused white space
+// TODO comment on whitespace
+void remove_whitespace(char* str) {
+    char* new_str = malloc(strlen(str) + 1); // allocate memory for the new string
+    if (new_str == NULL) {
+        printf("Failed to allocate memory\n");
+        return;
+    }
+    int j = 0;
+    bool flag = true;
+    // check whether it touches the first word
+    for (int i = 0; str[i] != '\0'; i++) {
+        // check if the character is not (a white space character and the previous charactor is ',' or beginning or '#' or ':')
+        if (!((isspace(str[i]) && ((str[i-1] == ',') || str[i-1] == ':' || flag || str[i+1] == '\0' || str[i+1] == '\n' || isspace(str[i+1]))) || str[i] == '\n')) { 
+            flag = false;
+            // // only true if it touches the first word
+            // if(j == 0) flag = true;
+            // // back to false after maintain the space after opcode or will not maintain space if it is a label
+            // if(isspace(str[i]) || str[i] == ':') flag = false;
+            new_str[j] = str[i]; // copy the character to the new string
+            j++;
+        }
+    }
+    new_str[j] = '\0'; // add null terminator to the end of the new string
+    strcpy(str, new_str);
+    free(new_str);
+}
+
 void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
 {
     // set the address of the first line for storge
@@ -40,6 +69,7 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
             // if the last character is ':' then it is a label
+            remove_whitespace(line);
             if (line[strlen(line) - 1] == ':')
             {
                 // remove the ':' from the label
@@ -54,27 +84,6 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
         }
     }
 }
-
-// remove unused white space
-// TODO comment on whitespace
-void remove_whitespace(char* str) {
-    char* new_str = malloc(strlen(str) + 1); // allocate memory for the new string
-    if (new_str == NULL) {
-        printf("Failed to allocate memory\n");
-        return;
-    }
-    int j = 0;
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (!(isspace(str[i]) && (i == 0 || str[i-1] == ','|| str[i-1] == '#'))) { // check if the character is not a white space character
-            new_str[j] = str[i]; // copy the character to the new string
-            j++;
-        }
-    }
-    new_str[j] = '\0'; // add null terminator to the end of the new string
-    strcpy(str, new_str);
-    free(new_str);
-}
-
 
 void generate_binary(char *buffer, char *filename, struct symbol_table *table, int file_size)
 {
@@ -93,20 +102,16 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
         if (buffer[i] == '\n' || i == file_size - 1)
         {
             *instruction = 0;
-            if(line_start == i) {
-                line_start++;
-                continue;
-            }
             // if file is end need to + 2
             if( i == file_size - 1) i += 2;
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
             // if the last character is ':' then it is a label or skip empty line
-            if (line[strlen(line) - 1] == ':' || line_start == i) {
+            remove_whitespace(line);
+            if (line[strlen(line) - 1] == ':' || strlen(line) == 0) {
                 line_start = i+1; 
                 continue;
             }
-            remove_whitespace(line);
             parse(line, address, instruction, table);
             // set for next line
             line_start = i + 1;
