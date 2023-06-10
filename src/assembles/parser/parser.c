@@ -183,7 +183,8 @@ void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_tab
     char *rt = strtok(NULL, ",");
     char *xn = strtok(NULL, ",");
     char *simm = strtok(NULL, ",");
-    if (simm == NULL)
+    // if it is literal (xn[0] != '[' if for checking zero unsigned offset)
+    if (simm == NULL && xn[0] != '[')
     {
         // then only two parameters (only for ldr)
         assert(!strcmp(opcode, "ldr"));

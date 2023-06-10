@@ -32,6 +32,11 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
     {
         if (buffer[i] == '\n')
         {
+            // jump empty line
+            if(line_start == i) {
+                line_start++;
+                continue;
+            }
             // copy the line into line (don't include '\n')
             char *line = substring(buffer, line_start, i);
             // if the last character is ':' then it is a label
@@ -40,10 +45,11 @@ void build_symbol_table(char *buffer, struct symbol_table *table, int file_size)
                 // remove the ':' from the label
                 line[strlen(line) - 1] = '\0';
                 symbol_table_push(table, line, address);
+            } else {
+                address += 4;
             }
             // set for next line
             line_start = i + 1;
-            address += 4;
             free(line);
         }
     }
@@ -87,7 +93,10 @@ void generate_binary(char *buffer, char *filename, struct symbol_table *table, i
         if (buffer[i] == '\n' || i == file_size - 1)
         {
             *instruction = 0;
-            if(line_start == i) continue;
+            if(line_start == i) {
+                line_start++;
+                continue;
+            }
             // if file is end need to + 2
             if( i == file_size - 1) i += 2;
             // copy the line into line (don't include '\n')
