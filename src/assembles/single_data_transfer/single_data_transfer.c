@@ -45,11 +45,11 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
             copy_bit(instruction, 1, 24, 24);
             if (sf) {
                 // When Rt is an X-register
-                unsigned int imm12 = atoi(divide.simm + 1) / 8;
+                unsigned int imm12 = to_int(divide.simm) / 8;
                 copy_bit(instruction, imm12, 10, 21);
             } else {
                 // When Rt is an W-register
-                unsigned int imm12 = atoi(divide.simm + 1) / 4;
+                unsigned int imm12 = to_int(divide.simm) / 4;
                 copy_bit(instruction, imm12, 10, 21);
             }
         } else {
@@ -66,14 +66,14 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
             copy_bit(instruction, 1, 10, 10);
             copy_bit(instruction, 1, 11, 11);
             divide.simm[strlen(divide.simm) - 2] = '\0'; // remove the last ']!'
-            int simm9 = atoi(divide.simm + 1);
+            int simm9 = to_int(divide.simm);
             simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
             copy_bit(instruction, simm9, 12, 20);
         } else {
             // post-index
             copy_bit(instruction, 1, 10, 10);
             copy_bit(instruction, 0, 11, 11);
-            int simm9 = atoi(divide.simm + 1);
+            int simm9 = to_int(divide.simm);
             simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
             copy_bit(instruction, simm9, 12, 20);
         }
@@ -100,7 +100,7 @@ void tokenise_load_store_literal(unsigned int *instruction, struct load_store_li
         simm19 = (literal_address - address) / 4;
     } else {
         // if it is an unsigned immediate address
-        int target_address = atoi(divide.literal + 1); // get the literal address (remove the front #)
+        int target_address = to_int(divide.literal); // get the literal address (remove the front #)
         simm19 = (target_address - address) / 4;
     }
     simm19 = simm19 < 0 ? simm19 & 0x7FFFF : simm19; // get corresponding unsigned 19 bit
