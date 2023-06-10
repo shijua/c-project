@@ -2,6 +2,7 @@
 #include "../Util.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <printf.h>
 
@@ -107,7 +108,7 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
 
     if(divide.shift != NULL){
         copy_opr (instr , divide.shift , 0 , N); //opr
-        copy_bit(instr , atoi(divide.shift + 5) , 10 , 15);//operand
+        copy_bit(instr , to_int(divide.shift + 4) , 10 , 15);//operand
     }
     else{
         copy_bit (instr , N, 21 , 24);//opr
