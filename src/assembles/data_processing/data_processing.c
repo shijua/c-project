@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <printf.h>
 
 void copy_arithm_opc (unsigned int *instr , char* opcode){
     if(!strcmp (opcode, "add")){
@@ -114,32 +115,67 @@ extern void tokenise_logical (unsigned int* instr , struct logical divide){
     }
 }
 
-extern void tokenise_move_wide (unsigned int* instr , struct move_wide divide){
-    if(!strcmp (divide.opcode, "movz")){  //opc
-        copy_bit (instr , 0 , 29 , 30);
+//extern void tokenise_move_wide (unsigned int* instr , struct move_wide divide){
+//    if(!strcmp (divide.opcode, "movz")){  //opc
+//        copy_bit (instr , 0 , 29 , 30);
+//    }
+//    if(!strcmp (divide.opcode, "movn")){
+//        copy_bit (instr , 2 , 29 , 30);
+//    }
+//    if(!strcmp (divide.opcode, "movk")){
+//        copy_bit (instr , 3 , 29 , 30);
+//    }
+//    copy_bit (instr , 2 , 23 , 25);//opi
+//    copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
+//    copy_bit (instr , 4 , 26 , 28);//op0
+//    copy_bit (instr , 2 , 23 , 25);//opi --- why there is two opi? from davie
+//    copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
+//    //divide.imm + 3 is for eliminating the prefix "#0x" of imm
+//    //strtol is turns a string representing hex to a int.
+//    copy_bit (instr , to_int(divide.imm), 5 , 20); //imm12
+//    if(divide.shift != NULL){
+//        assert (atoi(divide.shift + 5)%16 == 0);
+//        copy_bit(instr , atoi(divide.shift + 5)/16 , 21 , 22);
+//    }
+//    else{
+//        copy_bit(instr , 0 , 21 , 22);
+//    }
+//}
+void tokenise_move_wide(unsigned int *instruction, struct move_wide divide){
+    //opi
+    copy_bit(instruction, 5, 23, 25);
+    if(strcmp(divide.opcode, "movn") == 0){
+        copy_bit(instruction, 0, 29, 30);
     }
-    if(!strcmp (divide.opcode, "movn")){
-        copy_bit (instr , 2 , 29 , 30);
+    else if(strcmp(divide.opcode, "movz") == 0){
+        copy_bit(instruction, 2, 29, 30);
     }
-    if(!strcmp (divide.opcode, "movk")){
-        copy_bit (instr , 3 , 29 , 30);
-    }
-    copy_bit (instr , 2 , 23 , 25);//opi
-    copy_bit (instr , (check_bit (divide.rd)) , 31 , 31);//sf
-    copy_bit (instr , 4 , 26 , 28);//op0
-    copy_bit (instr , 2 , 23 , 25);//opi
-    copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
-    //divide.imm + 3 is for eliminating the prefix "#0x" of imm
-    //strtol is turns a string representing hex to a int.
-    copy_bit (instr , to_int(divide.imm), 5 , 20); //imm12
-    if(divide.shift != NULL){
-        assert (atoi(divide.shift + 5)%16 == 0);
-        copy_bit(instr , atoi(divide.shift + 5)/16 , 21 , 22);
+    else if(strcmp(divide.opcode, "movk") == 0){
+        copy_bit(instruction, 3, 29, 30);
     }
     else{
-        copy_bit(instr , 0 , 21 , 22);
+        printf("Invalid opcode\n");
     }
+    //sim16
+    copy_bit(instruction, to_int(divide.imm), 5, 20);
+    //rd
+    copy_bit(instruction, register_to_bin(divide.rd), 0, 4);
+    //26-28
+    copy_bit(instruction, 4, 26, 28);
+    copy_bit (instruction , (check_bit (divide.rd)) , 31 , 31);//sf
+    if(divide.shift != NULL){
+        assert (atoi(divide.shift + 5)%16 == 0);
+        copy_bit(instruction , atoi(divide.shift + 5)/16 , 21 , 22);
+    }
+    else{
+        copy_bit(instruction , 0 , 21 , 22);
+    }
+
+
+
 }
+
+
 
 void tokenise_multiply(unsigned int *instr, struct multiply divide){
     copy_bit (instr , register_to_bin(divide.rd) , 0 , 4);//rd
