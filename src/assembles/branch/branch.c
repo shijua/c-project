@@ -48,7 +48,8 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
         // PC = Xn
         sf = 3;
         copy_bit(instruction, 0, 0, 4);
-        copy_bit(instruction, 0x87C0, 5, 25);
+        copy_bit(instruction, 0x87C0, 10, 25);
+        copy_bit(instruction, register_to_bin(divide.literal), 5, 9); //Xn
 
     } else if (strcmp(op, "eq") == 0) {
         // equal
