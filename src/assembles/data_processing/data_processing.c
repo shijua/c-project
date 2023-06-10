@@ -71,7 +71,7 @@ extern void tokenise_add_sub_register (unsigned int* instr , struct add_sub_regi
     if(divide.shift != NULL){
         copy_opr (instr , divide.shift , 1 , 0); //opr
         
-        copy_bit(instr , atoi(divide.shift + 5) , 10 , 15);//operand
+        copy_bit(instr , to_int(divide.shift + 4) , 10 , 15);//operand
     }
     else{
         copy_bit (instr , 8, 21 , 24);//opr
@@ -155,13 +155,5 @@ void tokenise_multiply(unsigned int *instr, struct multiply divide){
         copy_bit(instr , 1 , 15 , 15);
     }
 }
-
-// int main(){
-    
-// }
-int main(){
-    printf("hello\n");
-}
-
 
 
