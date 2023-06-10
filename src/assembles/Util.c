@@ -82,7 +82,7 @@ int to_int(char * in) {
     int x = atoi(in + 1);
     return x;
 }
-int to_int_2(char * in) {  // without #
+int to_int_without_hash(char * in) {  // without #
     if(!strcmp (substring(in , 0 , 2),"0x")||!strcmp (substring(in , 0 , 2),"0X"))
         return strtol(in + 2, NULL, 16);
     int x = atoi(in);

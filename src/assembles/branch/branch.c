@@ -26,7 +26,7 @@ void set_condition(unsigned int *instruction, struct branch divide, struct symbo
     if (is_label(divide.literal)) {
         set_condition_label(instruction, divide.literal, table, cond, address);
     } else {
-        set_condition_num(instruction, to_int_2(divide.literal), table, cond, address);
+        set_condition_num(instruction, to_int_without_hash(divide.literal), table, cond, address);
     }
 }
 
@@ -40,7 +40,7 @@ void tokenise_branch(unsigned int *instruction, struct branch divide, struct sym
         if(is_label(divide.literal)){
             operand = (symbol_table_get(table, divide.literal) - address) / 4;
         }else{
-            operand = (to_int_2(divide.literal) - address) / 4;
+            operand = (to_int_without_hash(divide.literal) - address) / 4;
         }
         copy_bit(instruction, operand, 0, 25);  //sim26
 
