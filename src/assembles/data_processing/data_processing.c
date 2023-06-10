@@ -171,8 +171,8 @@ void tokenise_move_wide(unsigned int *instruction, struct move_wide divide){
     copy_bit(instruction, 4, 26, 28);
     copy_bit (instruction , (check_bit (divide.rd)) , 31 , 31);//sf
     if(divide.shift != NULL){
-        assert (atoi(divide.shift + 5)%16 == 0);
-        copy_bit(instruction , atoi(divide.shift + 5)/16 , 21 , 22);
+        assert (to_int(divide.shift + 1)%16 == 0);
+        copy_bit(instruction , to_int(divide.shift + 1)/16 , 21 , 22);
     }
     else{
         copy_bit(instruction , 0 , 21 , 22);

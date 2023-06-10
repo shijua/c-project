@@ -8,7 +8,7 @@
 // format: ror or x[num] or w[num] (ex: x10 w0)
 char register_to_bin(char *in) {
     // zero register gives 11111;
-    if (!strcmp("rzr", in)) 
+    if (!strcmp("rzr", in)||!strcmp("xzr", in)) 
         return 0x1F;
     // otherwise check the rest characters(except the first x or w)
     // convert string into integer
