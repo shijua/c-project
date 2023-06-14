@@ -1,21 +1,60 @@
 \documentclass[11pt]{article}
 
 \usepackage{fullpage}
-
+\usepackage{indentfirst}
 \begin{document}
 
-\title{Our Extension...}
-\author{TODO}
+\title{Final Report}
+\author{Weijun Huang, Lihaomin Qiu, Molan Yang, Yifan Jiang}
 
 \maketitle
 
-\section{Introduction}
+\section{assembler}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+In the assembler, our objective is to translate the corresponding assembly code into binary format. The instructions in the assembler are the same as in the emulator, covering a range of operations from arithmetic operations to branching, single data transfer, and special instructions.
 
+\subsection{structure}
+
+Similar to the emulator, our assembler project follows a specific file and directory structure.  The main file, "assemble.c," is located outside of any directories. Inside the main directory, we have a directory for each type of instruction, including arithmetic operations, branching, single data transfer, and special instructions. Additionally, we have an additional subdirectory named "parser" that contains the files related to input handling and parsing. Furthermore, certain crucial files like "Util", "parseformat," and "symboltable" are located directly within the "assembles" directory to prevent cyclic includes. By doing so, efficient referencing of these files can be ensured throughout the project, as they are extensively utilized by various other components.  \\ 
+
+Furthermore, To streamline the build process, we have implemented a makefile in each directory. The makefile in the outer directory takes care of calling the corresponding makefile in the inner directory, resulting in the generation of library files. This approach simplifies the inclusion of necessary files and ensures proper linkage between different components of the assember. \\
+
+By following this structured approach, we promote modularity, maintainability, and ease of development. It allows us to work on specific instruction types independently while ensuring smooth integration and collaboration among different components.
+
+\subsection{implementation}
+In the main function of the assembler, two arguments are received: the input and output files. The first pass of the assembler involves building a symbol table, implemented using a dynamic array. \\
+
+It reads each line and identifies the lines that use labels, adding the label name and its corresponding address to the symbol table. \\
+
+After the first pass, the second pass begins. This pass reads each line, removes redundant white spaces, and uses the parser to determine the type of instruction by checking the opcode. If an alias instruction is encountered, it is renamed using a separate function. The parser then parses the remaining line into different elements by using the comma as a delimiter. These elements, along with the opcode, are passed to the corresponding tokenizer, which converts them into binary code. 
+The resulting binary code is stored as an unsigned integer since it represents a 32-bit binary value. Finally, the binary code is written into a binary file as output.
+
+\subsection{debugging}
+The debugging process in the assembler was challenging but relatively easier compared to the emulator, as each line has less direct relation to other lines. \\
+
+One significant issue we encountered was dealing with white spaces. During the debugging process, we encountered test cases that occasionally included unnecessary spaces at the start, end, or after commas. Moreover, it was crucial to ensure the presence of specific spaces between the opcode and the remaining line, as well as within shift statements. The challenge in this scenario was identifying the commas that needed to be removed while preserving the structural integrity of the code.\\
+
+Another challenge arose when checking and converting strings into decimal or hexadecimal values, particularly when they started with a '\#' symbol (as in the lines corresponding to arithmetic operations). We also faced problems while handling aliases, as new memory needed to be allocated and a pointer returned after the alias was generated to pass it into the tokeniser function. Furthermore, we experienced difficulties when running the testsuite on macOS devices. However, we were able to resolve this issue by utilizing lab machines for testing purposes.
+
+\section{extension}
+TODO: description
+\subsection{challenges}
+TODO
+\subsection{testing}
+TODO
+\section{reflection}
+TODO
+\subsection{group reflection}
+TODO
+\subsection{individual reflections}
+TODO
+
+
+
+\begin{itemize}
+\item Weijun huang:
+\item Lihaomin Qiu:
+\item Molan Yang:
+\item Yifan Jiang:
+\end{itemize}
 \end{document}
