@@ -6,6 +6,7 @@
 #include "input.h"
 #include "parser.h"
 #include "../Util.h"
+#define IS_DELIMITER(str, i, flag) ((str[i-1] == ',') || (str[i-1] == ':') || (flag) || (str[i+1] == '\0') || (str[i+1] == '\n') || isspace(str[i+1]))
 char *readfile(char *filename)
 {
     FILE *input = fopen(filename, "r"); // Open the file in read
@@ -36,7 +37,7 @@ void remove_whitespace(char* str) {
     // check whether it touches the first word
     for (int i = 0; str[i] != '\0'; i++) {
         // check if the character is not (a white space character and the previous charactor is ',' or beginning or '#' or ':')
-        if (!((isspace(str[i]) && ((str[i-1] == ',') || str[i-1] == ':' || flag || str[i+1] == '\0' || str[i+1] == '\n' || isspace(str[i+1]))) || str[i] == '\n')) { 
+        if (!((isspace(str[i]) && IS_DELIMITER(str, i, flag)) || str[i] == '\n')) { 
             flag = false;
             // // only true if it touches the first word
             // if(j == 0) flag = true;
