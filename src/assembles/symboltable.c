@@ -4,8 +4,7 @@
 #include "symboltable.h"
 
 // create the table
-struct symbol_table *symbol_table_create(int cap)
-{
+struct symbol_table *symbol_table_create(int cap) {
     struct symbol_table *table = malloc(sizeof(struct symbol_table));
     assert(table != NULL);
     table->name = malloc(cap * sizeof(char *));
@@ -18,8 +17,7 @@ struct symbol_table *symbol_table_create(int cap)
 }
 
 // get relative address by name (guaranteed to be in the table)
-int symbol_table_get(struct symbol_table *table, char *in)
-{
+int symbol_table_get(struct symbol_table *table, char *in) {
     int data = -1;
     for (int i = 0; i < table->len; i++)
         if (!strcmp(table->name[i], in))
@@ -29,10 +27,8 @@ int symbol_table_get(struct symbol_table *table, char *in)
 }
 
 // aim for increasing the capacity of the table if it is full
-static void grow(struct symbol_table *table)
-{
-    if (table->len + 1 >= table->cap)
-    {
+static void grow(struct symbol_table *table) {
+    if (table->len + 1 >= table->cap) {
         table->cap += 100;
         table->name = realloc(table->name, table->cap * sizeof(char *));
         table->address = realloc(table->address, table->cap * sizeof(int));
@@ -42,8 +38,7 @@ static void grow(struct symbol_table *table)
 }
 
 // push a new name and address into the table
-void symbol_table_push(struct symbol_table *table, char *name_in, int address_in)
-{
+void symbol_table_push(struct symbol_table *table, char *name_in, int address_in) {
     grow(table);
     // allocate memory for the name
     char *temp = malloc(strlen(name_in) + 1);
@@ -54,8 +49,7 @@ void symbol_table_push(struct symbol_table *table, char *name_in, int address_in
 }
 
 // free the table
-void symbol_table_free(struct symbol_table *table)
-{
+void symbol_table_free(struct symbol_table *table) {
     for (int i = 0; i < table->len; i++)
         free(table->name[i]);
     free(table->name);
