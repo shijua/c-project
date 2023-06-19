@@ -35,7 +35,7 @@ void Branch(char* memory, struct Registers *r, struct send_branch pre){
     free(lit);
 }
 
-bool conditional_branch(struct Registers * r, unsigned int condition) {
+bool conditional_branch(struct Registers * r, uint32_t condition) {
     switch (condition) {
         case 0:
             return r->pstate.Z == 1;

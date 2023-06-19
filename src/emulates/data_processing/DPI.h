@@ -2,24 +2,24 @@
 #include "../Util.h"
 struct DPI_instruction
 {
-    long long * rd;
+    int64_t * rd;
     bool sf;
-    int opc;
-    long long operand;
+    uint8_t opc;
+    int64_t operand;
     bool opi;
-    int topBit;
+    uint8_t topBit;
 };
 
 struct arithmetic_Operand{
     bool sh;
-    long long * rn;
-    int imm12;
+    int64_t * rn;
+    int32_t imm12;
 
 };
 
 struct wideMove_Operand{
-    int hw;
-    int imm16;
+    uint8_t hw;
+    int32_t imm16;
 };
 
 extern void DPI(char* memory, struct Registers* registers, struct send_DPI divide);

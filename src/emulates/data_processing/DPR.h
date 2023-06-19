@@ -3,17 +3,17 @@
 #include "../Util.h"
 struct DPR_instruction
 {
-    long long * rd;
-    long long * rn;
-    long long * rm;
+    int64_t * rd;
+    int64_t * rn;
+    int64_t * rm;
     bool sf;
-    int opc;
-    long long operand;
-    int opr;
+    int32_t opc;
+    int64_t operand;
+    int32_t opr;
     bool M;
-    int topBit;
+    int32_t topBit;
 };
 
 extern void DPR(char* memory, struct Registers* registers, struct send_DPR divide);
-extern void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers); 
-extern void Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers);
+extern void Logical_Operation(struct DPR_instruction instr , int64_t OP2 , struct Registers* registers); 
+extern void Arithmetic_Operation (struct DPR_instruction instr , int64_t OP2, struct Registers* registers);

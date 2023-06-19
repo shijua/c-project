@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "inputformat.h"
 
-struct send_DPI to_DPI(unsigned int instruction) {
+struct send_DPI to_DPI(uint32_t instruction) {
     struct send_DPI divide;
     divide.sf = get_bit(31, 1, instruction);
     divide.opc = get_bit(30, 2, instruction);
@@ -11,7 +11,7 @@ struct send_DPI to_DPI(unsigned int instruction) {
     return divide;
 }
 
-struct send_DPR to_DPR(unsigned int instruction) {
+struct send_DPR to_DPR(uint32_t instruction) {
     struct send_DPR divide;
     divide.sf = get_bit(31, 1, instruction);
     divide.opc = get_bit(30, 2, instruction);
@@ -24,7 +24,7 @@ struct send_DPR to_DPR(unsigned int instruction) {
     return divide;
 }
 
-struct sdtp to_SDT(unsigned int instruction) {
+struct sdtp to_SDT(uint32_t instruction) {
     struct sdtp divide;
     divide.sf = get_bit(30, 1, instruction);
     divide.U = get_bit(24, 1, instruction);
@@ -35,7 +35,7 @@ struct sdtp to_SDT(unsigned int instruction) {
     return divide;
 }
 
-struct loadliteral to_LL(unsigned int instruction) {
+struct loadliteral to_LL(uint32_t instruction) {
     struct loadliteral divide;
     divide.sf = get_bit(30, 1, instruction);
     divide.simm19 = sget_bit(23, 19, instruction);
@@ -43,7 +43,7 @@ struct loadliteral to_LL(unsigned int instruction) {
     return divide;
 }
 
-struct send_branch to_branch(unsigned int instruction) {
+struct send_branch to_branch(uint32_t instruction) {
     struct send_branch divide;
     divide.sf = get_bit(31, 2, instruction);
     divide.operand = sget_bit(25, 26, instruction);

@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include "Util.h"
 // Function to get the value of specific bits
-unsigned int get_bit(int startBit, int numBits, unsigned int number) {
+uint32_t get_bit(int startBit, int numBits, uint32_t number) {
     // Create a bitmask with the desired number of bits
-    unsigned int bitmask = (1 << numBits) - 1;
+    uint32_t bitmask = (1 << numBits) - 1;
     // Shift the result back to the rightmost bits
-    unsigned int result = number >> (startBit - numBits + 1);
+    uint32_t result = number >> (startBit - numBits + 1);
     // Apply the bitmask to the number using bitwise AND operation
     result &= bitmask;
     return result;
 }
 
 // Function to get the value of specific bits
-unsigned long long get_bitl(int startBit, int numBits, unsigned long long number) {
+uint64_t get_bitl(int startBit, int numBits, uint64_t number) {
     // Create a bitmask with the desired number of bits
-    unsigned long long bitmask = (1 << numBits) - 1;
+    uint64_t bitmask = (1 << numBits) - 1;
     // Shift the result back to the rightmost bits
-    unsigned long long result = number >> (startBit - numBits + 1);
+    uint64_t result = number >> (startBit - numBits + 1);
     // Apply the bitmask to the number using bitwise AND operation
     result &= bitmask;
     return result;
@@ -25,7 +25,7 @@ unsigned long long get_bitl(int startBit, int numBits, unsigned long long number
 // get bit that will return signed int
 int sget_bit(int startBit, int numBits, int number) {
     // Create a bitmask with the desired number of bits
-    unsigned int bitmask = (1 << numBits) - 1;
+    uint32_t bitmask = (1 << numBits) - 1;
     // Shift the result back to the rightmost bits
     int result = number >> (startBit - numBits + 1);
     // Apply the bitmask to the number using bitwise AND operation
@@ -34,13 +34,13 @@ int sget_bit(int startBit, int numBits, int number) {
     return result;
 }
 
-unsigned int getBitRange(int num, int x, int y) {
-    unsigned int mask = (1u << (y - x + 1)) - 1;
+uint32_t getBitRange(int num, int x, int y) {
+    uint32_t mask = (1u << (y - x + 1)) - 1;
     return (num >> x) & mask;
 }
 
 // function to check whether it has borrow if sub is 1 or carry if sub is 0
-bool hasCarryBorrow(long long a, long long b, bool is_64, bool is_sub) {
+bool hasCarryBorrow(int64_t a, int64_t b, bool is_64, bool is_sub) {
     if (!is_64) {
         a <<= 32;
         b <<= 32;
@@ -51,7 +51,7 @@ bool hasCarryBorrow(long long a, long long b, bool is_64, bool is_sub) {
         carry = 1;
         b = ~b;
     }
-    long long next = 1;
+    int64_t next = 1;
     int count = 0;
     // compare the bit in a and b (emulate full adder to get borrow/carry)
     while (count < 64) {
@@ -65,9 +65,9 @@ bool hasCarryBorrow(long long a, long long b, bool is_64, bool is_sub) {
 }
 
 // function for overflow and underflow
-bool overflow(long long a, long long b, bool is_64)
+bool overflow(int64_t a, int64_t b, bool is_64)
 {
-    // if it is 32 then shifting for still detecting overflow as a, b is in long long
+    // if it is 32 then shifting for still detecting overflow as a, b is in int64_t
     if (!is_64) { 
         a <<= 32;
         b <<= 32;

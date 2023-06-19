@@ -14,8 +14,8 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     instr.M = divide.M;
     instr.opr = divide.opr;
     instr.operand = divide.operand;
-    int shift = get_bit (2 , 2 , instr.opr);
-    long long OP2;
+    uint8_t shift = get_bit (2 , 2 , instr.opr);
+    int64_t OP2;
     switch (shift) // perform shift based on the mid two bits of opr
     {
     case 0:
@@ -46,7 +46,7 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
         //check if opr is 1xxx or 0xxx, if it is 1xxx then we perform arithmetic operation or Multiplication
         //otherwise perform logic operation.
         if(instr.M){
-            long long * ra;
+            int64_t * ra;
             if(get_bitl (4 , 5 , instr.operand) == 31) {
                 ra = &(registers->ZR);
             }
@@ -77,8 +77,8 @@ void DPR(char* memory, struct Registers* registers, struct send_DPR divide){
     }
 }
 
-void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Registers* registers){
-    long long res;
+void Logical_Operation(struct DPR_instruction instr , int64_t OP2 , struct Registers* registers){
+    int64_t res;
     switch (instr.opc)
         {
         case 0:
@@ -109,9 +109,9 @@ void Logical_Operation(struct DPR_instruction instr , long long OP2 , struct Reg
 }
 
 
-void  Arithmetic_Operation (struct DPR_instruction instr , long long OP2, struct Registers* registers){
-    long long addition = OP2 + *instr.rn;
-    long long subtraction = *instr.rn - OP2;
+void  Arithmetic_Operation (struct DPR_instruction instr , int64_t OP2, struct Registers* registers){
+    int64_t addition = OP2 + *instr.rn;
+    int64_t subtraction = *instr.rn - OP2;
     switch (instr.opc) //perform operation based on opc(operation code)
     {
     case 0:

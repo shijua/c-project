@@ -12,8 +12,8 @@
 #include "../data_processing/DPI.h"
 #include "../data_processing/DPR.h"
 
-void decode(char* memory, struct Registers* registers, unsigned int instruction) {
-    int op0 = get_bit(28, 4, instruction);
+void decode(char* memory, struct Registers* registers, uint32_t instruction) {
+    uint8_t op0 = get_bit(28, 4, instruction);
     // printf("op0: %d\n", op0);
     if (instruction == -721215457) {
         nop(memory, registers);

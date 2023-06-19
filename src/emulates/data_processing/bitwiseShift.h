@@ -1,6 +1,7 @@
 #include <stdbool.h>
+#include <stdint.h>
 
-extern long long logicalShiftLeft(long long value, int shiftAmount, bool is64Bit);
-extern long long logicalShiftRight(long long value, int shiftAmount, bool is64Bit);
-extern long long arithmeticShiftRight(long long value, int shiftAmount, bool is64Bit);
-extern long long rotateRight(long long value, int shiftAmount, bool is64Bit);
+extern int64_t logicalShiftLeft(int64_t value, int shiftAmount, bool is64Bit);
+extern int64_t logicalShiftRight(int64_t value, int shiftAmount, bool is64Bit);
+extern int64_t arithmeticShiftRight(int64_t value, int shiftAmount, bool is64Bit);
+extern int64_t rotateRight(int64_t value, int shiftAmount, bool is64Bit);

@@ -40,8 +40,8 @@ void arithmetic (struct Registers* registers, struct DPI_instruction instr , str
     if(opr.sh){
         opr.imm12 = opr.imm12 << 12; //if sh is 1 then right move by 12
     }
-    long long addition = opr.imm12 + *opr.rn;
-    long long subtraction = *opr.rn - opr.imm12;
+    int64_t addition = opr.imm12 + *opr.rn;
+    int64_t subtraction = *opr.rn - opr.imm12;
     switch (instr.opc) //perform operation based on opc(operation code)
     {
     case 0:
@@ -77,8 +77,8 @@ void wideMove (struct Registers* registers , struct DPI_instruction instr , stru
     int shift = opr.hw * 16;
     instr.operand <<= shift;
     // 64 1 bits
-    long long lon1 = ~0LL;
-    // use char as pointer I can modify long long byte by byte
+    int64_t lon1 = ~0LL;
+    // use char as pointer I can modify int64_t byte by byte
     char* rd = (char*)instr.rd;
     switch (instr.opc)
     {

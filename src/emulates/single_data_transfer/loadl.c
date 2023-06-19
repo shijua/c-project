@@ -3,7 +3,7 @@
 
 void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
     // init variables
-    unsigned long long address;
+    uint64_t address;
     address = (l.simm19 * 4 + regs->PC);
     if (l.sf == 0) {
         // target reg is 32-bits
@@ -14,7 +14,7 @@ void LoadLiteral(char* memory, struct Registers* regs, struct loadliteral l) {
         }
     } else {
         // target reg is 64-bits
-        long long content;
+        int64_t content;
         // get content from memory
         memcpy(&content, memory+address, 8);
         if (l.rt <= 30) {
