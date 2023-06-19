@@ -37,7 +37,7 @@ uint32_t melody[2][NUM_BUTTON] = {
 bool current = 1;
 
 // use for prevent double press at a really short amount of time
-#define MIN_DIFF 10
+#define MIN_DIFF 10000
 uint32_t last_tick;
 
 void buzz(uint32_t freq, int button) {
@@ -95,8 +95,6 @@ void initialise() {
 	// set buzzer's gpio to output 
     gpioSetMode(BUZZER, PI_OUTPUT);
 }
-
-
 
 int main() {
 	// initialise the program

@@ -41,7 +41,7 @@ bool check_bit(char *in) {
 // get the substring of a string
 // remember to free the returned pointer
 // ex: substring("hello world", 0, 5) gives "hell"
-char *substring(char *str, uint8_t start, uint8_t end) {
+char *substring(char *str, uint32_t start, uint32_t end) {
     int len = end - start;
     char *substr = malloc(len + 1);
     strncpy(substr, str + start, len);
