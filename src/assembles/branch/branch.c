@@ -28,7 +28,7 @@ static void set_condition(uint32_t *instruction, struct branch divide, struct sy
 
 void tokenise_branch(uint32_t *instruction, struct branch divide, struct symbol_table *table, u_int32_t address) {
     char *op = divide.opcode; // the pointer of operand of the branch instruction
-    bool sf = 1; //condition case
+    u_int8_t sf = 1; //condition case
     int32_t operand;
     if (strcmp(op, "b") == 0) {
         // PC = literal
