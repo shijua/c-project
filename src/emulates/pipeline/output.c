@@ -6,7 +6,7 @@
 void output_general(int64_t* general_register_ptr, FILE* fp) {
     for (int i = 0; i < 31; i++) {
         // output 16 hexadecimals
-        fprintf(fp, "X%02d    = %016lx\n", i, *(general_register_ptr+i));
+        fprintf(fp, "X%02d    = %016llx\n", i, (long long) *(general_register_ptr+i));
     }
 }
 
@@ -45,7 +45,7 @@ void output(struct Registers* register_ptr, char* memory, FILE* fp) {
     output_general(register_ptr->general, fp);
 
     // output PC
-    fprintf(fp, "PC     = %016lx\n", register_ptr->PC);
+    fprintf(fp, "PC     = %016llx\n", (long long) register_ptr->PC);
 
     // output P-state
     fprintf(fp, "PSTATE : ");
