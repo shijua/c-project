@@ -8,6 +8,10 @@ char memory[MAX_MEMORY];
 struct Registers registers;
 // input format: ./emulate <input .bin file> <output .out file>
 int main(int argc, char **argv) {
+  if (argc != 3) {
+    printf("inputformat: ./emulate <input .bin file> <output .out file>\n");       
+    return 0;
+  }
   readfile(argv[1], memory);
   // initialise PC to 0
   registers.PC = 0;

@@ -6,6 +6,10 @@
 #include "assembles/symboltable.h"
 #include "assembles/parser/parser.h"
 int main(int argc, char **argv) {
+    if (argc != 3) {
+        printf("inputformat: ./assemble <.s file> <.bin file>\n");       
+        return 0;
+    }
     char *buffer = readfile(argv[1]);
     int file_size = strlen(buffer) - 1;
 
