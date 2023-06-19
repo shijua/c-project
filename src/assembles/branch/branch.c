@@ -4,21 +4,21 @@
 #include "stdio.h"
 #include "assert.h"
 
-static void set_condition_label(uint32_t *instruction, char *label, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
+static void set_condition_label(uint32_t *instruction, char *label, struct symbol_table *table, uint8_t cond, uint32_t address) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
     copy_bit(instruction, (symbol_table_get(table, label) - address) / 4, 5, 23); //sim19
 }
 
-static void set_condition_num(uint32_t *instruction, int num, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
+static void set_condition_num(uint32_t *instruction, int num, struct symbol_table *table, uint8_t cond, uint32_t address) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
     copy_bit(instruction, (num - address) / 4, 5, 23); //sim19
 }
 
-static void set_condition(uint32_t *instruction, struct branch divide, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
+static void set_condition(uint32_t *instruction, struct branch divide, struct symbol_table *table, uint8_t cond, uint32_t address) {
     if (is_label(divide.literal)) {
         set_condition_label(instruction, divide.literal, table, cond, address);
     } else {
@@ -26,9 +26,9 @@ static void set_condition(uint32_t *instruction, struct branch divide, struct sy
     }
 }
 
-void tokenise_branch(uint32_t *instruction, struct branch divide, struct symbol_table *table, u_int32_t address) {
+void tokenise_branch(uint32_t *instruction, struct branch divide, struct symbol_table *table, uint32_t address) {
     char *op = divide.opcode; // the pointer of operand of the branch instruction
-    u_int8_t sf = 1; //condition case
+    uint8_t sf = 1; //condition case
     int32_t operand;
     if (strcmp(op, "b") == 0) {
         // PC = literal

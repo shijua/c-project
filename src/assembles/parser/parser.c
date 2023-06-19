@@ -137,7 +137,7 @@ void parse_multiply(uint32_t *instruction, char *opcode) {
     tokenise_multiply(instruction, multiply_init(opcode, rd, rn, rm, ra));
 }
 
-void parse_load_store(uint32_t *instruction, char *opcode, struct symbol_table *table, u_int32_t address) {
+void parse_load_store(uint32_t *instruction, char *opcode, struct symbol_table *table, uint32_t address) {
     char *rt = strtok(NULL, ",");
     char *xn = strtok(NULL, ",");
     char *simm = strtok(NULL, ",");
@@ -153,7 +153,7 @@ void parse_load_store(uint32_t *instruction, char *opcode, struct symbol_table *
 }
 
 // overall parsing for each line
-void parse(char *in, u_int32_t address, uint32_t *instruction, struct symbol_table *table) {
+void parse(char *in, uint32_t address, uint32_t *instruction, struct symbol_table *table) {
     char *opcode = strtok(in, " ");
     // if opcode is analias shown in spec, then change it to the real one
     if (!strcmp(opcode, "cmp") || !strcmp(opcode, "cmn") || !strcmp(opcode, "neg") ||

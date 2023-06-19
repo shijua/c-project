@@ -78,7 +78,7 @@ void tokenise_load_store(uint32_t *instruction, struct load_store divide, struct
             copy_bit(instruction, simm9, 12, 20);
         }
 }
-void tokenise_load_store_literal(uint32_t *instruction, struct load_store_literal divide, struct symbol_table *table, u_int32_t address) {
+void tokenise_load_store_literal(uint32_t *instruction, struct load_store_literal divide, struct symbol_table *table, uint32_t address) {
     // load literal
     bool sf = check_bit(divide.rt);
     int32_t simm19;

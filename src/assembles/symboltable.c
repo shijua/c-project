@@ -38,7 +38,7 @@ static void grow(struct symbol_table *table) {
 }
 
 // push a new name and address into the table
-void symbol_table_push(struct symbol_table *table, char *name_in, u_int32_t address_in) {
+void symbol_table_push(struct symbol_table *table, char *name_in, uint32_t address_in) {
     grow(table);
     // allocate memory for the name
     char *temp = malloc(strlen(name_in) + 1);
