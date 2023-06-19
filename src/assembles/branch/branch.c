@@ -4,29 +4,21 @@
 #include "stdio.h"
 #include "assert.h"
 
-bool is_label(char *literal) {
-    char a = literal[0];
-    if (('a' <= a && a <= 'z') || ('A' <= a && a <= 'Z')) {
-        return true;
-    }
-    return false;
-}
-
-void set_condition_label(unsigned int *instruction, char *label, struct symbol_table *table, int cond, int address) {
+static void set_condition_label(uint32_t *instruction, char *label, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
     copy_bit(instruction, (symbol_table_get(table, label) - address) / 4, 5, 23); //sim19
 }
 
-void set_condition_num(unsigned int *instruction, int num, struct symbol_table *table, int cond, int address) {
+static void set_condition_num(uint32_t *instruction, int num, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
     copy_bit(instruction, cond, 0, 3); // cond to bit 0 to 3
     copy_bit(instruction, 0, 4, 4);
     copy_bit(instruction, 0, 24, 25);
     copy_bit(instruction, (num - address) / 4, 5, 23); //sim19
 }
 
-void set_condition(unsigned int *instruction, struct branch divide, struct symbol_table *table, int cond, int address) {
+static void set_condition(uint32_t *instruction, struct branch divide, struct symbol_table *table, u_int8_t cond, u_int32_t address) {
     if (is_label(divide.literal)) {
         set_condition_label(instruction, divide.literal, table, cond, address);
     } else {
@@ -34,10 +26,10 @@ void set_condition(unsigned int *instruction, struct branch divide, struct symbo
     }
 }
 
-void tokenise_branch(unsigned int *instruction, struct branch divide, struct symbol_table *table, int address) {
+void tokenise_branch(uint32_t *instruction, struct branch divide, struct symbol_table *table, u_int32_t address) {
     char *op = divide.opcode; // the pointer of operand of the branch instruction
-    int sf = 1; //condition case
-    int operand;
+    bool sf = 1; //condition case
+    int32_t operand;
     if (strcmp(op, "b") == 0) {
         // PC = literal
         sf = 0;

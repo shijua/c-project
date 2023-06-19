@@ -100,7 +100,7 @@ char *to_alias(char *opcode, char *remain) {
 }
 
 // parsing each specific operation
-void parse_add_sub(unsigned int *instruction, char *opcode) {
+void parse_add_sub(uint32_t *instruction, char *opcode) {
     char *rd = strtok(NULL, ",");
     char *rn = strtok(NULL, ",");
     char *imm = strtok(NULL, ",");
@@ -114,7 +114,7 @@ void parse_add_sub(unsigned int *instruction, char *opcode) {
     }
 }
 
-void parse_logical(unsigned int *instruction, char *opcode) {
+void parse_logical(uint32_t *instruction, char *opcode) {
     char *rd = strtok(NULL, ",");
     char *rn = strtok(NULL, ",");
     char *rm = strtok(NULL, ",");
@@ -122,14 +122,14 @@ void parse_logical(unsigned int *instruction, char *opcode) {
     tokenise_logical(instruction, logical_init(opcode, rd, rn, rm, shift));
 }
 
-void parse_move_wide(unsigned int *instruction, char *opcode) {
+void parse_move_wide(uint32_t *instruction, char *opcode) {
     char *rd = strtok(NULL, ",");
     char *imm = strtok(NULL, ",");
     char *shift = strtok(NULL, ",");
     tokenise_move_wide(instruction, move_wide_init(opcode, rd, imm, shift));
 }
 
-void parse_multiply(unsigned int *instruction, char *opcode) {
+void parse_multiply(uint32_t *instruction, char *opcode) {
     char *rd = strtok(NULL, ",");
     char *rn = strtok(NULL, ",");
     char *rm = strtok(NULL, ",");
@@ -137,7 +137,7 @@ void parse_multiply(unsigned int *instruction, char *opcode) {
     tokenise_multiply(instruction, multiply_init(opcode, rd, rn, rm, ra));
 }
 
-void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_table *table, int address) {
+void parse_load_store(uint32_t *instruction, char *opcode, struct symbol_table *table, u_int32_t address) {
     char *rt = strtok(NULL, ",");
     char *xn = strtok(NULL, ",");
     char *simm = strtok(NULL, ",");
@@ -153,8 +153,7 @@ void parse_load_store(unsigned int *instruction, char *opcode, struct symbol_tab
 }
 
 // overall parsing for each line
-void parse(char *in, int address, unsigned int *instruction, struct symbol_table *table) {
-    // printf("Parsing: %s\n", in);
+void parse(char *in, u_int32_t address, uint32_t *instruction, struct symbol_table *table) {
     char *opcode = strtok(in, " ");
     // if opcode is analias shown in spec, then change it to the real one
     if (!strcmp(opcode, "cmp") || !strcmp(opcode, "cmn") || !strcmp(opcode, "neg") ||

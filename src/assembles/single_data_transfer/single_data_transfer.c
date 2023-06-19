@@ -1,5 +1,5 @@
 #include "single_data_transfer.h"
-void tokenise_load_store(unsigned int *instruction, struct load_store divide, struct symbol_table *table) {
+void tokenise_load_store(uint32_t *instruction, struct load_store divide, struct symbol_table *table) {
     // single data transfer without shift and not literal
     bool isldr = divide.opcode[0] == 'l';
     bool sf = check_bit(divide.rt);
@@ -45,11 +45,11 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
             copy_bit(instruction, 1, 24, 24);
             if (sf) {
                 // When Rt is an X-register
-                unsigned int imm12 = to_int(divide.simm) / 8;
+                uint32_t imm12 = to_int(divide.simm) / 8;
                 copy_bit(instruction, imm12, 10, 21);
             } else {
                 // When Rt is an W-register
-                unsigned int imm12 = to_int(divide.simm) / 4;
+                uint32_t imm12 = to_int(divide.simm) / 4;
                 copy_bit(instruction, imm12, 10, 21);
             }
         } else {
@@ -58,7 +58,7 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
                 copy_bit(instruction, 1, 11, 11);
                 copy_bit(instruction, 3, 13, 14);
                 divide.simm[strlen(divide.simm) - 1] = '\0'; // remove the last ']'
-                int xm = register_to_bin(divide.simm);
+                uint8_t xm = register_to_bin(divide.simm);
                 copy_bit(instruction, xm, 16, 20);
             }
         } else if (offset_last == '!') {
@@ -66,22 +66,22 @@ void tokenise_load_store(unsigned int *instruction, struct load_store divide, st
             copy_bit(instruction, 1, 10, 10);
             copy_bit(instruction, 1, 11, 11);
             divide.simm[strlen(divide.simm) - 2] = '\0'; // remove the last ']!'
-            int simm9 = to_int(divide.simm);
+            int16_t simm9 = to_int(divide.simm);
             simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
             copy_bit(instruction, simm9, 12, 20);
         } else {
             // post-index
             copy_bit(instruction, 1, 10, 10);
             copy_bit(instruction, 0, 11, 11);
-            int simm9 = to_int(divide.simm);
+            int16_t simm9 = to_int(divide.simm);
             simm9 = simm9 < 0 ? simm9 & 0x1FF : simm9;
             copy_bit(instruction, simm9, 12, 20);
         }
 }
-void tokenise_load_store_literal(unsigned int *instruction, struct load_store_literal divide, struct symbol_table *table, int address) {
+void tokenise_load_store_literal(uint32_t *instruction, struct load_store_literal divide, struct symbol_table *table, u_int32_t address) {
     // load literal
     bool sf = check_bit(divide.rt);
-    int simm19;
+    int32_t simm19;
 
     //set common bits
     copy_bit(instruction, 3, 27, 28);
@@ -96,11 +96,11 @@ void tokenise_load_store_literal(unsigned int *instruction, struct load_store_li
     }
     if (divide.literal[0] != '#') {
         // if it is a label
-        int literal_address = symbol_table_get(table, divide.literal);
+        uint32_t literal_address = symbol_table_get(table, divide.literal);
         simm19 = (literal_address - address) / 4;
     } else {
         // if it is an unsigned immediate address
-        int target_address = to_int(divide.literal); // get the literal address (remove the front #)
+        uint32_t target_address = to_int(divide.literal); // get the literal address (remove the front #)
         simm19 = (target_address - address) / 4;
     }
     simm19 = simm19 < 0 ? simm19 & 0x7FFFF : simm19; // get corresponding unsigned 19 bit

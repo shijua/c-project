@@ -1,4 +1,4 @@
 #include "../Util.h"
 #include "../parseformat.h"
 #include "../symboltable.h"
-void tokenise_int(unsigned int *instruction, struct constant divide);
+void tokenise_int(uint32_t *instruction, struct constant divide);

@@ -1,16 +1,17 @@
 #include <stdbool.h>
+#include <stdint.h>
 
 extern char register_to_bin(char *in);
 
-extern void copy_bit(unsigned int *in, unsigned int change, int start, int end);
+extern void copy_bit(uint32_t *in, uint32_t change, uint8_t start, uint8_t end);
 
 // check in 32 bit or 64 bit;
 extern bool check_bit(char *in);
 
-extern char *substring(char *str, int start, int end);
+extern char *substring(char *str, uint8_t start, uint8_t end);
 
-unsigned int to_num(const char *hex_string);
+extern int to_int(char *in);
 
-int to_int(char *in);
+extern int to_int_without_hash(char *in);
 
-int to_int_without_hash(char *in);
+extern bool is_label(char *literal);

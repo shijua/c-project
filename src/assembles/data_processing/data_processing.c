@@ -6,7 +6,7 @@
 #include <string.h>
 #include <printf.h>
 
-void copy_arithm_opc(unsigned int *instr, char *opcode) {
+void copy_arithm_opc(uint32_t *instr, char *opcode) {
     if (!strcmp(opcode, "add")) {
         copy_bit(instr, 0, 29, 30);
     }
@@ -21,20 +21,20 @@ void copy_arithm_opc(unsigned int *instr, char *opcode) {
     }
 }
 
-void copy_opr(unsigned int *instr, char *shift, bool is_arith, bool N) {
-    // TODO string cost lots of time
-    if (!strcmp(substring(shift, 0, 3), "lsl")) {
+void copy_opr(uint32_t *instr, char *shift, bool is_arith, bool N) {
+    char* type = substring(shift, 0, 3);
+    if (!strcmp(type, "lsl")) {
         copy_bit(instr, 8 * is_arith + N, 21, 24);//shift type : lsl
-    } else if (!strcmp(substring(shift, 0, 3), "lsr")) {
+    } else if (!strcmp(type, "lsr")) {
         copy_bit(instr, 8 * is_arith + N + 2, 21, 24);//shift type : lsr
-    } else if (!strcmp(substring(shift, 0, 3), "asr")) {
+    } else if (!strcmp(type, "asr")) {
         copy_bit(instr, 8 * is_arith + N + 4, 21, 24);//shift type : asr
-    } else if (!strcmp(substring(shift, 0, 3), "ror") && !is_arith) {
+    } else if (!strcmp(type, "ror") && !is_arith) {
         copy_bit(instr, 8 * is_arith + N + 6, 21, 24);//shift type : ror
     }
 }
 
-extern void tokenise_add_sub_immediate(unsigned int *instr, struct add_sub_immediate divide) {
+extern void tokenise_add_sub_immediate(uint32_t *instr, struct add_sub_immediate divide) {
     copy_arithm_opc(instr, divide.opcode); //opc
     // if first is not rzr then get sf by rn else rm
     // pre: at most one rzr
@@ -57,7 +57,7 @@ extern void tokenise_add_sub_immediate(unsigned int *instr, struct add_sub_immed
 
 }
 
-extern void tokenise_add_sub_register(unsigned int *instr, struct add_sub_register divide) {
+extern void tokenise_add_sub_register(uint32_t *instr, struct add_sub_register divide) {
     copy_bit(instr, register_to_bin(divide.rd), 0, 4);//rd
     copy_bit(instr, register_to_bin(divide.rn), 5, 9); //rn
     copy_bit(instr, register_to_bin(divide.rm), 16, 20); //rm
@@ -75,7 +75,7 @@ extern void tokenise_add_sub_register(unsigned int *instr, struct add_sub_regist
 
 }
 
-extern void tokenise_logical(unsigned int *instr, struct logical divide) {
+extern void tokenise_logical(uint32_t *instr, struct logical divide) {
     copy_bit(instr, register_to_bin(divide.rd), 0, 4);//rd
     copy_bit(instr, register_to_bin(divide.rn), 5, 9); //rn
     copy_bit(instr, register_to_bin(divide.rm), 16, 20); //rm
@@ -114,7 +114,7 @@ extern void tokenise_logical(unsigned int *instr, struct logical divide) {
     }
 }
 
-void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) {
+void tokenise_move_wide(uint32_t *instruction, struct move_wide divide) {
     //opi
     copy_bit(instruction, 5, 23, 25);
     if (strcmp(divide.opcode, "movn") == 0) {
@@ -141,7 +141,7 @@ void tokenise_move_wide(unsigned int *instruction, struct move_wide divide) {
     }
 }
 
-void tokenise_multiply(unsigned int *instr, struct multiply divide) {
+void tokenise_multiply(uint32_t *instr, struct multiply divide) {
     copy_bit(instr, register_to_bin(divide.rd), 0, 4);//rd
     copy_bit(instr, register_to_bin(divide.rn), 5, 9); //rn
     copy_bit(instr, register_to_bin(divide.rm), 16, 20); //rm
