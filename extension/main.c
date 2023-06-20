@@ -7,12 +7,12 @@
 #define BUZZER 21
 #define NUM_BUTTON 7
 // button that will be used from 2 to 8
-enum melody_buttons {BUT_DO = 2, BUT_RE, BUT_MI, BUT_FA, BUT_SO, BUT_LA, BUT_XI};
-// button for changing level on melody from 14 to 15
+enum tune_buttons {BUT_DO = 2, BUT_RE, BUT_MI, BUT_FA, BUT_SO, BUT_LA, BUT_XI};
+// button for changing level on tune from 14 to 15
 #define BUT_LEVEL_1 0
 #define BUT_LEVEL_2 1
 
-// define melody
+// define tune
 #define DO_1 262
 #define RE_1 294
 #define MI_1 330
@@ -29,7 +29,7 @@ enum melody_buttons {BUT_DO = 2, BUT_RE, BUT_MI, BUT_FA, BUT_SO, BUT_LA, BUT_XI}
 #define LA_2 880
 #define XI_2 988
 
-uint32_t melody[2][NUM_BUTTON] = {
+uint32_t tune[2][NUM_BUTTON] = {
     {DO_1, RE_1, MI_1, FA_1, SO_1, LA_1, XI_1},
     {DO_2, RE_2, MI_2, FA_2, SO_2, LA_2, XI_2}
 };
@@ -56,12 +56,12 @@ void buzz(uint32_t freq, int button) {
 
 // level is 1 when button is released
 // 0 when button is pressed
-void melody_button_pressed (int gpio, int level, uint32_t tick) {
+void tune_button_pressed (int gpio, int level, uint32_t tick) {
     // if button is pressed and not double press
     if (level == 0 && tick - last_tick > MIN_DIFF) { 
         last_tick = tick;
-        // give corresponding melody to buzz
-        buzz(melody[current][gpio-BUT_DO], gpio);
+        // give corresponding tune to buzz
+        buzz(tune[current][gpio-BUT_DO], gpio);
     }
 }
 
@@ -86,7 +86,7 @@ void initialise() {
     uint8_t button = BUT_DO;
 	for (int i = 0; i < NUM_BUTTON; i++) {
 		// when button pressed, it will call this function
-		gpioSetAlertFunc(button, melody_button_pressed);
+		gpioSetAlertFunc(button, tune_button_pressed);
 		// set button's gpio to input
 		gpioSetMode(button, PI_INPUT);
         button++;
