@@ -65,8 +65,5 @@ int to_int_without_hash(char *in) {  // without #
 
 bool is_label(char *literal) {
     char a = literal[0];
-    if (('a' <= a && a <= 'z') || ('A' <= a && a <= 'Z')) {
-        return true;
-    }
-    return false;
+    return ('a' <= a && a <= 'z') || ('A' <= a && a <= 'Z');
 }
