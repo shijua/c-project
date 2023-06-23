@@ -5,7 +5,7 @@
 \usepackage{graphicx,capt-of,amsmath,float,indentfirst,xcolor,listings}
 \begin{document}
 
-\title{Final Report}
+\title{C Final Report}
 \author{Weijun Huang, Lihaomin Qiu, Molan Yang, Yifan Jiang}
 
 \maketitle
@@ -34,7 +34,7 @@ One significant issue we encountered was dealing with white spaces. During the d
 
 Another challenge arose when checking and converting strings into decimal or hexadecimal values, as they either start with or without '\#' symbol. We also faced problems while handling aliases, as new memory needed to be allocated and a pointer returned after the alias was generated to pass it into the tokeniser function. Furthermore, we experienced difficulties when running the testsuite on macOS devices. However, we were able to resolve this issue by utilizing lab machines for testing purposes.
 
-\section{turn on LED on a Raspberry Pi}
+\section{Mailbox}
 In the implementation of Part 3, our group adopted a systematic approach, partitioning the task into distinct phases. Initially, our objective was to compose the assembler code, enabling the illumination of the LED. Contrary to expectations, this proved rather arduous due to the intricacies involved in passing immediate values to registers. Our preliminary efforts did not yield a solution, compelling us to utilise labels for the immediate values, which diverged from our original plan.
 
 Subsequently, our endeavour was to effectuate the LED to illuminate for a brief interval and subsequently deactivate. This ostensibly rudimentary task was fraught with unexpected complexities. The wait function did not exhibit the anticipated performance, likely attributable to an excessive utilisation of registers. Additionally, we inadvertently neglected the necessity to replenish the buffer with each iteration of LED activation, which inadvertently extended the duration of execution. Nevertheless, through persistent efforts, we succeeded in effectuating the LED to blink quintuple times. It is noteworthy that one of our group members displayed proficiency in comprehending the read function and status verification function, which notably expedited our progress. Conclusively, we refined our codebase and achieved completion of Part 3.
