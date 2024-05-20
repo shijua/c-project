@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Run the server
+# Tries to run with pipenv, else with python3
+
+if [ -e .venv/bin/python3 ]
+then
+    . ./.venv/bin/activate
+    python3 run.py $@
+    deactivate
+else
+    python3 run.py $@
+fi

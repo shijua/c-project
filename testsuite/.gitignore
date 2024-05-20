@@ -1,0 +1,10 @@
+solution
+__pycache__
+*.pyc
+*.o
+test/actual_results
+.venv
+.pytest_cache
+tests/res/outfiles
+.vscode
+non_student
